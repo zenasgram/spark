@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>996396240937-d6v6v5e5i8sq0mn5innbf1tgrnreeopv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.996396240937-d6v6v5e5i8sq0mn5innbf1tgrnreeopv</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>996396240937-2jv9vu9dqg6u4fg7bgq71og82o346ia6.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBIY6ZQW_KLkhQZZb5m93EfBxzLNMzLOEI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>996396240937</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>ac.imperial.spark</string>
+	<key>PROJECT_ID</key>
+	<string>spark-bbe20</string>
+	<key>STORAGE_BUCKET</key>
+	<string>spark-bbe20.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:996396240937:ios:b3f0206d1673886d33cc38</string>
+	<key>DATABASE_URL</key>
+	<string>https://spark-bbe20.firebaseio.com</string>
+</dict>
+</plist>
