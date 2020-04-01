@@ -29,6 +29,7 @@ dependencies:
 
   #animation packages
   rubber: ^0.4.0
+  flare_flutter: ^2.0.1
 
 
 
@@ -43,3 +44,4 @@ flutter:
 
   assets:
     - images/
+    - assets/
