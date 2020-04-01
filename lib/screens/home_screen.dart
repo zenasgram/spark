@@ -1,6 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:spark/constants.dart';
-import 'package:flare_flutter/flare_actor.dart';
+import 'package:spark/components/activity_card.dart';
+import 'package:spark/screens/activities/activity1.dart';
+import 'package:spark/screens/activities/activity2.dart';
+import 'package:spark/screens/activities/activity3.dart';
+import 'package:spark/screens/welcome_screen.dart';
+
+//decorative package
+import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:spark/auth.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = 'home_screen';
@@ -10,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool selected = false;
+  bool bluetoothStatus = true;
 
   @override
   void initState() {
@@ -20,35 +31,111 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kHomeBackground,
       body: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(30.0),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selected = !selected;
-                  });
-                },
-                child: AnimatedContainer(
-//                  width: selected ? 200.0 : 100.0,
-//                  height: selected ? 100.0 : 200.0,
-//                  color: selected ? Colors.red : Colors.blue,
-                  height: 250,
-                  width: 150,
-                  color: Colors.blue,
-                  duration: Duration(seconds: 10),
-                  child: FlareActor(
-                    'assets/switch.flr',
-                    alignment: Alignment.center,
-                    fit: BoxFit.fill,
-                    animation: 'go',
+              padding: const EdgeInsets.only(
+                  top: 10.0, left: 30.0, right: 30.0, bottom: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Spark',
+                    style: GoogleFonts.montserrat(
+                      textStyle: kHomeTitleStyle,
+                    ),
                   ),
-                ),
+                  Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(top: 7.0),
+                        child: Column(
+                          children: <Widget>[
+                            Icon(
+                              FontAwesomeIcons.bluetoothB,
+                              color:
+                                  bluetoothStatus ? kConnected : kUnconnected,
+                            ),
+                            SizedBox(
+                              height: 3.0,
+                            ),
+                            Text(
+                              bluetoothStatus ? 'Connected' : 'Unconnected',
+                              style: GoogleFonts.montserrat(
+                                textStyle: kBluetoothStatus,
+                              ).copyWith(
+                                color:
+                                    bluetoothStatus ? kConnected : kUnconnected,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      IconButton(
+                          icon: Icon(FontAwesomeIcons.signOutAlt),
+                          color: kAppBlue,
+                          iconSize: 30,
+                          onPressed: () {
+                            //Implement logout functionality
+                            authService.signOut();
+                            Navigator.pushNamed(context, WelcomeScreen.id);
+                          }),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.all(30.0),
+//          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//          crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        Navigator.pushNamed(context, Activity1.id);
+                      });
+                    },
+                    child: ActivityCard(
+                      flare: 'switch',
+                      activityTitle: 'Switch Control',
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        Navigator.pushNamed(context, Activity2.id);
+                      });
+                    },
+                    child: ActivityCard(
+                      flare: 'switch',
+                      activityTitle: 'Motor Stepper',
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        Navigator.pushNamed(context, Activity3.id);
+                      });
+                    },
+                    child: ActivityCard(
+                      flare: 'switch',
+                      activityTitle: 'Tone Generator',
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
