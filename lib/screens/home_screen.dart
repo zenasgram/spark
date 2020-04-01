@@ -21,8 +21,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool bluetoothStatus = true;
-
   @override
   void initState() {
     super.initState();
@@ -49,33 +47,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Row(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 7.0),
-                        child: Column(
-                          children: <Widget>[
-                            Icon(
-                              FontAwesomeIcons.bluetoothB,
-                              color:
-                                  bluetoothStatus ? kConnected : kUnconnected,
-                            ),
-                            SizedBox(
-                              height: 3.0,
-                            ),
-                            Text(
-                              bluetoothStatus ? 'Connected' : 'Unconnected',
-                              style: GoogleFonts.montserrat(
-                                textStyle: kBluetoothStatus,
-                              ).copyWith(
-                                color:
-                                    bluetoothStatus ? kConnected : kUnconnected,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10.0,
-                      ),
                       IconButton(
                           icon: Icon(FontAwesomeIcons.signOutAlt),
                           color: kAppBlue,

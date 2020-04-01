@@ -5,8 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 const kAppBlue = Color(0xFF003BC0);
 const kHomeBackground = Color(0xFFEFEFEF);
 
-const kConnected = Color(0xFFEFEFEF);
-const kUnconnected = Color(0xFFBBBBBBBB);
 //--------------------------------------
 
 const kWelcomeScaffold = BoxDecoration(
@@ -42,11 +40,6 @@ const kHomeTitleStyle = TextStyle(
   fontSize: 40.0,
   fontWeight: FontWeight.w600,
   color: kAppBlue,
-);
-
-const kBluetoothStatus = TextStyle(
-  fontSize: 7.0,
-  fontWeight: FontWeight.w200,
 );
 
 const kCardTitleStyle = TextStyle(
