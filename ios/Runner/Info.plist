@@ -2,6 +2,7 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -28,6 +29,23 @@
     			<string>com.googleusercontent.apps.996396240937-d6v6v5e5i8sq0mn5innbf1tgrnreeopv</string>
     		</array>
     	</dict>
+    	<dict>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>fb218253649589954</string>
+            </array>
+         </dict>
+    </array>
+    <key>FacebookAppID</key>
+    <string>218253649589954</string>
+    <key>FacebookDisplayName</key>
+    <string>Spark by Imperial</string>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>fbapi</string>
+        <string>fb-messenger-share-api</string>
+        <string>fbauth2</string>
+        <string>fbshareextension</string>
     </array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>

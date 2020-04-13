@@ -46,3 +46,30 @@ const kCardTitleStyle = TextStyle(
   fontSize: 30.0,
   fontWeight: FontWeight.bold,
 );
+
+const kActivityTitleStyle = TextStyle(
+  fontSize: 25.0,
+  fontWeight: FontWeight.w500,
+);
+
+const kControlPanelTitle = TextStyle(
+  fontSize: 20.0,
+  fontWeight: FontWeight.w300,
+);
+
+const kSliderText = TextStyle(
+  fontSize: 15.0,
+  fontWeight: FontWeight.w500,
+);
+
+const kConfigurePanelTitle = TextStyle(
+  fontSize: 20.0,
+  fontWeight: FontWeight.w300,
+  color: Colors.black,
+);
+
+const kConfigureText = TextStyle(
+  fontSize: 15.0,
+  fontWeight: FontWeight.w500,
+  color: Colors.black,
+);

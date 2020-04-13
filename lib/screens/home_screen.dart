@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spark/auth_fb.dart';
 import 'package:spark/constants.dart';
 import 'package:spark/components/activity_card.dart';
 import 'package:spark/screens/activities/activity1.dart';
@@ -11,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:spark/auth.dart';
+import 'package:spark/auth_google.dart';
 
 class HomeScreen extends StatefulWidget {
   static String id = 'home_screen';
@@ -53,7 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           iconSize: 30,
                           onPressed: () {
                             //Implement logout functionality
-                            authService.signOut();
+                            authServiceGoogle.signOut();
+                            authServiceFB.logout();
                             Navigator.pushNamed(context, WelcomeScreen.id);
                           }),
                     ],

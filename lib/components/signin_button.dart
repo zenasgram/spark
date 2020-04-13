@@ -1,14 +1,24 @@
 import 'package:flutter/material.dart';
 
 class SignInButton extends StatelessWidget {
-  SignInButton({@required this.onPressed});
+  SignInButton({
+    @required this.onPressed,
+    @required this.imageName,
+    @required this.buttonColour,
+    @required this.textColour,
+    @required this.signinText,
+  });
 
   final Function onPressed;
+  final String imageName;
+  final Color buttonColour;
+  final Color textColour;
+  final String signinText;
 
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
-      color: Colors.white,
+      color: buttonColour,
       onPressed: onPressed,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
       highlightElevation: 0,
@@ -19,17 +29,17 @@ class SignInButton extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image(image: AssetImage("images/google_logo.png"), height: 25.0),
+            Image(image: AssetImage("images/$imageName.png"), height: 25.0),
             SizedBox(
-              width: 15.0,
+              width: 25.0,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                'Sign in with Google',
+                signinText,
                 style: TextStyle(
                   fontSize: 17,
-                  color: Colors.black54,
+                  color: textColour,
                 ),
               ),
             )

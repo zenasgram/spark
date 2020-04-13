@@ -1,14 +1,15 @@
 //page dependencies
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:spark/screens/home_screen.dart';
 import 'package:spark/constants.dart';
-import 'package:spark/components/rounded_button.dart';
 import 'package:spark/components/signin_button.dart';
 
 //decorative packages
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:spark/auth.dart';
+import 'package:spark/auth_google.dart';
+import 'package:spark/auth_fb.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String id = 'welcome_screen';
@@ -92,22 +93,30 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ),
               SignInButton(
                 onPressed: () {
-                  authService.googleSignIn().whenComplete(() {
+                  authServiceGoogle.googleSignIn().whenComplete(() {
                     Navigator.pushNamed(context, HomeScreen.id);
                   });
                 },
+                imageName: "google_logo",
+                buttonColour: Colors.white,
+                textColour: Colors.black54,
+                signinText: ' Sign in with Google  ',
               ),
-//              RoundedButton(
-//                title: 'Login with Google',
-//                colour: Colors.lightBlueAccent,
-//                onPressed: () => authService.googleSignIn(),
-//              ),
-              RoundedButton(
-                  title: 'Register',
-                  colour: Colors.blueAccent,
-                  onPressed: () {
+              SizedBox(
+                height: 15.0,
+              ),
+              SignInButton(
+                onPressed: () {
+                  authServiceFB.loginWithFB();
+                  if (authServiceFB.isLoggedIn == true) {
                     Navigator.pushNamed(context, HomeScreen.id);
-                  }),
+                  }
+                },
+                imageName: "facebook_logo",
+                buttonColour: Color(0xFF1874EC),
+                textColour: Colors.white,
+                signinText: 'Login with Facebook',
+              ),
             ],
           ),
         ),
