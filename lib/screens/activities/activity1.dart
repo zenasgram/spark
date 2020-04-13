@@ -80,6 +80,23 @@ class _Activity1State extends State<Activity1>
 
   Widget _getLowerLayer() {
     return Container(
+      decoration: BoxDecoration(
+        color: Color(0xFF2d248a),
+        borderRadius: BorderRadius.all(
+          Radius.circular(25),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xFF101010),
+            blurRadius: 20.0, // has the effect of softening the shadow
+            spreadRadius: 5.0, // has the effect of extending the shadow
+            offset: Offset(
+              0.0, // horizontal, move right 10
+              0.0, // vertical, move down 10
+            ),
+          )
+        ],
+      ),
       child: Padding(
         padding: const EdgeInsets.all(40.0),
         child: Column(
@@ -226,23 +243,6 @@ class _Activity1State extends State<Activity1>
           ],
         ),
       ),
-      decoration: BoxDecoration(
-        color: Color(0xFF2d248a),
-        borderRadius: BorderRadius.all(
-          Radius.circular(25),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xFF101010),
-            blurRadius: 20.0, // has the effect of softening the shadow
-            spreadRadius: 5.0, // has the effect of extending the shadow
-            offset: Offset(
-              0.0, // horizontal, move right 10
-              0.0, // vertical, move down 10
-            ),
-          )
-        ],
-      ),
     );
   }
 
@@ -255,7 +255,7 @@ class _Activity1State extends State<Activity1>
         ),
         boxShadow: [
           BoxShadow(
-            color: Color(0xAA505050),
+            color: Color(0xCC202020),
             blurRadius: 20.0, // has the effect of softening the shadow
             spreadRadius: 5.0, // has the effect of extending the shadow
             offset: Offset(
