@@ -4,6 +4,8 @@ platform :ios, '9.0'
 pod 'FBSDKLoginKit'
 pod 'FBSDKCoreKit', '~> 5.8', :modular_headers => true
 
+
+
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
