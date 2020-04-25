@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:wave_slider/wave_slider.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
+import 'package:spark/config_data.dart';
+
 class Activity1 extends StatefulWidget {
   static String id = 'activity_1';
 
@@ -23,12 +25,32 @@ class _Activity1State extends State<Activity1>
   bool switch1 = false;
   bool switch2 = false;
 
+  int port1key = null;
+  List<String> port1List = inputOnlyPinsLIST;
+  String selectedPort1 = inputOnlyPinsLIST[0];
+
+  int port2key = null;
+  List<String> port2List = inputOnlyPinsLIST;
+  String selectedPort2 = inputOnlyPinsLIST[0];
+
+  List<DropdownMenuItem> getDropdownItems(List<String> portList) {
+    List<DropdownMenuItem<String>> dropdownItems = [];
+    for (String port in portList) {
+      var newItem = DropdownMenuItem(
+        child: Text(port),
+        value: port,
+      );
+      dropdownItems.add(newItem);
+    }
+    return dropdownItems;
+  }
+
   @override
   void initState() {
     _controller = RubberAnimationController(
         vsync: this,
         upperBoundValue: AnimationControllerValue(percentage: 0.78),
-        lowerBoundValue: AnimationControllerValue(pixel: 150),
+        lowerBoundValue: AnimationControllerValue(percentage: 0.1),
         duration: Duration(milliseconds: 200));
     _controller.addStatusListener(_statusListener);
     _controller.animationState.addListener(_stateListener);
@@ -57,6 +79,7 @@ class _Activity1State extends State<Activity1>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Color(0xFF202020),
       appBar: AppBar(
         title: Text(
@@ -103,142 +126,178 @@ class _Activity1State extends State<Activity1>
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              'Control Panel',
-              style: GoogleFonts.montserrat(
-                textStyle: kControlPanelTitle,
+            Flexible(
+              flex: 2,
+              child: Text(
+                'Control Panel',
+                style: GoogleFonts.montserrat(
+                  textStyle: kControlPanelTitle,
+                ),
+                textAlign: TextAlign.start,
               ),
-              textAlign: TextAlign.start,
             ),
-            Column(
-              children: <Widget>[
-                WaveSlider(
-                  color: Color(0xFFe42c64),
-                  displayTrackball: true,
-                  sliderHeight: 50,
-                  onChanged: (double dragUpdate) {
-                    setState(() {
-                      _dragPercentage1 = dragUpdate *
-                          100; // dragUpdate is a fractional value between 0 and 1
-                    });
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Slider 1',
-                    style: GoogleFonts.montserrat(
-                      textStyle: kSliderText,
+            SizedBox(
+              height: 10.0,
+            ),
+            Flexible(
+              flex: 3,
+              child: Column(
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: WaveSlider(
+                      color: Color(0xFFe42c64),
+                      displayTrackball: true,
+                      sliderHeight: 50,
+                      onChanged: (double dragUpdate) {
+                        setState(() {
+                          _dragPercentage1 = dragUpdate *
+                              100; // dragUpdate is a fractional value between 0 and 1
+                        });
+                      },
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    '$_dragPercentage1',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                )
-              ],
-            ),
-            Column(
-              children: <Widget>[
-                WaveSlider(
-                  color: Color(0xFFe42c64),
-                  displayTrackball: true,
-                  sliderHeight: 50,
-                  onChanged: (double dragUpdate) {
-                    setState(() {
-                      _dragPercentage2 = dragUpdate *
-                          100; // dragUpdate is a fractional value between 0 and 1
-                    });
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Slider 2',
-                    style: GoogleFonts.montserrat(
-                      textStyle: kSliderText,
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Slider 1',
+                        style: GoogleFonts.montserrat(
+                          textStyle: kSliderText,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    '$_dragPercentage2',
-                    style: TextStyle(fontSize: 16),
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '$_dragPercentage1',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Flexible(
+              flex: 3,
+              child: Column(
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: WaveSlider(
+                      color: Color(0xFFe42c64),
+                      displayTrackball: true,
+                      sliderHeight: 50,
+                      onChanged: (double dragUpdate) {
+                        setState(() {
+                          _dragPercentage2 = dragUpdate *
+                              100; // dragUpdate is a fractional value between 0 and 1
+                        });
+                      },
+                    ),
                   ),
-                )
-              ],
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Slider 2',
+                        style: GoogleFonts.montserrat(
+                          textStyle: kSliderText,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '$_dragPercentage2',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
             SizedBox(
               height: 30.0,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0, left: 35.0),
-                  child: Text(
-                    'Switch 1',
-                    style: GoogleFonts.montserrat(
-                      textStyle: kSliderText,
+            Flexible(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0, left: 35.0),
+                    child: Text(
+                      'Switch 1',
+                      style: GoogleFonts.montserrat(
+                        textStyle: kSliderText,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20, right: 0.0),
-                  child: LiteRollingSwitch(
-                    value: false,
-                    textOn: 'active',
-                    textOff: 'inactive',
-                    colorOn: Color(0xFF64F58D),
-                    colorOff: Colors.blueGrey,
-                    iconOn: Icons.lightbulb_outline,
-                    iconOff: Icons.power_settings_new,
-                    onChanged: (bool state) {
-                      switch1 = state;
-                      print('switch 1: turned ${(switch1) ? 'on' : 'off'}');
-                    },
+                  Padding(
+                    padding: EdgeInsets.only(top: 20, right: 0.0),
+                    child: LiteRollingSwitch(
+                      value: false,
+                      textOn: 'active',
+                      textOff: 'inactive',
+                      colorOn: Color(0xFF64F58D),
+                      colorOff: Colors.blueGrey,
+                      iconOn: Icons.lightbulb_outline,
+                      iconOff: Icons.power_settings_new,
+                      onChanged: (bool state) {
+                        switch1 = state;
+                        print('switch 1: turned ${(switch1) ? 'on' : 'off'}');
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             SizedBox(
               height: 30.0,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0, left: 35.0),
-                  child: Text(
-                    'Switch 2',
-                    style: GoogleFonts.montserrat(
-                      textStyle: kSliderText,
+            Flexible(
+              flex: 2,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0, left: 35.0),
+                    child: Text(
+                      'Switch 2',
+                      style: GoogleFonts.montserrat(
+                        textStyle: kSliderText,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20, right: 0.0),
-                  child: LiteRollingSwitch(
-                    value: false,
-                    textOn: 'active',
-                    textOff: 'inactive',
-                    colorOn: Color(0xFF64F58D),
-                    colorOff: Colors.blueGrey,
-                    iconOn: Icons.lightbulb_outline,
-                    iconOff: Icons.power_settings_new,
-                    onChanged: (bool state) {
-                      switch2 = state;
-                      print('switch 2: turned ${(switch2) ? 'on' : 'off'}');
-                    },
+                  Padding(
+                    padding: EdgeInsets.only(top: 20, right: 0.0),
+                    child: LiteRollingSwitch(
+                      value: false,
+                      textOn: 'active',
+                      textOff: 'inactive',
+                      colorOn: Color(0xFF64F58D),
+                      colorOff: Colors.blueGrey,
+                      iconOn: Icons.lightbulb_outline,
+                      iconOff: Icons.power_settings_new,
+                      onChanged: (bool state) {
+                        switch2 = state;
+                        print('switch 2: turned ${(switch2) ? 'on' : 'off'}');
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             )
           ],
         ),
@@ -265,20 +324,109 @@ class _Activity1State extends State<Activity1>
           )
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(40.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Text(
-              'Configure',
-              style: GoogleFonts.montserrat(
-                textStyle: kConfigurePanelTitle,
-              ),
-              textAlign: TextAlign.start,
+      child: SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+        child: Container(
+          height: 1000,
+          child: Padding(
+            padding: const EdgeInsets.all(40.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text(
+                  'Configure',
+                  style: GoogleFonts.montserrat(
+                    textStyle: kConfigurePanelTitle,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Divider(
+                  color: Colors.grey,
+                  thickness: 1.0,
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color(0x44333333),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, bottom: 10.0, left: 40.0, right: 40.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Port 1',
+                          style: kSliderText,
+                        ),
+                        DropdownButton<String>(
+                          value: selectedPort1,
+                          items: getDropdownItems(port1List),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedPort1 = value;
+                              port1key = inputOnlyPins.keys.firstWhere(
+                                  (k) => inputOnlyPins[k] == selectedPort1,
+                                  orElse: () => null);
+                            });
+                            print(value);
+                            print(port1key);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color(0x44333333),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, bottom: 10.0, left: 40.0, right: 40.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          'Port 2',
+                          style: kSliderText,
+                        ),
+                        DropdownButton<String>(
+                          value: selectedPort2,
+                          items: getDropdownItems(port2List),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedPort2 = value;
+                              port2key = inputOnlyPins.keys.firstWhere(
+                                  (k) => inputOnlyPins[k] == selectedPort2,
+                                  orElse: () => null);
+                            });
+                            print(value);
+                            print(port2key);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
