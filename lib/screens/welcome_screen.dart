@@ -107,10 +107,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               ),
               SignInButton(
                 onPressed: () {
-                  authServiceFB.loginWithFB();
-                  if (authServiceFB.isLoggedIn == true) {
+                  authServiceFB.loginWithFB().whenComplete(() {
                     Navigator.pushNamed(context, HomeScreen.id);
-                  }
+                  });
                 },
                 imageName: "facebook_logo",
                 buttonColour: Color(0xFF1874EC),

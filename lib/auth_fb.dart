@@ -8,9 +8,9 @@ class AuthServiceFB {
   Map userProfile;
   final facebookLogin = FacebookLogin();
 
-  AuthServiceFB() {}
+  AuthServiceFB();
 
-  void loginWithFB() async {
+  Future loginWithFB() async {
     final result = await facebookLogin.logIn(['email']);
 
     switch (result.status) {

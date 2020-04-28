@@ -27,7 +27,7 @@ BLEServer* pServer = NULL;
 BLECharacteristic* pCharacteristic = NULL;
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
-uint32_t value = 0;
+//uint32_t value = 0;
 
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
@@ -47,13 +47,34 @@ class MyServerCallbacks: public BLEServerCallbacks {
     }
 };
 
+class MyCallbacks: public BLECharacteristicCallbacks {
+
+  void onWrite(BLECharacteristic *pCharacteristic){
+    std::string value = pCharacteristic->getValue();
+
+    if(value.length() > 0){
+
+      Serial.println("***********");
+      Serial.print("New value: ");
+      for(int i=0; i<value.length(); i++){
+        Serial.print(value[i]);
+      }
+
+      Serial.println();
+      Serial.println("***********");      
+    }
+
+  }
+  
+};
+
 
 
 void setup() {
   Serial.begin(115200);
 
   // Create the BLE Device
-  BLEDevice::init("ESP32 THAT PROJECT");
+  BLEDevice::init("ESP32 GET NOTI FROM DEVICE");
 
   // Create the BLE Server
   pServer = BLEDevice::createServer();
@@ -71,6 +92,8 @@ void setup() {
                       BLECharacteristic::PROPERTY_INDICATE
                     );
 
+  pCharacteristic->setCallbacks(new MyCallbacks());
+ 
   // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml
   // Create a BLE Descriptor
   pCharacteristic->addDescriptor(new BLE2902());
@@ -89,12 +112,12 @@ void setup() {
 
 void loop() {
     // notify changed value
-    if (deviceConnected) {
-        pCharacteristic->setValue((uint8_t*)&value, 4);
-        pCharacteristic->notify();
-        value++;
-        delay(500); // bluetooth stack will go into congestion, if too many packets are sent, in 6 hours test i was able to go as low as 3ms
-    }
+//    if (deviceConnected) {
+//        pCharacteristic->setValue((uint8_t*)&value, 4);
+//        pCharacteristic->notify();
+//        value++;
+//        delay(500); // bluetooth stack will go into congestion, if too many packets are sent, in 6 hours test i was able to go as low as 3ms
+//    }
     // disconnecting
     if (!deviceConnected && oldDeviceConnected) {
         delay(500); // give the bluetooth stack the chance to get things ready
