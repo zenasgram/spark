@@ -6,6 +6,7 @@ import 'package:spark/screens/activities/activity1.dart';
 import 'package:spark/screens/activities/activity2.dart';
 import 'package:spark/screens/activities/activity3.dart';
 import 'package:spark/screens/welcome_screen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 //decorative package
 import 'package:google_fonts/google_fonts.dart';
@@ -39,6 +40,30 @@ class _HomeScreenState extends State<HomeScreen> {
   BluetoothCharacteristic targetCharacteristic;
 
   String connectionText = "";
+
+  var alertStyle = AlertStyle(
+    backgroundColor: Color(0xAAFFFFFF),
+    animationType: AnimationType.grow,
+    isCloseButton: false,
+    isOverlayTapDismiss: false,
+    descStyle: TextStyle(
+      color: Colors.black87,
+      fontSize: 15.0,
+      fontWeight: FontWeight.w300,
+    ),
+    animationDuration: Duration(milliseconds: 300),
+    alertBorder: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30.0),
+      side: BorderSide(
+        color: Colors.transparent,
+      ),
+    ),
+    titleStyle: TextStyle(
+      color: kAppBlue,
+      fontSize: 25.0,
+      fontWeight: FontWeight.bold,
+    ),
+  );
 
   @override
   void initState() {
@@ -182,7 +207,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   GestureDetector(
                     onTap: () {
                       setState(() {
-                        Navigator.pushNamed(context, Activity1.id);
+                        if (connected == false) {
+                          Alert(
+                            context: context,
+                            style: alertStyle,
+                            type: AlertType.none,
+                            title: "NOT CONNECTED",
+                            desc:
+                                "Please tap the bluetooth icon above to connect with the ESP32 first.",
+                            buttons: [
+                              DialogButton(
+                                child: Text(
+                                  "OKAY",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                                onPressed: () => Navigator.pop(context),
+                                color: kAppBlue,
+                                radius: BorderRadius.circular(20.0),
+                              ),
+                            ],
+                          ).show();
+                        } else {
+                          Navigator.pushNamed(context, Activity1.id);
+                        }
                       });
                     },
                     child: ActivityCard(
@@ -196,7 +244,30 @@ class _HomeScreenState extends State<HomeScreen> {
 //                  GestureDetector(
 //                    onTap: () {
 //                      setState(() {
-//                        Navigator.pushNamed(context, Activity2.id);
+//                        if (connected == false) {
+//                          Alert(
+//                            context: context,
+//                            style: alertStyle,
+//                            type: AlertType.none,
+//                            title: "NOT CONNECTED",
+//                            desc:
+//                                "Please tap the bluetooth icon above to connect with the ESP32 first.",
+//                            buttons: [
+//                              DialogButton(
+//                                child: Text(
+//                                  "OKAY",
+//                                  style: TextStyle(
+//                                      color: Colors.white, fontSize: 20),
+//                                ),
+//                                onPressed: () => Navigator.pop(context),
+//                                color: kAppBlue,
+//                                radius: BorderRadius.circular(20.0),
+//                              ),
+//                            ],
+//                          ).show();
+//                        } else {
+//                          Navigator.pushNamed(context, Activity2.id);
+//                        }
 //                      });
 //                    },
 //                    child: ActivityCard(
@@ -210,7 +281,30 @@ class _HomeScreenState extends State<HomeScreen> {
 //                  GestureDetector(
 //                    onTap: () {
 //                      setState(() {
-//                        Navigator.pushNamed(context, Activity3.id);
+//                        if (connected == false) {
+//                          Alert(
+//                            context: context,
+//                            style: alertStyle,
+//                            type: AlertType.none,
+//                            title: "NOT CONNECTED",
+//                            desc:
+//                                "Please tap the bluetooth icon above to connect with the ESP32 first.",
+//                            buttons: [
+//                              DialogButton(
+//                                child: Text(
+//                                  "OKAY",
+//                                  style: TextStyle(
+//                                      color: Colors.white, fontSize: 20),
+//                                ),
+//                                onPressed: () => Navigator.pop(context),
+//                                color: kAppBlue,
+//                                radius: BorderRadius.circular(20.0),
+//                              ),
+//                            ],
+//                          ).show();
+//                        } else {
+//                          Navigator.pushNamed(context, Activity3.id);
+//                        }
 //                      });
 //                    },
 //                    child: ActivityCard(

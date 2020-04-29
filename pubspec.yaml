@@ -33,6 +33,7 @@ dependencies:
   #animation packages
   rubber: ^0.4.0
   flare_flutter: ^2.0.1
+  rflutter_alert: ^1.0.3
 
   #bluetooth packages
   flutter_blue: ^0.7.0

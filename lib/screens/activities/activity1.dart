@@ -9,6 +9,8 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 import 'package:spark/config_data.dart';
 
+import 'package:spark/screens/home_screen.dart';
+
 class Activity1 extends StatefulWidget {
   static String id = 'activity_1';
 
@@ -22,8 +24,8 @@ class _Activity1State extends State<Activity1>
 
   double _dragPercentage1 = 0;
   double _dragPercentage2 = 0;
-  bool switch1 = false;
-  bool switch2 = false;
+  int switch1 = 0;
+  int switch2 = 0;
 
   int port1key = null;
   List<String> port1List = inputOnlyPinsLIST;
@@ -254,8 +256,8 @@ class _Activity1State extends State<Activity1>
                       iconOn: Icons.lightbulb_outline,
                       iconOff: Icons.power_settings_new,
                       onChanged: (bool state) {
-                        switch1 = state;
-                        print('switch 1: turned ${(switch1) ? 'on' : 'off'}');
+                        switch1 = state ? 1 : 0;
+                        print('switch 1: turned ${(state) ? 'on' : 'off'}');
                       },
                     ),
                   ),
@@ -291,8 +293,8 @@ class _Activity1State extends State<Activity1>
                       iconOn: Icons.lightbulb_outline,
                       iconOff: Icons.power_settings_new,
                       onChanged: (bool state) {
-                        switch2 = state;
-                        print('switch 2: turned ${(switch2) ? 'on' : 'off'}');
+                        switch2 = state ? 1 : 0;
+                        print('switch 2: turned ${(state) ? 'on' : 'off'}');
                       },
                     ),
                   ),
