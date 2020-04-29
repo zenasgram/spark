@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>NSBluetoothAlwaysUsageDescription</key>
-    <string>Our app uses bluetooth to find, connect and transfer data between different devices</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -21,37 +19,39 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
-    <array>
-    	<dict>
-    		<key>CFBundleTypeRole</key>
-    		<string>Editor</string>
-    		<key>CFBundleURLSchemes</key>
-    		<array>
-    			<string>com.googleusercontent.apps.996396240937-d6v6v5e5i8sq0mn5innbf1tgrnreeopv</string>
-    		</array>
-    	</dict>
-    	<dict>
-            <key>CFBundleURLSchemes</key>
-            <array>
-                <string>fb218253649589954</string>
-            </array>
-         </dict>
-    </array>
-    <key>FacebookAppID</key>
-    <string>218253649589954</string>
-    <key>FacebookDisplayName</key>
-    <string>Spark by Imperial</string>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>fbapi</string>
-        <string>fb-messenger-share-api</string>
-        <string>fbauth2</string>
-        <string>fbshareextension</string>
-    </array>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.996396240937-d6v6v5e5i8sq0mn5innbf1tgrnreeopv</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb218253649589954</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>218253649589954</string>
+	<key>FacebookDisplayName</key>
+	<string>Spark by Imperial</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Our app uses bluetooth to find, connect and transfer data between different devices</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -59,8 +59,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>

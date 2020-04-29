@@ -27,6 +27,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool connected = false;
   final String SERVICE_UUID = "c6bcdf5e-86da-11ea-bc55-0242ac130003";
   final String CHARACTERISTIC_UUID = "cec2788a-86da-11ea-bc55-0242ac130003";
   final String TARGET_DEVICE_NAME = "ESP32 GET NOTI FROM DEVICE";
@@ -80,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await targetDevice.connect();
     print('DEVICE CONNECTED');
     setState(() {
+      connected = true;
       connectionText = "Device Connected";
     });
 
@@ -92,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
     targetDevice.disconnect();
     print('DEVICE DISCONNECTED');
     setState(() {
+      connected = false;
       connectionText = "Device Disconnected";
     });
   }
@@ -143,6 +146,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Row(
                     children: <Widget>[
+                      IconButton(
+                          icon: Icon(FontAwesomeIcons.bluetoothB),
+                          color: connected ? Colors.greenAccent : Colors.grey,
+                          iconSize: 30,
+                          onPressed: () {
+                            //Implement logout functionality
+                            if (connected == true) {
+                              disconnectedFromDevice();
+                            } else {
+                              connectToDevice();
+                            }
+                          }),
                       IconButton(
                           icon: Icon(FontAwesomeIcons.signOutAlt),
                           color: kAppBlue,
