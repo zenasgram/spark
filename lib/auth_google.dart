@@ -8,6 +8,7 @@ class AuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _db = Firestore.instance;
+  bool isLoggedIn = false;
 
   // Shared State for Widgets
 //  Observable<FirebaseUser> user; // firebase user
@@ -59,6 +60,7 @@ class AuthService {
     // Done
     loading.add(false);
     print("signed in " + user.displayName);
+    isLoggedIn = true;
     return user;
   }
 
@@ -75,6 +77,7 @@ class AuthService {
   }
 
   void signOut() {
+    isLoggedIn = false;
     _auth.signOut();
   }
 }

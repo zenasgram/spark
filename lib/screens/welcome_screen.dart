@@ -94,7 +94,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               SignInButton(
                 onPressed: () {
                   authServiceGoogle.googleSignIn().whenComplete(() {
-                    Navigator.pushNamed(context, HomeScreen.id);
+                    if (authServiceGoogle.isLoggedIn == true) {
+                      Navigator.pushNamed(context, HomeScreen.id);
+                    }
                   });
                 },
                 imageName: "google_logo",
@@ -108,7 +110,9 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               SignInButton(
                 onPressed: () {
                   authServiceFB.loginWithFB().whenComplete(() {
-                    Navigator.pushNamed(context, HomeScreen.id);
+                    if (authServiceFB.isLoggedIn == true) {
+                      Navigator.pushNamed(context, HomeScreen.id);
+                    }
                   });
                 },
                 imageName: "facebook_logo",
