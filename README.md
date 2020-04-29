@@ -1,6 +1,6 @@
 # Spark
 
-Spark is a pre-college outreach application to educate students on basic engineering concepts.
+Spark is a pre-college outreach application to educate students on fundamental engineering concepts (eg. electromagnetism).
 
 ## Getting Started
 
