@@ -149,12 +149,16 @@ class _Activity1State extends State<Activity1>
                     flex: 1,
                     child: WaveSlider(
                       color: Color(0xFFe42c64),
-                      displayTrackball: true,
+                      displayTrackball: false,
                       sliderHeight: 50,
                       onChanged: (double dragUpdate) {
                         setState(() {
                           _dragPercentage1 = dragUpdate *
                               100; // dragUpdate is a fractional value between 0 and 1
+                          String dataValues =
+                              "Slider1: ${_dragPercentage1.toStringAsFixed(2)}";
+                          print(dataValues);
+                          writeData(dataValues);
                         });
                       },
                     ),
@@ -192,12 +196,16 @@ class _Activity1State extends State<Activity1>
                     flex: 1,
                     child: WaveSlider(
                       color: Color(0xFFe42c64),
-                      displayTrackball: true,
+                      displayTrackball: false,
                       sliderHeight: 50,
                       onChanged: (double dragUpdate) {
                         setState(() {
                           _dragPercentage2 = dragUpdate *
                               100; // dragUpdate is a fractional value between 0 and 1
+                          String dataValues =
+                              "Slider2: ${_dragPercentage2.toStringAsFixed(2)}";
+                          print(dataValues);
+                          writeData(dataValues);
                         });
                       },
                     ),
@@ -258,6 +266,9 @@ class _Activity1State extends State<Activity1>
                       onChanged: (bool state) {
                         switch1 = state ? 1 : 0;
                         print('switch 1: turned ${(state) ? 'on' : 'off'}');
+                        String dataValues = "Switch1: $switch1";
+                        print(dataValues);
+                        writeData(dataValues);
                       },
                     ),
                   ),
@@ -295,6 +306,9 @@ class _Activity1State extends State<Activity1>
                       onChanged: (bool state) {
                         switch2 = state ? 1 : 0;
                         print('switch 2: turned ${(state) ? 'on' : 'off'}');
+                        String dataValues = "Switch2: $switch2";
+                        print(dataValues);
+                        writeData(dataValues);
                       },
                     ),
                   ),
@@ -379,9 +393,10 @@ class _Activity1State extends State<Activity1>
                               port1key = inputOnlyPins.keys.firstWhere(
                                   (k) => inputOnlyPins[k] == selectedPort1,
                                   orElse: () => null);
+                              String dataPorts = "Port1: $port1key";
+                              print(dataPorts);
+                              writeData(dataPorts);
                             });
-                            print(value);
-                            print(port1key);
                           },
                         ),
                       ],
@@ -417,9 +432,10 @@ class _Activity1State extends State<Activity1>
                               port2key = inputOnlyPins.keys.firstWhere(
                                   (k) => inputOnlyPins[k] == selectedPort2,
                                   orElse: () => null);
+                              String dataPorts = "Port2: $port2key";
+                              print(dataPorts);
+                              writeData(dataPorts);
                             });
-                            print(value);
-                            print(port2key);
                           },
                         ),
                       ],

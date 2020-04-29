@@ -27,6 +27,9 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+BluetoothDevice targetDevice;
+BluetoothCharacteristic targetCharacteristic;
+
 class _HomeScreenState extends State<HomeScreen> {
   bool connected = false;
   final String SERVICE_UUID = "c6bcdf5e-86da-11ea-bc55-0242ac130003";
@@ -35,9 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   FlutterBlue flutterBlue = FlutterBlue.instance;
   StreamSubscription<ScanResult> scanSubscription;
-
-  BluetoothDevice targetDevice;
-  BluetoothCharacteristic targetCharacteristic;
 
   String connectionText = "";
 
@@ -141,13 +141,6 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       }
     });
-  }
-
-  writeData(String data) async {
-    if (targetCharacteristic == null) return;
-
-    List<int> bytes = utf8.encode(data);
-    await targetCharacteristic.write(bytes);
   }
 
   @override
@@ -320,4 +313,11 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+}
+
+writeData(String data) async {
+  if (targetCharacteristic == null) return;
+
+  List<int> bytes = utf8.encode(data);
+  await targetCharacteristic.write(bytes);
 }
