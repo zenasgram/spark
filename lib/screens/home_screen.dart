@@ -315,9 +315,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-writeData(String data) async {
+//writeData(String data) async {
+//  if (targetCharacteristic == null) return;
+//
+//  List<int> bytes = utf8.encode(data);
+//  await targetCharacteristic.write(bytes);
+//}
+
+//removed async for faster transmission
+writeData(String data) {
   if (targetCharacteristic == null) return;
 
   List<int> bytes = utf8.encode(data);
-  await targetCharacteristic.write(bytes);
+  targetCharacteristic.write(bytes);
 }

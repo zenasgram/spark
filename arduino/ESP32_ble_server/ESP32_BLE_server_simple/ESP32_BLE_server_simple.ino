@@ -23,6 +23,97 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 
+//**********************************************************************************************
+//-------------------------------------- ACTIVITY 1 --------------------------------------------
+//**********************************************************************************************
+
+int led1 = 1; // 12 corresponds to GPIO12
+int led2 = 2;
+
+// setting PWM properties
+int freq1 = 5000;
+int ledChannel1 = 0;
+int resolution1 = 8;
+int freq2 = 5000;
+int ledChannel2 = 1;
+int resolution2 = 8;
+
+int switch1 = 0;
+int switch2 = 0;
+
+int dutyCycle1 = 0;
+int dutyCycle2 = 0;
+
+
+//**********************************************************************************************
+//----------------------------------- Command Parsing ------------------------------------------
+//**********************************************************************************************
+
+String command;
+
+void parseCommand(String com){
+  String part1;
+  String part2;
+
+  part1 = com.substring(0, com.indexOf(" "));
+  part2 = com.substring(com.indexOf(" ") + 1);
+
+  if(part1.equalsIgnoreCase("Port1:")){
+    led1 = part2.toInt();
+    ledcAttachPin(led1, ledChannel1);
+    
+  }
+  else if (part1.equalsIgnoreCase("Port2:")){
+    led2 = part2.toInt();
+    ledcAttachPin(led2, ledChannel2);
+  }
+  else if (part1.equalsIgnoreCase("Slider1:")){
+    dutyCycle1 = part2.toInt() * 2; //to scale range to 0 to 200 (max is 255)
+    if(switch1 == 1){
+      ledcWrite(ledChannel1, dutyCycle1);
+    }
+    else{
+      ledcWrite(ledChannel1, 0);
+    }
+  }
+  else if (part1.equalsIgnoreCase("Slider2:")){
+    dutyCycle2 = part2.toInt() * 2;
+    if(switch2 == 1){
+      ledcWrite(ledChannel2, dutyCycle2);
+    }
+    else{
+      ledcWrite(ledChannel2, 0);
+    }
+    
+  }
+  else if (part1.equalsIgnoreCase("Switch1:")){
+    switch1 = part2.toInt();
+    if(switch1 == 1){
+      ledcWrite(ledChannel1, dutyCycle1);
+    }
+    else{
+      ledcWrite(ledChannel1, 0);
+    }
+  }
+   else if (part1.equalsIgnoreCase("Switch2:")){
+    switch2 = part2.toInt();
+    if(switch2 == 1){
+      ledcWrite(ledChannel2, dutyCycle2);
+    }
+    else{
+      ledcWrite(ledChannel2, 0);
+    }
+  }
+  else{
+    Serial.println(" ");
+  }
+}
+
+//**********************************************************************************************
+//--------------------------------------- BLUETOOTH --------------------------------------------
+//**********************************************************************************************
+
+
 BLEServer* pServer = NULL;
 BLECharacteristic* pCharacteristic = NULL;
 bool deviceConnected = false;
@@ -34,6 +125,8 @@ bool oldDeviceConnected = false;
 
 #define SERVICE_UUID        "c6bcdf5e-86da-11ea-bc55-0242ac130003"
 #define CHARACTERISTIC_UUID "cec2788a-86da-11ea-bc55-0242ac130003"
+
+
 
 
 class MyServerCallbacks: public BLEServerCallbacks {
@@ -58,7 +151,10 @@ class MyCallbacks: public BLECharacteristicCallbacks {
       Serial.print("New value: ");
       for(int i=0; i<value.length(); i++){
         Serial.print(value[i]);
+        command += value[i];
       }
+      parseCommand(command);
+          command = "";
 
       Serial.println();
       Serial.println("***********");      
@@ -70,7 +166,22 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
 
 
+
+
+
+
 void setup() {
+  
+  // configure LED PWM functionalitites
+  ledcSetup(ledChannel1, freq1, resolution1);
+  ledcSetup(ledChannel2, freq2, resolution2);
+ 
+  // attach the channel to the GPIO to be controlled
+  ledcAttachPin(led1, ledChannel1);
+  ledcAttachPin(led2, ledChannel2);
+
+  
+  
   Serial.begin(115200);
 
   // Create the BLE Device
@@ -111,6 +222,37 @@ void setup() {
 }
 
 void loop() {
+
+//  //parse commands
+//  if(Serial.available()){
+//    char c = Serial.read();
+//
+//    if(c == '\n'){
+//      parseCommand(command);
+//      command = "";
+//    }
+//    else{
+//      command += c;
+//    }
+//  }
+  
+
+//  // increase the LED brightness
+//  for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++){   
+//    // changing the LED brightness with PWM
+//    ledcWrite(ledChannel1, dutyCycle);
+//    ledcWrite(ledChannel2, dutyCycle);
+//    delay(15);
+//  }
+//
+//  // decrease the LED brightness
+//  for(int dutyCycle = 255; dutyCycle >= 0; dutyCycle--){
+//    // changing the LED brightness with PWM
+//    ledcWrite(ledChannel1, dutyCycle);  
+//    ledcWrite(ledChannel2, dutyCycle);   
+//    delay(15);
+//  }
+  
     // notify changed value
 //    if (deviceConnected) {
 //        pCharacteristic->setValue((uint8_t*)&value, 4);

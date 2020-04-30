@@ -97,3 +97,42 @@ const Map<int, String> I2CPins = {
 
 var I2CPinsKEYS = I2CPins.keys.toList();
 var I2CPinsLIST = I2CPins.values.toList();
+
+const Map<int, String> PWMPins = {
+  1: 'GPIO 1',
+  2: 'GPIO 2',
+  3: 'GPIO 3',
+  4: 'GPIO 4',
+  5: 'GPIO 5',
+  6: 'GPIO 6',
+  7: 'GPIO 7',
+  8: 'GPIO 8',
+  9: 'GPIO 9',
+  10: 'GPIO 10',
+  11: 'GPIO 11',
+  12: 'GPIO 12',
+  13: 'GPIO 13',
+  14: 'GPIO 14',
+  15: 'GPIO 15',
+  16: 'GPIO 16',
+  17: 'GPIO 17',
+  18: 'GPIO 18',
+  19: 'GPIO 19',
+  20: 'GPIO 20',
+  21: 'GPIO 21',
+  22: 'GPIO 22',
+  23: 'GPIO 23',
+  24: 'GPIO 24',
+  25: 'GPIO 25',
+  26: 'GPIO 26',
+  27: 'GPIO 27',
+  28: 'GPIO 28',
+  29: 'GPIO 29',
+  30: 'GPIO 30',
+  31: 'GPIO 31',
+  32: 'GPIO 32',
+  33: 'GPIO 33',
+};
+
+var PWMPinsKEYS = PWMPins.keys.toList();
+var PWMPinsLIST = PWMPins.values.toList();

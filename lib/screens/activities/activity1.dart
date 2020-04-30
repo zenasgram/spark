@@ -28,12 +28,12 @@ class _Activity1State extends State<Activity1>
   int switch2 = 0;
 
   int port1key = null;
-  List<String> port1List = inputOnlyPinsLIST;
-  String selectedPort1 = inputOnlyPinsLIST[0];
+  List<String> port1List = PWMPinsLIST;
+  String selectedPort1 = PWMPinsLIST[0];
 
   int port2key = null;
-  List<String> port2List = inputOnlyPinsLIST;
-  String selectedPort2 = inputOnlyPinsLIST[0];
+  List<String> port2List = PWMPinsLIST;
+  String selectedPort2 = PWMPinsLIST[0];
 
   List<DropdownMenuItem> getDropdownItems(List<String> portList) {
     List<DropdownMenuItem<String>> dropdownItems = [];
@@ -180,7 +180,7 @@ class _Activity1State extends State<Activity1>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '$_dragPercentage1',
+                        '${_dragPercentage1.toStringAsFixed(2)}',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -227,7 +227,7 @@ class _Activity1State extends State<Activity1>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '$_dragPercentage2',
+                        '${_dragPercentage2.toStringAsFixed(2)}',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -390,8 +390,8 @@ class _Activity1State extends State<Activity1>
                           onChanged: (value) {
                             setState(() {
                               selectedPort1 = value;
-                              port1key = inputOnlyPins.keys.firstWhere(
-                                  (k) => inputOnlyPins[k] == selectedPort1,
+                              port1key = PWMPins.keys.firstWhere(
+                                  (k) => PWMPins[k] == selectedPort1,
                                   orElse: () => null);
                               String dataPorts = "Port1: $port1key";
                               print(dataPorts);
@@ -429,8 +429,8 @@ class _Activity1State extends State<Activity1>
                           onChanged: (value) {
                             setState(() {
                               selectedPort2 = value;
-                              port2key = inputOnlyPins.keys.firstWhere(
-                                  (k) => inputOnlyPins[k] == selectedPort2,
+                              port2key = PWMPins.keys.firstWhere(
+                                  (k) => PWMPins[k] == selectedPort2,
                                   orElse: () => null);
                               String dataPorts = "Port2: $port2key";
                               print(dataPorts);
