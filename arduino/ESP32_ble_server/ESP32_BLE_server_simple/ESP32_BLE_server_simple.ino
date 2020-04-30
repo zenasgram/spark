@@ -222,36 +222,6 @@ void setup() {
 }
 
 void loop() {
-
-//  //parse commands
-//  if(Serial.available()){
-//    char c = Serial.read();
-//
-//    if(c == '\n'){
-//      parseCommand(command);
-//      command = "";
-//    }
-//    else{
-//      command += c;
-//    }
-//  }
-  
-
-//  // increase the LED brightness
-//  for(int dutyCycle = 0; dutyCycle <= 255; dutyCycle++){   
-//    // changing the LED brightness with PWM
-//    ledcWrite(ledChannel1, dutyCycle);
-//    ledcWrite(ledChannel2, dutyCycle);
-//    delay(15);
-//  }
-//
-//  // decrease the LED brightness
-//  for(int dutyCycle = 255; dutyCycle >= 0; dutyCycle--){
-//    // changing the LED brightness with PWM
-//    ledcWrite(ledChannel1, dutyCycle);  
-//    ledcWrite(ledChannel2, dutyCycle);   
-//    delay(15);
-//  }
   
     // notify changed value
 //    if (deviceConnected) {
