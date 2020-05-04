@@ -231,80 +231,80 @@ class _HomeScreenState extends State<HomeScreen> {
                       activityTitle: 'Switch Control',
                     ),
                   ),
-//                  SizedBox(
-//                    height: 30.0,
-//                  ),
-//                  GestureDetector(
-//                    onTap: () {
-//                      setState(() {
-//                        if (connected == false) {
-//                          Alert(
-//                            context: context,
-//                            style: alertStyle,
-//                            type: AlertType.none,
-//                            title: "NOT CONNECTED",
-//                            desc:
-//                                "Please tap the bluetooth icon above to connect with the ESP32 first.",
-//                            buttons: [
-//                              DialogButton(
-//                                child: Text(
-//                                  "OKAY",
-//                                  style: TextStyle(
-//                                      color: Colors.white, fontSize: 20),
-//                                ),
-//                                onPressed: () => Navigator.pop(context),
-//                                color: kAppBlue,
-//                                radius: BorderRadius.circular(20.0),
-//                              ),
-//                            ],
-//                          ).show();
-//                        } else {
-//                          Navigator.pushNamed(context, Activity2.id);
-//                        }
-//                      });
-//                    },
-//                    child: ActivityCard(
-//                      flare: 'switch',
-//                      activityTitle: 'Motor Stepper',
-//                    ),
-//                  ),
-//                  SizedBox(
-//                    height: 30.0,
-//                  ),
-//                  GestureDetector(
-//                    onTap: () {
-//                      setState(() {
-//                        if (connected == false) {
-//                          Alert(
-//                            context: context,
-//                            style: alertStyle,
-//                            type: AlertType.none,
-//                            title: "NOT CONNECTED",
-//                            desc:
-//                                "Please tap the bluetooth icon above to connect with the ESP32 first.",
-//                            buttons: [
-//                              DialogButton(
-//                                child: Text(
-//                                  "OKAY",
-//                                  style: TextStyle(
-//                                      color: Colors.white, fontSize: 20),
-//                                ),
-//                                onPressed: () => Navigator.pop(context),
-//                                color: kAppBlue,
-//                                radius: BorderRadius.circular(20.0),
-//                              ),
-//                            ],
-//                          ).show();
-//                        } else {
-//                          Navigator.pushNamed(context, Activity3.id);
-//                        }
-//                      });
-//                    },
-//                    child: ActivityCard(
-//                      flare: 'switch',
-//                      activityTitle: 'Tone Generator',
-//                    ),
-//                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (connected == false) {
+                          Alert(
+                            context: context,
+                            style: alertStyle,
+                            type: AlertType.none,
+                            title: "NOT CONNECTED",
+                            desc:
+                                "Please tap the bluetooth icon above to connect with the ESP32 first.",
+                            buttons: [
+                              DialogButton(
+                                child: Text(
+                                  "OKAY",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                                onPressed: () => Navigator.pop(context),
+                                color: kAppBlue,
+                                radius: BorderRadius.circular(20.0),
+                              ),
+                            ],
+                          ).show();
+                        } else {
+                          Navigator.pushNamed(context, Activity2.id);
+                        }
+                      });
+                    },
+                    child: ActivityCard(
+                      flare: 'motor',
+                      activityTitle: 'Motor Stepper',
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.0,
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (connected == false) {
+                          Alert(
+                            context: context,
+                            style: alertStyle,
+                            type: AlertType.none,
+                            title: "NOT CONNECTED",
+                            desc:
+                                "Please tap the bluetooth icon above to connect with the ESP32 first.",
+                            buttons: [
+                              DialogButton(
+                                child: Text(
+                                  "OKAY",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                                onPressed: () => Navigator.pop(context),
+                                color: kAppBlue,
+                                radius: BorderRadius.circular(20.0),
+                              ),
+                            ],
+                          ).show();
+                        } else {
+                          Navigator.pushNamed(context, Activity3.id);
+                        }
+                      });
+                    },
+                    child: ActivityCard(
+                      flare: 'tone',
+                      activityTitle: 'Tone Generator',
+                    ),
+                  ),
                 ],
               ),
             ),
