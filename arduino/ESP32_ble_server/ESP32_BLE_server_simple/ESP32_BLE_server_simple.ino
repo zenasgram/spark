@@ -58,16 +58,16 @@ void parseCommand(String com){
   part1 = com.substring(0, com.indexOf(" "));
   part2 = com.substring(com.indexOf(" ") + 1);
 
-  if(part1.equalsIgnoreCase("Port1:")){
+  if(part1.equalsIgnoreCase("activity1::Port1:")){
     led1 = part2.toInt();
     ledcAttachPin(led1, ledChannel1);
     
   }
-  else if (part1.equalsIgnoreCase("Port2:")){
+  else if (part1.equalsIgnoreCase("activity1::Port2:")){
     led2 = part2.toInt();
     ledcAttachPin(led2, ledChannel2);
   }
-  else if (part1.equalsIgnoreCase("Slider1:")){
+  else if (part1.equalsIgnoreCase("activity1::Slider1:")){
     dutyCycle1 = part2.toInt() * 2; //to scale range to 0 to 200 (max is 255)
     if(switch1 == 1){
       ledcWrite(ledChannel1, dutyCycle1);
@@ -76,7 +76,7 @@ void parseCommand(String com){
       ledcWrite(ledChannel1, 0);
     }
   }
-  else if (part1.equalsIgnoreCase("Slider2:")){
+  else if (part1.equalsIgnoreCase("activity1::Slider2:")){
     dutyCycle2 = part2.toInt() * 2;
     if(switch2 == 1){
       ledcWrite(ledChannel2, dutyCycle2);
@@ -86,7 +86,7 @@ void parseCommand(String com){
     }
     
   }
-  else if (part1.equalsIgnoreCase("Switch1:")){
+  else if (part1.equalsIgnoreCase("activity1::Switch1:")){
     switch1 = part2.toInt();
     if(switch1 == 1){
       ledcWrite(ledChannel1, dutyCycle1);
@@ -95,14 +95,52 @@ void parseCommand(String com){
       ledcWrite(ledChannel1, 0);
     }
   }
-   else if (part1.equalsIgnoreCase("Switch2:")){
+  else if (part1.equalsIgnoreCase("activity1::Switch2:")){
     switch2 = part2.toInt();
     if(switch2 == 1){
       ledcWrite(ledChannel2, dutyCycle2);
     }
-    else{
-      ledcWrite(ledChannel2, 0);
-    }
+  }
+  //**********************************************************************************************
+  else if(part1.equalsIgnoreCase("activity2::Port1:")){
+    
+  }
+  else if (part1.equalsIgnoreCase("activity2::Port2:")){
+   
+  }
+  else if (part1.equalsIgnoreCase("activity2::Port3:")){
+   
+  }
+  else if (part1.equalsIgnoreCase("activity2::Port4:")){
+   
+  }
+  else if (part1.equalsIgnoreCase("activity2::Slider1:")){
+    
+  }
+  else if (part1.equalsIgnoreCase("activity2::Slider2:")){
+    
+  }
+  else if (part1.equalsIgnoreCase("activity2::Switch1:")){
+    
+  }
+  //**********************************************************************************************
+  else if(part1.equalsIgnoreCase("activity3::Port1:")){
+    
+  }
+  else if (part1.equalsIgnoreCase("activity3::Port2:")){
+   
+  }
+  else if (part1.equalsIgnoreCase("activity3::Slider1:")){
+    
+  }
+  else if (part1.equalsIgnoreCase("activity3::Slider2:")){
+    
+  }
+  else if (part1.equalsIgnoreCase("activity3::Switch1:")){
+    
+  }
+  else if (part1.equalsIgnoreCase("activity3::Switch2:")){
+    
   }
   else{
     Serial.println(" ");
@@ -148,7 +186,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
     if(value.length() > 0){
 
       Serial.println("***********");
-      Serial.print("New value: ");
+//      Serial.print("New value: ");
       for(int i=0; i<value.length(); i++){
         Serial.print(value[i]);
         command += value[i];
@@ -185,7 +223,7 @@ void setup() {
   Serial.begin(115200);
 
   // Create the BLE Device
-  BLEDevice::init("ESP32 GET NOTI FROM DEVICE");
+  BLEDevice::init("ESP32 for Spark by Imperial");
 
   // Create the BLE Server
   pServer = BLEDevice::createServer();
@@ -234,7 +272,7 @@ void loop() {
     if (!deviceConnected && oldDeviceConnected) {
         delay(500); // give the bluetooth stack the chance to get things ready
         pServer->startAdvertising(); // restart advertising
-        Serial.println("start advertising");
+        Serial.println("Start advertising");
         oldDeviceConnected = deviceConnected;
     }
     // connecting

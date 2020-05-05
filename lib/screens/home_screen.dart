@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool connected = false;
   final String SERVICE_UUID = "c6bcdf5e-86da-11ea-bc55-0242ac130003";
   final String CHARACTERISTIC_UUID = "cec2788a-86da-11ea-bc55-0242ac130003";
-  final String TARGET_DEVICE_NAME = "ESP32 GET NOTI FROM DEVICE";
+  final String TARGET_DEVICE_NAME = "ESP32 for Spark by Imperial";
 
   FlutterBlue flutterBlue = FlutterBlue.instance;
   StreamSubscription<ScanResult> scanSubscription;

@@ -106,7 +106,18 @@ class _Activity1State extends State<Activity1>
   Widget _getLowerLayer() {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFF2d248a),
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          stops: [0.1, 0.5, 0.7, 0.9],
+          colors: [
+            Color(0xFF3d349a),
+            Color(0xFF3d359a),
+            Color(0xFF2d248a),
+            Color(0xFF1d138a),
+          ],
+        ),
+//        color: Color(0xFF2d248a),
         borderRadius: BorderRadius.all(
           Radius.circular(25),
         ),
@@ -156,7 +167,7 @@ class _Activity1State extends State<Activity1>
                           _dragPercentage1 = dragUpdate *
                               100; // dragUpdate is a fractional value between 0 and 1
                           String dataValues =
-                              "Slider1: ${_dragPercentage1.toStringAsFixed(2)}";
+                              "activity1::Slider1: ${_dragPercentage1.toStringAsFixed(2)}";
                           print(dataValues);
                           writeData(dataValues);
                         });
@@ -203,7 +214,7 @@ class _Activity1State extends State<Activity1>
                           _dragPercentage2 = dragUpdate *
                               100; // dragUpdate is a fractional value between 0 and 1
                           String dataValues =
-                              "Slider2: ${_dragPercentage2.toStringAsFixed(2)}";
+                              "activity1::Slider2: ${_dragPercentage2.toStringAsFixed(2)}";
                           print(dataValues);
                           writeData(dataValues);
                         });
@@ -260,13 +271,13 @@ class _Activity1State extends State<Activity1>
                       textOn: 'active',
                       textOff: 'inactive',
                       colorOn: Color(0xFF64F58D),
-                      colorOff: Colors.blueGrey,
+                      colorOff: Colors.grey,
                       iconOn: Icons.lightbulb_outline,
                       iconOff: Icons.power_settings_new,
                       onChanged: (bool state) {
                         switch1 = state ? 1 : 0;
                         print('switch 1: turned ${(state) ? 'on' : 'off'}');
-                        String dataValues = "Switch1: $switch1";
+                        String dataValues = "activity1::Switch1: $switch1";
                         print(dataValues);
                         writeData(dataValues);
                       },
@@ -300,13 +311,13 @@ class _Activity1State extends State<Activity1>
                       textOn: 'active',
                       textOff: 'inactive',
                       colorOn: Color(0xFF64F58D),
-                      colorOff: Colors.blueGrey,
+                      colorOff: Colors.grey,
                       iconOn: Icons.lightbulb_outline,
                       iconOff: Icons.power_settings_new,
                       onChanged: (bool state) {
                         switch2 = state ? 1 : 0;
                         print('switch 2: turned ${(state) ? 'on' : 'off'}');
-                        String dataValues = "Switch2: $switch2";
+                        String dataValues = "activity1::Switch2: $switch2";
                         print(dataValues);
                         writeData(dataValues);
                       },
@@ -393,7 +404,7 @@ class _Activity1State extends State<Activity1>
                               port1key = PWMPins.keys.firstWhere(
                                   (k) => PWMPins[k] == selectedPort1,
                                   orElse: () => null);
-                              String dataPorts = "Port1: $port1key";
+                              String dataPorts = "activity1::Port1: $port1key";
                               print(dataPorts);
                               writeData(dataPorts);
                             });
@@ -432,7 +443,7 @@ class _Activity1State extends State<Activity1>
                               port2key = PWMPins.keys.firstWhere(
                                   (k) => PWMPins[k] == selectedPort2,
                                   orElse: () => null);
-                              String dataPorts = "Port2: $port2key";
+                              String dataPorts = "activity1::Port2: $port2key";
                               print(dataPorts);
                               writeData(dataPorts);
                             });
