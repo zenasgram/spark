@@ -170,7 +170,7 @@ class _Activity2State extends State<Activity2>
                       customColors: CustomSliderColors(
                         dotColor: Color(0xFF005FE0),
                         progressBarColor: Color(0xFF003FC0),
-                        trackColor: Colors.grey,
+                        trackColor: Color(0xFFDDDDDD),
                         hideShadow: true,
                       ),
                       infoProperties: InfoProperties(
@@ -505,7 +505,7 @@ class _Activity2State extends State<Activity2>
                           items: getDropdownItems(port4List),
                           onChanged: (value) {
                             setState(() {
-                              selectedPort2 = value;
+                              selectedPort4 = value;
                               port4key = PWMPins.keys.firstWhere(
                                   (k) => PWMPins[k] == selectedPort4,
                                   orElse: () => null);
