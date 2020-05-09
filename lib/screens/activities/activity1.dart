@@ -166,6 +166,12 @@ class _Activity1State extends State<Activity1>
                         setState(() {
                           _dragPercentage1 = dragUpdate *
                               100; // dragUpdate is a fractional value between 0 and 1
+                        });
+                      },
+                      onChangeEnd: (double dragUpdate) {
+                        setState(() {
+                          _dragPercentage1 = dragUpdate *
+                              100; // dragUpdate is a fractional value between 0 and 1
                           String dataValues =
                               "activity1::Slider1: ${_dragPercentage1.toStringAsFixed(2)}";
                           print(dataValues);
@@ -210,6 +216,12 @@ class _Activity1State extends State<Activity1>
                       displayTrackball: false,
                       sliderHeight: 50,
                       onChanged: (double dragUpdate) {
+                        setState(() {
+                          _dragPercentage2 = dragUpdate *
+                              100; // dragUpdate is a fractional value between 0 and 1
+                        });
+                      },
+                      onChangeEnd: (double dragUpdate) {
                         setState(() {
                           _dragPercentage2 = dragUpdate *
                               100; // dragUpdate is a fractional value between 0 and 1

@@ -26,6 +26,7 @@ class _Activity2State extends State<Activity2>
 
   double _dragPercentage1 = 0;
   double _dragPercentage2 = 0;
+  double _dragPercentage3 = 0;
   int switch1 = 0;
 
   int port1key = null;
@@ -158,41 +159,52 @@ class _Activity2State extends State<Activity2>
               ),
             ),
             SizedBox(
-              height: 25.0,
+              height: 20.0,
             ),
             Flexible(
-              flex: 4,
+              flex: 3,
               child: Center(
                 child: SleekCircularSlider(
-                    min: 0,
-                    max: 100,
-                    appearance: CircularSliderAppearance(
-                      customColors: CustomSliderColors(
-                        dotColor: Color(0xFF005FE0),
-                        progressBarColor: Color(0xFF003FC0),
-                        trackColor: Color(0xFFDDDDDD),
-                        hideShadow: true,
-                      ),
-                      infoProperties: InfoProperties(
-                        topLabelText: 'Frequency',
-                        topLabelStyle: GoogleFonts.montserrat(
-                          textStyle: kSliderText,
-                        ),
-                        mainLabelStyle: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
+                  min: 1,
+                  max: 250,
+                  appearance: CircularSliderAppearance(
+                    customColors: CustomSliderColors(
+                      dotColor: Color(0xFF005FE0),
+                      progressBarColor: Color(0xFF003FC0),
+                      trackColor: Color(0xFFDDDDDD),
+                      hideShadow: true,
                     ),
-                    onChange: (double dragUpdate) {
-                      setState(() {
-                        _dragPercentage1 =
-                            dragUpdate; // dragUpdate is a fractional value between 0 and 1
-                        String dataValues =
-                            "activity2::Slider1: ${_dragPercentage1.toStringAsFixed(2)}";
-                        print(dataValues);
-                        writeData(dataValues);
-                      });
-                    }),
+                    infoProperties: InfoProperties(
+                      topLabelText: 'Frequency',
+                      topLabelStyle: GoogleFonts.montserrat(
+                        textStyle: kSliderText,
+                      ),
+                      mainLabelStyle: TextStyle(
+                        color: Colors.transparent,
+                        fontSize: 1,
+                      ),
+                      bottomLabelText: '${_dragPercentage1.toInt()} Hz',
+                      bottomLabelStyle: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w200),
+                    ),
+                  ),
+                  onChange: (double dragUpdate) {
+                    setState(() {
+                      _dragPercentage1 =
+                          dragUpdate; // dragUpdate is a fractional value between 0 and 1
+                    });
+                  },
+                  onChangeEnd: (double dragUpdate) {
+                    setState(() {
+                      _dragPercentage1 =
+                          dragUpdate; // dragUpdate is a fractional value between 0 and 1
+                      String dataValues =
+                          "activity2::Slider1: ${_dragPercentage1.toStringAsFixed(2)}";
+                      print(dataValues);
+                      writeData(dataValues);
+                    });
+                  },
+                ),
               ),
             ),
             Flexible(
@@ -206,6 +218,12 @@ class _Activity2State extends State<Activity2>
                       displayTrackball: false,
                       sliderHeight: 50,
                       onChanged: (double dragUpdate) {
+                        setState(() {
+                          _dragPercentage2 = dragUpdate *
+                              180; // dragUpdate is a fractional value between 0 and 1
+                        });
+                      },
+                      onChangeEnd: (double dragUpdate) {
                         setState(() {
                           _dragPercentage2 = dragUpdate *
                               180; // dragUpdate is a fractional value between 0 and 1
@@ -266,7 +284,7 @@ class _Activity2State extends State<Activity2>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '${_dragPercentage2.toStringAsFixed(2)}',
+                        '${_dragPercentage2.toInt()}°',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -275,7 +293,61 @@ class _Activity2State extends State<Activity2>
               ),
             ),
             SizedBox(
-              height: 20.0,
+              height: 10.0,
+            ),
+            Flexible(
+              flex: 2,
+              child: Column(
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: WaveSlider(
+                      color: Color(0xFF003FC0),
+                      displayTrackball: false,
+                      sliderHeight: 50,
+                      onChanged: (double dragUpdate) {
+                        setState(() {
+                          _dragPercentage3 = dragUpdate *
+                              100; // dragUpdate is a fractional value between 0 and 1
+                        });
+                      },
+                      onChangeEnd: (double dragUpdate) {
+                        _dragPercentage3 = dragUpdate *
+                            100; // dragUpdate is a fractional value between 0 and 1
+                        String dataValues =
+                            "activity2::Slider3: ${_dragPercentage3.toInt()}";
+                        print(dataValues);
+                        writeData(dataValues);
+                      },
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'Duty Cycle',
+                        style: GoogleFonts.montserrat(
+                          textStyle: kSliderText,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        '${_dragPercentage3.toInt()} %',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10.0,
             ),
             Flexible(
               flex: 2,

@@ -26,6 +26,8 @@
 
 #include <elapsedMillis.h>
 
+#include <Stepper.h>
+
 //**********************************************************************************************
 //-------------------------------------- ACTIVITY 1 --------------------------------------------
 //**********************************************************************************************
@@ -34,7 +36,7 @@ int led1 = 1; // 12 corresponds to GPIO12
 int led2 = 2;
 
 // setting PWM properties
-int freq1 = 5000;
+int freq1 = 50;
 int ledChannel1 = 0;
 int resolution1 = 8;
 int freq2 = 5000;
@@ -53,34 +55,34 @@ int dutyCycle2 = 0;
 //**********************************************************************************************
 
 
-// Setup the builtin LED, the step and direction pins.
-int ledPin = 27;
-int stepPin = 26;
-int dirPin = 25;
+
+// Setup tpins
+int pin1 = 27;
+int pin2 = 26;
+int pin3 = 25;
+int pin4 = 33;
+ 
+int pinChannel1 = 3;
+int pinChannel2 = 4;
+int pinChannel3 = 5;
+int pinChannel4 = 6;
+int resolutionMotorPWM = 8;
+
+int motorFrequency = 100; //in Hz (minimum delay between steps is
 
 // Set the PWM duty cycle and counter pin.
-int dutyCycleMotor = 25;
-int counterPin = 33;
+int dutyCycleMotor = 25; // 25%
+int motorPhase = 90; // degrees
 
-// Define step targets and counters.
-int stepTarget;
-volatile int stepsTaken = 0;
-// Store the direction the stepper is moving (one or zero).
-int stepperDir;
+long delayValueMotor = 1000000;
 
-int motorValue;
-int motorFrequency;
+
+int switchMotor = 0; // On/Off
+
 
 // Periodically print status info.
 elapsedMillis timeSinceLastPrint;
 const int printDelayTime = 1000;
-
-
-
-// Setup counter interrupt.  Increment the count in a direction-sensitive way.
-void stepInterrupt() {
-  stepsTaken += stepperDir;
-}
 
 
 
@@ -456,51 +458,151 @@ void parseCommand(String com){
   
   else if(part1.equalsIgnoreCase("activity2::Port1:")){
       
-    ledPin = part2.toInt();
-    pinMode(ledPin, OUTPUT);
-    digitalWrite(ledPin, HIGH);
+    pin1 = part2.toInt();
+    ledcAttachPin(pin1, pinChannel1);
+    
+//    pinMode(pin1, OUTPUT);
 
   }
   else if (part1.equalsIgnoreCase("activity2::Port2:")){
 
-    dirPin = part2.toInt();
-    pinMode(dirPin, OUTPUT);
-    digitalWrite(dirPin, LOW);
+    pin2 = part2.toInt();
+    ledcAttachPin(pin2, pinChannel2);
     
   }
   else if (part1.equalsIgnoreCase("activity2::Port3:")){
 
-    stepPin = part2.toInt();
-    pinMode(stepPin, OUTPUT);
+    pin3 = part2.toInt();
+    ledcAttachPin(pin3, pinChannel3);
     
   }
   else if (part1.equalsIgnoreCase("activity2::Port4:")){
 
-   counterPin = part2.toInt();
-   pinMode(counterPin, OUTPUT);
-   attachInterrupt(counterPin, stepInterrupt, RISING);
+    pin4 = part2.toInt();
+    ledcAttachPin(pin4, pinChannel4);
     
   }
   else if (part1.equalsIgnoreCase("activity2::Slider1:")){
     motorFrequency = part2.toInt();
-    analogWriteFrequency(stepPin, motorFrequency);
-    stepTarget = stepsTaken + motorValue;
-    analogWrite(stepPin, dutyCycleMotor);
+
+    delayValueMotor = (1/motorFrequency) * (motorPhase/360); 
+
+    ledcSetup(pinChannel1, motorFrequency, resolutionMotorPWM);
+    ledcSetup(pinChannel2, motorFrequency, resolutionMotorPWM);
+    ledcSetup(pinChannel3, motorFrequency, resolutionMotorPWM);
+    ledcSetup(pinChannel4, motorFrequency, resolutionMotorPWM);
+    
+    ledcAttachPin(pin1, pinChannel1);
+    ledcAttachPin(pin2, pinChannel2);
+    ledcAttachPin(pin3, pinChannel3);
+    ledcAttachPin(pin4, pinChannel4);
+
+    
+    if(switchMotor == 1){
+      ledcWrite(pinChannel1, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor); // wait for the calculated delay value
+      ledcWrite(pinChannel2, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+      ledcWrite(pinChannel3, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+      ledcWrite(pinChannel4, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+    }
+    else{
+      ledcWrite(pinChannel1, 0);
+      ledcWrite(pinChannel2, 0);
+      ledcWrite(pinChannel3, 0);
+      ledcWrite(pinChannel4, 0);
+    }
 
   }
   else if (part1.equalsIgnoreCase("activity2::Slider2:")){
-    motorValue = part2.toInt();
+    motorPhase = part2.toInt();
+    
+    delayValueMotor = (1/motorFrequency) * (motorPhase/360); 
 
-    if (motorValue > 0) {
-        digitalWrite(dirPin, HIGH);
-        stepperDir = 1;
-      } else {
-        digitalWrite(dirPin, LOW);
-        stepperDir = -1;
-      }
+    ledcSetup(pinChannel1, motorFrequency, resolutionMotorPWM);
+    ledcSetup(pinChannel2, motorFrequency, resolutionMotorPWM);
+    ledcSetup(pinChannel3, motorFrequency, resolutionMotorPWM);
+    ledcSetup(pinChannel4, motorFrequency, resolutionMotorPWM);
+    
+    ledcAttachPin(pin1, pinChannel1);
+    ledcAttachPin(pin2, pinChannel2);
+    ledcAttachPin(pin3, pinChannel3);
+    ledcAttachPin(pin4, pinChannel4);
+
+    
+    if(switchMotor == 1){
+      ledcWrite(pinChannel1, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor); 
+      ledcWrite(pinChannel2, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+      ledcWrite(pinChannel3, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+      ledcWrite(pinChannel4, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+    }
+    else{
+      ledcWrite(pinChannel1, 0);
+      ledcWrite(pinChannel2, 0);
+      ledcWrite(pinChannel3, 0);
+      ledcWrite(pinChannel4, 0);
+    }
+  }
+  else if (part1.equalsIgnoreCase("activity2::Slider3:")){
+    dutyCycleMotor = part2.toInt();
+    
+    delayValueMotor = (1/motorFrequency) * (motorPhase/360); 
+
+    ledcSetup(pinChannel1, motorFrequency, resolutionMotorPWM);
+    ledcSetup(pinChannel2, motorFrequency, resolutionMotorPWM);
+    ledcSetup(pinChannel3, motorFrequency, resolutionMotorPWM);
+    ledcSetup(pinChannel4, motorFrequency, resolutionMotorPWM);
+    
+    ledcAttachPin(pin1, pinChannel1);
+    ledcAttachPin(pin2, pinChannel2);
+    ledcAttachPin(pin3, pinChannel3);
+    ledcAttachPin(pin4, pinChannel4);
+
+    
+    if(switchMotor == 1){
+      ledcWrite(pinChannel1, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor); 
+      ledcWrite(pinChannel2, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+      ledcWrite(pinChannel3, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+      ledcWrite(pinChannel4, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+    }
+    else{
+      ledcWrite(pinChannel1, 0);
+      ledcWrite(pinChannel2, 0);
+      ledcWrite(pinChannel3, 0);
+      ledcWrite(pinChannel4, 0);
+    }
+    
   }
   else if (part1.equalsIgnoreCase("activity2::Switch1:")){
-    
+
+     switchMotor = part2.toInt();
+    if(switchMotor == 1){
+      ledcWrite(pinChannel1, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor); 
+      ledcWrite(pinChannel2, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+      ledcWrite(pinChannel3, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+      ledcWrite(pinChannel4, dutyCycleMotor);
+      delayMicroseconds(delayValueMotor);
+      
+    }
+    else{
+      ledcWrite(pinChannel1, 0);
+      ledcWrite(pinChannel2, 0);
+      ledcWrite(pinChannel3, 0);
+      ledcWrite(pinChannel4, 0);
+    }
   }
   //**********************************************************************************************
   else if(part1.equalsIgnoreCase("activity3::Port1:")){
@@ -601,17 +703,23 @@ void setup() {
 
 
 //-------------------------------------- ACTIVITY 2 --------------------------------------------
+
+  // configure LED PWM functionalitites
+  ledcSetup(pinChannel1, motorFrequency, resolutionMotorPWM);
+  ledcSetup(pinChannel2, motorFrequency, resolutionMotorPWM);
+  ledcSetup(pinChannel3, motorFrequency, resolutionMotorPWM);
+  ledcSetup(pinChannel4, motorFrequency, resolutionMotorPWM);
+
+  delayValueMotor = (1/motorFrequency) * (motorPhase/360); 
   
-  // Turn on the LED
-  pinMode(ledPin, OUTPUT);
-  digitalWrite(ledPin, HIGH);
-  // Setup the stepper
-  pinMode(dirPin, OUTPUT);
-  digitalWrite(dirPin, LOW);
-  pinMode(stepPin, OUTPUT);
-  // Setup the counter pin
-  pinMode(counterPin, INPUT_PULLUP);
-  attachInterrupt(counterPin, stepInterrupt, RISING);
+  ledcAttachPin(pin1, pinChannel1);
+  delayMicroseconds(delayValueMotor); 
+  ledcAttachPin(pin2, pinChannel2);
+  delayMicroseconds(delayValueMotor); 
+  ledcAttachPin(pin3, pinChannel3);
+  delayMicroseconds(delayValueMotor); 
+  ledcAttachPin(pin4, pinChannel4);
+  delayMicroseconds(delayValueMotor); 
 
 
 
@@ -676,19 +784,21 @@ void loop() {
 
 //-------------------------------------- ACTIVITY 2 --------------------------------------------
  
-  // Stop the stepper when it reaches its step target.
-  if (stepperDir == 1 && stepsTaken >= stepTarget) {
-    analogWrite(stepPin, 0);
-  }
-  else if (stepperDir == -1 && stepsTaken <= stepTarget) {
-    analogWrite(stepPin, 0);
-  }
+//  // Stop the stepper when it reaches its step target.
+//  if (stepperDir == 1 && stepsTaken >= stepTarget) {
+//    analogWrite(stepPin, 0);
+//  }
+//  else if (stepperDir == -1 && stepsTaken <= stepTarget) {
+//    analogWrite(stepPin, 0);
+//  }
 
   // Periodically print the stepper position.
 //  if (timeSinceLastPrint > printDelayTime) {
 //    Serial.println(stepsTaken);
 //    timeSinceLastPrint = 0;
 //  }
+
+
 
 //-------------------------------------- ACTIVITY 3 --------------------------------------------
  
