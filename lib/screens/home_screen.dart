@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
         service.characteristics.forEach((characteristic) {
           if (characteristic.uuid.toString() == CHARACTERISTIC_UUID) {
             targetCharacteristic = characteristic;
-            writeData("Hi there, ESP32!");
+            writeData("Spark by Imperial App is CONNECTED!");
             setState(() {
               connectionText = "All Ready with ${targetDevice.name}";
             });

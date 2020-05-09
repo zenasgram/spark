@@ -31,19 +31,19 @@ class _Activity2State extends State<Activity2>
 
   int port1key = null;
   List<String> port1List = PWMPinsLIST;
-  String selectedPort1 = PWMPinsLIST[0];
+  String selectedPort1 = PWMPinsLIST[26]; //pin27
 
   int port2key = null;
   List<String> port2List = PWMPinsLIST;
-  String selectedPort2 = PWMPinsLIST[0];
+  String selectedPort2 = PWMPinsLIST[25]; //pin26
 
   int port3key = null;
   List<String> port3List = PWMPinsLIST;
-  String selectedPort3 = PWMPinsLIST[0];
+  String selectedPort3 = PWMPinsLIST[24]; //pin25
 
   int port4key = null;
   List<String> port4List = PWMPinsLIST;
-  String selectedPort4 = PWMPinsLIST[0];
+  String selectedPort4 = PWMPinsLIST[32]; //pin33
 
   List<DropdownMenuItem> getDropdownItems(List<String> portList) {
     List<DropdownMenuItem<String>> dropdownItems = [];

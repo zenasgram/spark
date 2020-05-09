@@ -62,10 +62,10 @@ int pin2 = 26;
 int pin3 = 25;
 int pin4 = 33;
  
-int pinChannel1 = 3;
-int pinChannel2 = 4;
-int pinChannel3 = 5;
-int pinChannel4 = 6;
+int pinChannel1 = 2;
+int pinChannel2 = 3;
+int pinChannel3 = 4;
+int pinChannel4 = 5;
 int resolutionMotorPWM = 8;
 
 int motorFrequency = 100; //in Hz (minimum delay between steps is
@@ -452,6 +452,9 @@ void parseCommand(String com){
     switch2 = part2.toInt();
     if(switch2 == 1){
       ledcWrite(ledChannel2, dutyCycle2);
+    }
+    else{
+      ledcWrite(ledChannel2, 0);
     }
   }
   //**********************************************************************************************
