@@ -167,6 +167,7 @@ class _Activity2State extends State<Activity2>
                 child: SleekCircularSlider(
                   min: 1,
                   max: 250,
+                  initialValue: 100,
                   appearance: CircularSliderAppearance(
                     customColors: CustomSliderColors(
                       dotColor: Color(0xFF005FE0),
@@ -296,7 +297,7 @@ class _Activity2State extends State<Activity2>
               height: 10.0,
             ),
             Flexible(
-              flex: 2,
+              flex: 3,
               child: Column(
                 children: <Widget>[
                   Flexible(

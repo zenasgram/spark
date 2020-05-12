@@ -1,21 +1,3 @@
-/*
-    Video: https://www.youtube.com/watch?v=oCMOYS71NIU
-    Based on Neil Kolban example for IDF: https://github.com/nkolban/esp32-snippets/blob/master/cpp_utils/tests/BLE%20Tests/SampleNotify.cpp
-    Ported to Arduino ESP32 by Evandro Copercini
-    updated by chegewara
-   Create a BLE server that, once we receive a connection, will send periodic notifications.
-   The service advertises itself as: 4fafc201-1fb5-459e-8fcc-c5c9c331914b
-   And has a characteristic of: beb5483e-36e1-4688-b7f5-ea07361b26a8
-   The design of creating the BLE server is:
-   1. Create a BLE Server
-   2. Create a BLE Service
-   3. Create a BLE Characteristic on the Service
-   4. Create a BLE Descriptor on the characteristic
-   5. Start the service.
-   6. Start advertising.
-   A connect hander associated with the server starts a background task that performs notification
-   every couple of seconds.
-*/
 #include <Arduino.h>
 #include <analogWrite.h>
 
@@ -28,15 +10,20 @@
 
 #include <Stepper.h>
 
+#include "driver/mcpwm.h"
+#include "soc/mcpwm_reg.h"
+#include "soc/mcpwm_struct.h"
+
+
 //**********************************************************************************************
 //-------------------------------------- ACTIVITY 1 --------------------------------------------
 //**********************************************************************************************
 
-int led1 = 1; // 12 corresponds to GPIO12
-int led2 = 2;
+int led1 = 12; // 12 corresponds to GPIO12
+int led2 = 13;
 
 // setting PWM properties
-int freq1 = 50;
+int freq1 = 5000;
 int ledChannel1 = 0;
 int resolution1 = 8;
 int freq2 = 5000;
@@ -54,36 +41,208 @@ int dutyCycle2 = 0;
 //-------------------------------------- ACTIVITY 2 --------------------------------------------
 //**********************************************************************************************
 
+int GPIO_PWM0A_OUT = 27;  //Set GPIO 27 as PWM0A
+int GPIO_PWM0B_OUT = 26;   //Set GPIO 26 as PWM0B
+int GPIO_PWM1A_OUT = 25;   //Set GPIO 25 as PWM1A
+int GPIO_PWM1B_OUT = 33;   //Set GPIO 33 as PWM1B 
 
-
-// Setup tpins
-int pin1 = 27;
-int pin2 = 26;
-int pin3 = 25;
-int pin4 = 33;
- 
-int pinChannel1 = 2;
-int pinChannel2 = 3;
-int pinChannel3 = 4;
-int pinChannel4 = 5;
-int resolutionMotorPWM = 8;
-
-int motorFrequency = 100; //in Hz (minimum delay between steps is
+uint32_t motorFrequency = 100; //in Hz (minimum delay between steps is 2ms, and max phase shift is 180 for the app, hence max freq is capped at 250Hz)
 
 // Set the PWM duty cycle and counter pin.
-int dutyCycleMotor = 25; // 25%
-int motorPhase = 90; // degrees
+int dutyCycleMotor = 0; // ranges from 0 to 255 -> 8bit. 
+int motorPhase = 0; // degrees
 
-long delayValueMotor = 1000000;
-
+uint32_t delayValueMotor = 5000; //in micro second
 
 int switchMotor = 0; // On/Off
 
 
-// Periodically print status info.
-elapsedMillis timeSinceLastPrint;
-const int printDelayTime = 1000;
+static void setup_mcpwm_pins()
+{
+    Serial.println(" ");
+    Serial.println("initializing mcpwm control gpio...");
+    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, GPIO_PWM0A_OUT);
+    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0B, GPIO_PWM0B_OUT);
+    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM1A, GPIO_PWM1A_OUT);
+    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM1B, GPIO_PWM1B_OUT);
+} // setup_pins()
 
+
+
+static void setup_mcpwm()
+{
+   setup_mcpwm_pins();
+
+   mcpwm_config_t pwm_config;
+   pwm_config.frequency = motorFrequency;  //frequency = 100Hz
+   pwm_config.cmpr_a = dutyCycleMotor;      //eg. duty cycle of PWMxA = 50.0%
+   pwm_config.cmpr_b = dutyCycleMotor;      //eg. duty cycle of PWMxB = 50.0%
+   pwm_config.counter_mode = MCPWM_UP_DOWN_COUNTER; // Up-down counter (triangle wave)
+   pwm_config.duty_mode = MCPWM_DUTY_MODE_0; // Active HIGH
+   mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config);    //Configure PWM0A & PWM0B with above settings
+   mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_1, &pwm_config);    //Configure PWM0A & PWM0B with above settings
+
+//   mcpwm_sync_enable(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_SELECT_SYNC_OUT0, 0);
+//   mcpwm_sync_enable(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_SELECT_SYNC_OUT0, 0);
+//   mcpwm_sync_enable(MCPWM_UNIT_0, MCPWM_TIMER_2, MCPWM_SELECT_SYNC_OUT0, 0);
+  
+//   MCPWM0.timer[0].sync.out_sel = 1;
+//   delayMicroseconds(100);
+//   MCPWM0.timer[0].sync.out_sel = 0;
+
+   UpdateMotor ();
+
+} // setup_mcpwm
+
+
+
+//int pin1 = 27;
+//int pin2 = 26;
+//int pin3 = 25;
+//int pin4 = 33;
+// 
+//int pinChannel1 = 2;
+//int pinChannel2 = 3;
+//int pinChannel3 = 4;
+//int pinChannel4 = 5;
+//int resolutionMotorPWM = 8; //8-bit (0 to 255)
+//
+//int motorFrequency = 100; //in Hz (minimum delay between steps is 2ms, and max phase shift is 180 for the app, hence max freq is capped at 250Hz)
+//
+//// Set the PWM duty cycle and counter pin.
+//int dutyCycleMotor = 0; // ranges from 0 to 255 -> 8bit. 
+//int motorPhase = 0; // degrees
+//
+//float delayValueMotor = 5000.0; //in micro second
+//
+//int switchMotor = 0; // On/Off
+
+static void UpdateMotor (){
+
+   delayValueMotor = (int)((1000000.0/motorFrequency) * (motorPhase/360.0)); 
+
+   mcpwm_set_frequency(MCPWM_UNIT_0, MCPWM_TIMER_0, motorFrequency);
+   mcpwm_set_frequency(MCPWM_UNIT_0, MCPWM_TIMER_1, motorFrequency);
+
+    
+//    ledcSetup(pinChannel1, motorFrequency, resolutionMotorPWM);
+//    ledcSetup(pinChannel2, motorFrequency, resolutionMotorPWM);
+//    ledcSetup(pinChannel3, motorFrequency, resolutionMotorPWM);
+//    ledcSetup(pinChannel4, motorFrequency, resolutionMotorPWM);
+//    
+//    ledcAttachPin(pin1, pinChannel1);
+//    ledcAttachPin(pin2, pinChannel2);
+//    ledcAttachPin(pin3, pinChannel3);
+//    ledcAttachPin(pin4, pinChannel4);
+
+
+    
+    if(switchMotor == 1){
+
+     mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, dutyCycleMotor);
+     mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_B, dutyCycleMotor);
+     mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_OPR_A, dutyCycleMotor);
+     mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_OPR_B, dutyCycleMotor);
+     
+     mcpwm_deadtime_enable(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_BYPASS_RED, 0, 0);   //Deadtime of 10us
+     mcpwm_deadtime_enable(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_BYPASS_RED, delayValueMotor, delayValueMotor);   //Deadtime of 10us
+     mcpwm_deadtime_enable(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_BYPASS_RED, delayValueMotor*2, delayValueMotor*2);   //Deadtime of 10us
+     mcpwm_deadtime_enable(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_BYPASS_RED, delayValueMotor*3, delayValueMotor*3);   //Deadtime of 10us
+      
+//      ledcWrite(pinChannel1, dutyCycleMotor);
+//      
+//      delayMicroseconds((int)delayValueMotor); 
+//      ledcWrite(pinChannel2, dutyCycleMotor);
+//      
+//      delayMicroseconds((int)delayValueMotor);
+//      ledcWrite(pinChannel3, dutyCycleMotor);
+//      
+//      delayMicroseconds((int)delayValueMotor);
+//      ledcWrite(pinChannel4, dutyCycleMotor);
+//      
+    }else{
+
+      
+     mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A, 0);
+     mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_B, 0);
+     mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_OPR_A, 0);
+     mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_OPR_B, 0);
+      
+//      ledcWrite(pinChannel1, 0);
+//      ledcWrite(pinChannel2, 0);
+//      ledcWrite(pinChannel3, 0);
+//      ledcWrite(pinChannel4, 0);
+    }
+}
+
+#define STEPPER_PIN_1 27
+#define STEPPER_PIN_2 26
+#define STEPPER_PIN_3 25
+#define STEPPER_PIN_4 33
+int step_number = 0;
+
+void OneStep(bool dir){
+    if(dir){
+switch(step_number){
+  case 0:
+  digitalWrite(STEPPER_PIN_1, HIGH);
+  digitalWrite(STEPPER_PIN_2, LOW);
+  digitalWrite(STEPPER_PIN_3, LOW);
+  digitalWrite(STEPPER_PIN_4, LOW);
+  break;
+  case 1:
+  digitalWrite(STEPPER_PIN_1, LOW);
+  digitalWrite(STEPPER_PIN_2, HIGH);
+  digitalWrite(STEPPER_PIN_3, LOW);
+  digitalWrite(STEPPER_PIN_4, LOW);
+  break;
+  case 2:
+  digitalWrite(STEPPER_PIN_1, LOW);
+  digitalWrite(STEPPER_PIN_2, LOW);
+  digitalWrite(STEPPER_PIN_3, HIGH);
+  digitalWrite(STEPPER_PIN_4, LOW);
+  break;
+  case 3:
+  digitalWrite(STEPPER_PIN_1, LOW);
+  digitalWrite(STEPPER_PIN_2, LOW);
+  digitalWrite(STEPPER_PIN_3, LOW);
+  digitalWrite(STEPPER_PIN_4, HIGH);
+  break;
+} 
+  }else{
+    switch(step_number){
+  case 0:
+  digitalWrite(STEPPER_PIN_1, LOW);
+  digitalWrite(STEPPER_PIN_2, LOW);
+  digitalWrite(STEPPER_PIN_3, LOW);
+  digitalWrite(STEPPER_PIN_4, HIGH);
+  break;
+  case 1:
+  digitalWrite(STEPPER_PIN_1, LOW);
+  digitalWrite(STEPPER_PIN_2, LOW);
+  digitalWrite(STEPPER_PIN_3, HIGH);
+  digitalWrite(STEPPER_PIN_4, LOW);
+  break;
+  case 2:
+  digitalWrite(STEPPER_PIN_1, LOW);
+  digitalWrite(STEPPER_PIN_2, HIGH);
+  digitalWrite(STEPPER_PIN_3, LOW);
+  digitalWrite(STEPPER_PIN_4, LOW);
+  break;
+  case 3:
+  digitalWrite(STEPPER_PIN_1, HIGH);
+  digitalWrite(STEPPER_PIN_2, LOW);
+  digitalWrite(STEPPER_PIN_3, LOW);
+  digitalWrite(STEPPER_PIN_4, LOW);
+ 
+  
+} 
+  }
+step_number++;
+  if(step_number > 3){
+    step_number = 0;
+  }
+}
 
 
 //**********************************************************************************************
@@ -421,7 +580,8 @@ void parseCommand(String com){
     ledcAttachPin(led2, ledChannel2);
   }
   else if (part1.equalsIgnoreCase("activity1::Slider1:")){
-    dutyCycle1 = part2.toInt() * 2; //to scale range to 0 to 200 (max is 255)
+    dutyCycle1 = (int)(part2.toInt()*2.55); //to scale range to 0 to 255 (max is 255)
+    
     if(switch1 == 1){
       ledcWrite(ledChannel1, dutyCycle1);
     }
@@ -430,7 +590,9 @@ void parseCommand(String com){
     }
   }
   else if (part1.equalsIgnoreCase("activity1::Slider2:")){
-    dutyCycle2 = part2.toInt() * 2;
+    dutyCycle2 = (int)(part2.toInt()*2.55); //to scale range to 0 to 255 (max is 255)
+    
+    
     if(switch2 == 1){
       ledcWrite(ledChannel2, dutyCycle2);
     }
@@ -461,151 +623,50 @@ void parseCommand(String com){
   
   else if(part1.equalsIgnoreCase("activity2::Port1:")){
       
-    pin1 = part2.toInt();
-    ledcAttachPin(pin1, pinChannel1);
-    
-//    pinMode(pin1, OUTPUT);
-
+    GPIO_PWM0A_OUT = part2.toInt();
+//    ledcAttachPin(pin1, pinChannel1);
+    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, GPIO_PWM0A_OUT);
+    setup_mcpwm();
   }
   else if (part1.equalsIgnoreCase("activity2::Port2:")){
-
-    pin2 = part2.toInt();
-    ledcAttachPin(pin2, pinChannel2);
     
+    GPIO_PWM0B_OUT = part2.toInt();
+//    ledcAttachPin(pin2, pinChannel2);
+    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0B, GPIO_PWM0B_OUT);
+    setup_mcpwm();
   }
   else if (part1.equalsIgnoreCase("activity2::Port3:")){
 
-    pin3 = part2.toInt();
-    ledcAttachPin(pin3, pinChannel3);
-    
+    GPIO_PWM1A_OUT = part2.toInt();
+//    ledcAttachPin(pin3, pinChannel3);
+    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM1A, GPIO_PWM1A_OUT);
+    setup_mcpwm();
   }
   else if (part1.equalsIgnoreCase("activity2::Port4:")){
 
-    pin4 = part2.toInt();
-    ledcAttachPin(pin4, pinChannel4);
-    
+    GPIO_PWM1B_OUT = part2.toInt();
+//    ledcAttachPin(pin4, pinChannel4);
+    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM1B, GPIO_PWM1B_OUT);
+    setup_mcpwm();
   }
   else if (part1.equalsIgnoreCase("activity2::Slider1:")){
     motorFrequency = part2.toInt();
-
-    delayValueMotor = (1/motorFrequency) * (motorPhase/360); 
-
-    ledcSetup(pinChannel1, motorFrequency, resolutionMotorPWM);
-    ledcSetup(pinChannel2, motorFrequency, resolutionMotorPWM);
-    ledcSetup(pinChannel3, motorFrequency, resolutionMotorPWM);
-    ledcSetup(pinChannel4, motorFrequency, resolutionMotorPWM);
-    
-    ledcAttachPin(pin1, pinChannel1);
-    ledcAttachPin(pin2, pinChannel2);
-    ledcAttachPin(pin3, pinChannel3);
-    ledcAttachPin(pin4, pinChannel4);
-
-    
-    if(switchMotor == 1){
-      ledcWrite(pinChannel1, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor); // wait for the calculated delay value
-      ledcWrite(pinChannel2, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-      ledcWrite(pinChannel3, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-      ledcWrite(pinChannel4, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-    }
-    else{
-      ledcWrite(pinChannel1, 0);
-      ledcWrite(pinChannel2, 0);
-      ledcWrite(pinChannel3, 0);
-      ledcWrite(pinChannel4, 0);
-    }
+    UpdateMotor();
 
   }
   else if (part1.equalsIgnoreCase("activity2::Slider2:")){
     motorPhase = part2.toInt();
-    
-    delayValueMotor = (1/motorFrequency) * (motorPhase/360); 
-
-    ledcSetup(pinChannel1, motorFrequency, resolutionMotorPWM);
-    ledcSetup(pinChannel2, motorFrequency, resolutionMotorPWM);
-    ledcSetup(pinChannel3, motorFrequency, resolutionMotorPWM);
-    ledcSetup(pinChannel4, motorFrequency, resolutionMotorPWM);
-    
-    ledcAttachPin(pin1, pinChannel1);
-    ledcAttachPin(pin2, pinChannel2);
-    ledcAttachPin(pin3, pinChannel3);
-    ledcAttachPin(pin4, pinChannel4);
-
-    
-    if(switchMotor == 1){
-      ledcWrite(pinChannel1, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor); 
-      ledcWrite(pinChannel2, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-      ledcWrite(pinChannel3, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-      ledcWrite(pinChannel4, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-    }
-    else{
-      ledcWrite(pinChannel1, 0);
-      ledcWrite(pinChannel2, 0);
-      ledcWrite(pinChannel3, 0);
-      ledcWrite(pinChannel4, 0);
-    }
+    UpdateMotor();
   }
   else if (part1.equalsIgnoreCase("activity2::Slider3:")){
+//    dutyCycleMotor = (int)(part2.toInt()*2.55);
     dutyCycleMotor = part2.toInt();
-    
-    delayValueMotor = (1/motorFrequency) * (motorPhase/360); 
-
-    ledcSetup(pinChannel1, motorFrequency, resolutionMotorPWM);
-    ledcSetup(pinChannel2, motorFrequency, resolutionMotorPWM);
-    ledcSetup(pinChannel3, motorFrequency, resolutionMotorPWM);
-    ledcSetup(pinChannel4, motorFrequency, resolutionMotorPWM);
-    
-    ledcAttachPin(pin1, pinChannel1);
-    ledcAttachPin(pin2, pinChannel2);
-    ledcAttachPin(pin3, pinChannel3);
-    ledcAttachPin(pin4, pinChannel4);
-
-    
-    if(switchMotor == 1){
-      ledcWrite(pinChannel1, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor); 
-      ledcWrite(pinChannel2, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-      ledcWrite(pinChannel3, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-      ledcWrite(pinChannel4, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-    }
-    else{
-      ledcWrite(pinChannel1, 0);
-      ledcWrite(pinChannel2, 0);
-      ledcWrite(pinChannel3, 0);
-      ledcWrite(pinChannel4, 0);
-    }
-    
+    UpdateMotor();
   }
   else if (part1.equalsIgnoreCase("activity2::Switch1:")){
-
-     switchMotor = part2.toInt();
-    if(switchMotor == 1){
-      ledcWrite(pinChannel1, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor); 
-      ledcWrite(pinChannel2, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-      ledcWrite(pinChannel3, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-      ledcWrite(pinChannel4, dutyCycleMotor);
-      delayMicroseconds(delayValueMotor);
-      
-    }
-    else{
-      ledcWrite(pinChannel1, 0);
-      ledcWrite(pinChannel2, 0);
-      ledcWrite(pinChannel3, 0);
-      ledcWrite(pinChannel4, 0);
-    }
+    switchMotor = part2.toInt();
+    UpdateMotor();
+    
   }
   //**********************************************************************************************
   else if(part1.equalsIgnoreCase("activity3::Port1:")){
@@ -694,6 +755,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
 void setup() {
 
+  // Start serial comms over USB
+  Serial.begin(115200);
+
 //-------------------------------------- ACTIVITY 1 --------------------------------------------
   
   // configure LED PWM functionalitites
@@ -707,22 +771,24 @@ void setup() {
 
 //-------------------------------------- ACTIVITY 2 --------------------------------------------
 
-  // configure LED PWM functionalitites
-  ledcSetup(pinChannel1, motorFrequency, resolutionMotorPWM);
-  ledcSetup(pinChannel2, motorFrequency, resolutionMotorPWM);
-  ledcSetup(pinChannel3, motorFrequency, resolutionMotorPWM);
-  ledcSetup(pinChannel4, motorFrequency, resolutionMotorPWM);
+    setup_mcpwm();
 
-  delayValueMotor = (1/motorFrequency) * (motorPhase/360); 
-  
-  ledcAttachPin(pin1, pinChannel1);
-  delayMicroseconds(delayValueMotor); 
-  ledcAttachPin(pin2, pinChannel2);
-  delayMicroseconds(delayValueMotor); 
-  ledcAttachPin(pin3, pinChannel3);
-  delayMicroseconds(delayValueMotor); 
-  ledcAttachPin(pin4, pinChannel4);
-  delayMicroseconds(delayValueMotor); 
+  // configure LED PWM functionalitites
+//  ledcSetup(pinChannel1, motorFrequency, resolutionMotorPWM);
+//  ledcSetup(pinChannel2, motorFrequency, resolutionMotorPWM);
+//  ledcSetup(pinChannel3, motorFrequency, resolutionMotorPWM);
+//  ledcSetup(pinChannel4, motorFrequency, resolutionMotorPWM);
+//
+//  ledcAttachPin(pin1, pinChannel1);
+//  ledcAttachPin(pin2, pinChannel2);
+//  ledcAttachPin(pin3, pinChannel3);
+//  ledcAttachPin(pin4, pinChannel4);
+
+//pinMode(STEPPER_PIN_1, OUTPUT);
+//pinMode(STEPPER_PIN_2, OUTPUT);
+//pinMode(STEPPER_PIN_3, OUTPUT);
+//pinMode(STEPPER_PIN_4, OUTPUT);
+
 
 
 
@@ -743,8 +809,7 @@ void setup() {
   
 //-------------------------------------- BLUETOOTH ---------------------------------------------
   
-  // Start serial comms over USB
-  Serial.begin(115200);
+ 
 
   // Create the BLE Device
   BLEDevice::init("ESP32 for Spark by Imperial");
@@ -787,21 +852,8 @@ void loop() {
 
 //-------------------------------------- ACTIVITY 2 --------------------------------------------
  
-//  // Stop the stepper when it reaches its step target.
-//  if (stepperDir == 1 && stepsTaken >= stepTarget) {
-//    analogWrite(stepPin, 0);
-//  }
-//  else if (stepperDir == -1 && stepsTaken <= stepTarget) {
-//    analogWrite(stepPin, 0);
-//  }
-
-  // Periodically print the stepper position.
-//  if (timeSinceLastPrint > printDelayTime) {
-//    Serial.println(stepsTaken);
-//    timeSinceLastPrint = 0;
-//  }
-
-
+//OneStep(false);
+//  delay(2);
 
 //-------------------------------------- ACTIVITY 3 --------------------------------------------
  

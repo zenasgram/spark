@@ -115,7 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   disconnectedFromDevice() {
     if (targetDevice == null) return;
-
     targetDevice.disconnect();
     print('DEVICE DISCONNECTED');
     setState(() {
@@ -133,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
         service.characteristics.forEach((characteristic) {
           if (characteristic.uuid.toString() == CHARACTERISTIC_UUID) {
             targetCharacteristic = characteristic;
-            writeData("Spark by Imperial App is CONNECTED!");
+            writeData("Spark App is CONNECTED!");
             setState(() {
               connectionText = "All Ready with ${targetDevice.name}";
             });
