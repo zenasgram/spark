@@ -18,6 +18,57 @@ class _Activity3State extends State<Activity3>
     with SingleTickerProviderStateMixin {
   RubberAnimationController _controller;
 
+  // 0 - Unpressed, 1 - Pressed
+
+  void playKey(int keyNumber) {
+    print('key$keyNumber: pressed');
+    String dataValues = "activity3::Key$keyNumber: pressed";
+    writeData(dataValues);
+  }
+
+  void playSharp(int sharpNumber) {
+    print('sharp$sharpNumber: pressed');
+    String dataValues = "activity3::Sharp$sharpNumber: pressed";
+    writeData(dataValues);
+  }
+
+  List<bool> _octaveSelect = [false, false, true, false, false];
+  List<int> octaveStates = [-2, -1, 0, 1, 2];
+
+  Expanded buildKey(int keyNumber) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: RaisedButton(
+          onPressed: () {
+            playKey(keyNumber);
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          color: Color(0xAAFFFFFF),
+        ),
+      ),
+    );
+  }
+
+  Expanded buildSharp(int sharpNumber) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: RaisedButton(
+          onPressed: () {
+            playKey(sharpNumber);
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          color: Color(0xCC000000),
+        ),
+      ),
+    );
+  }
+
   int port1key = null;
   List<String> port1List = PWMPinsLIST;
   String selectedPort1 = PWMPinsLIST[17]; //GPIO 18  as default
@@ -127,7 +178,7 @@ class _Activity3State extends State<Activity3>
         padding: const EdgeInsets.all(40.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Flexible(
               flex: 2,
@@ -140,8 +191,122 @@ class _Activity3State extends State<Activity3>
               ),
             ),
             SizedBox(
-              height: 10.0,
+              height: 20.0,
               width: double.maxFinite,
+            ),
+            buildKey(1),
+            buildKey(2),
+            buildKey(3),
+            buildKey(4),
+            buildKey(5),
+            buildKey(6),
+            buildKey(7),
+//            Stack(
+//              children: <Widget>[
+//                Column(
+////                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+////                  crossAxisAlignment: CrossAxisAlignment.stretch,
+//                  children: <Widget>[
+//                    buildKey(1),
+//                    buildKey(2),
+//                    buildKey(3),
+//                    buildKey(4),
+//                    buildKey(5),
+//                    buildKey(6),
+//                    buildKey(7),
+//                  ],
+//                ),
+//                Column(
+////                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+////                  crossAxisAlignment: CrossAxisAlignment.end,
+//                  children: <Widget>[
+//                    SizedBox(
+//                      height: 10.0,
+//                    ),
+//                    buildSharp(1),
+//                    buildSharp(2),
+//                    buildSharp(3),
+//                    SizedBox(
+//                      height: 10.0,
+//                    ),
+//                    buildSharp(4),
+//                    buildSharp(5),
+//                    SizedBox(
+//                      height: 10.0,
+//                    ),
+//                  ],
+//                ),
+//              ],
+//            ),
+            SizedBox(
+              height: 20.0,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Text(
+                  "Octave",
+                  style: GoogleFonts.montserrat(
+                    textStyle: kSliderText,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 10.0,
+                ),
+                Center(
+                  child: ToggleButtons(
+                    children: <Widget>[
+                      Text(
+                        '      -2      ',
+                      ),
+                      Text(
+                        '      -1      ',
+                      ),
+                      Text(
+                        '      0      ',
+                      ),
+                      Text(
+                        '      +1      ',
+                      ),
+                      Text(
+                        '      +2      ',
+                      )
+                    ],
+                    isSelected: _octaveSelect,
+                    onPressed: (int index) {
+                      setState(() {
+                        for (int buttonIndex = 0;
+                            buttonIndex < _octaveSelect.length;
+                            buttonIndex++) {
+                          if (buttonIndex == index) {
+                            _octaveSelect[buttonIndex] =
+                                !_octaveSelect[buttonIndex];
+                          } else {
+                            _octaveSelect[buttonIndex] = false;
+                          }
+                        }
+                        int octave = octaveStates[index];
+                        print('octave: $octave');
+                        String dataValues = "activity3::Octave: $octave";
+                        writeData(dataValues);
+                      });
+                    },
+                    color: Colors.white,
+                    selectedColor: Colors.white,
+                    fillColor: Color(0xFFFAA436),
+                    borderWidth: 2.0,
+                    borderRadius: BorderRadius.circular(25),
+                    textStyle: GoogleFonts.montserrat(
+                      textStyle: TextStyle(
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    constraints: BoxConstraints(minHeight: 40.0),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
