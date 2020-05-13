@@ -280,7 +280,7 @@ class _Activity1State extends State<Activity1>
                     padding: EdgeInsets.only(top: 20, right: 0.0),
                     child: LiteRollingSwitch(
                       value: false,
-                      textOn: 'active',
+                      textOn: ' active',
                       textOff: 'inactive',
                       colorOn: Color(0xFF64F58D),
                       colorOff: Colors.grey,
@@ -320,7 +320,7 @@ class _Activity1State extends State<Activity1>
                     padding: EdgeInsets.only(top: 20, right: 0.0),
                     child: LiteRollingSwitch(
                       value: false,
-                      textOn: 'active',
+                      textOn: ' active',
                       textOff: 'inactive',
                       colorOn: Color(0xFF64F58D),
                       colorOff: Colors.grey,

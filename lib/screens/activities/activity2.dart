@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:spark/constants.dart';
 
 import 'package:rubber/rubber.dart';
@@ -25,8 +26,13 @@ class _Activity2State extends State<Activity2>
   RubberAnimationController _controller;
 
   double _dragPercentage1 = 0;
-  double _dragPercentage2 = 0;
-  double _dragPercentage3 = 0;
+  String pattern = "fullstep90";
+  List<bool> _patternSelect = [true, false, false];
+  List<String> patternStates = ["fullstep90", "microstep67", "microstep45"];
+
+  int direction = 0;
+  List<bool> _dirSelect = [true, false];
+
   int switch1 = 0;
 
   int port1key = null;
@@ -162,12 +168,12 @@ class _Activity2State extends State<Activity2>
               height: 20.0,
             ),
             Flexible(
-              flex: 3,
+              flex: 4,
               child: Center(
                 child: SleekCircularSlider(
                   min: 1,
-                  max: 250,
-                  initialValue: 100,
+                  max: 150,
+                  initialValue: 75,
                   appearance: CircularSliderAppearance(
                     customColors: CustomSliderColors(
                       dotColor: Color(0xFF005FE0),
@@ -209,87 +215,67 @@ class _Activity2State extends State<Activity2>
               ),
             ),
             Flexible(
-              flex: 3,
+              flex: 2,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Flexible(
-                    flex: 1,
-                    child: WaveSlider(
-                      color: Color(0xFF003FC0),
-                      displayTrackball: false,
-                      sliderHeight: 50,
-                      onChanged: (double dragUpdate) {
+                  Text(
+                    "Pattern",
+                    style: GoogleFonts.montserrat(
+                      textStyle: kSliderText,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Center(
+                    child: ToggleButtons(
+                      children: <Widget>[
+                        Text(
+                          '    Full Step    ',
+                        ),
+                        Text(
+                          '    3/4 Step    ',
+                        ),
+                        Text(
+                          '    Half Step    ',
+                        )
+                      ],
+                      isSelected: _patternSelect,
+                      onPressed: (int index) {
                         setState(() {
-                          _dragPercentage2 = dragUpdate *
-                              180; // dragUpdate is a fractional value between 0 and 1
-                        });
-                      },
-                      onChangeEnd: (double dragUpdate) {
-                        setState(() {
-                          _dragPercentage2 = dragUpdate *
-                              180; // dragUpdate is a fractional value between 0 and 1
-                          String dataValues =
-                              "activity2::Slider2: ${_dragPercentage2.toStringAsFixed(2)}";
+                          for (int buttonIndex = 0;
+                              buttonIndex < _patternSelect.length;
+                              buttonIndex++) {
+                            if (buttonIndex == index) {
+                              _patternSelect[buttonIndex] =
+                                  !_patternSelect[buttonIndex];
+                            } else {
+                              _patternSelect[buttonIndex] = false;
+                            }
+                          }
+                          pattern = patternStates[index];
+                          print('pattern: $pattern');
+                          String dataValues = "activity2::Pattern: $pattern";
                           print(dataValues);
                           writeData(dataValues);
                         });
                       },
-                    ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                          top: 5.0, left: 8.0, right: 8.0, bottom: 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            '0',
-                            style: TextStyle(fontSize: 10),
-                          ),
-                          Text(
-                            '45',
-                            style: TextStyle(fontSize: 10),
-                          ),
-                          Text(
-                            '90',
-                            style: TextStyle(fontSize: 10),
-                          ),
-                          Text(
-                            '135',
-                            style: TextStyle(fontSize: 10),
-                          ),
-                          Text(
-                            '180',
-                            style: TextStyle(fontSize: 10),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Phase Shift',
-                        style: GoogleFonts.montserrat(
-                          textStyle: kSliderText,
+                      color: Colors.white,
+                      selectedColor: Colors.white,
+                      fillColor: Color(0xFF003FC0),
+                      borderWidth: 2.0,
+                      borderRadius: BorderRadius.circular(25),
+                      textStyle: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w300,
                         ),
                       ),
+                      constraints: BoxConstraints(minHeight: 40.0),
                     ),
                   ),
-                  Flexible(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        '${_dragPercentage2.toInt()}°',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
@@ -297,53 +283,72 @@ class _Activity2State extends State<Activity2>
               height: 10.0,
             ),
             Flexible(
-              flex: 3,
+              flex: 2,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Flexible(
-                    flex: 1,
-                    child: WaveSlider(
-                      color: Color(0xFF003FC0),
-                      displayTrackball: false,
-                      sliderHeight: 50,
-                      onChanged: (double dragUpdate) {
+                  Text(
+                    "Direction",
+                    style: GoogleFonts.montserrat(
+                      textStyle: kSliderText,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Center(
+                    child: ToggleButtons(
+                      children: <Widget>[
+                        Text(
+                          '    Clockwise    ',
+                        ),
+                        Text(
+                          '    Anti-Clockwise    ',
+                        ),
+                      ],
+                      isSelected: _dirSelect,
+                      onPressed: (int index) {
                         setState(() {
-                          _dragPercentage3 = dragUpdate *
-                              100; // dragUpdate is a fractional value between 0 and 1
+                          for (int buttonIndex = 0;
+                              buttonIndex < _dirSelect.length;
+                              buttonIndex++) {
+                            if (buttonIndex == index) {
+                              _dirSelect[buttonIndex] =
+                                  !_dirSelect[buttonIndex];
+                            } else {
+                              _dirSelect[buttonIndex] = false;
+                            }
+                          }
+                          direction = index;
+                          bool state;
+                          if (direction == 0) {
+                            state = true;
+                          } else {
+                            state = false;
+                          }
+                          print(
+                              'direction: ${(state) ? 'clockwise' : 'anti-clockwise'}');
+                          String dataValues =
+                              "activity2::Direction: $direction";
+                          print(dataValues);
+                          writeData(dataValues);
                         });
                       },
-                      onChangeEnd: (double dragUpdate) {
-                        _dragPercentage3 = dragUpdate *
-                            100; // dragUpdate is a fractional value between 0 and 1
-                        String dataValues =
-                            "activity2::Slider3: ${_dragPercentage3.toInt()}";
-                        print(dataValues);
-                        writeData(dataValues);
-                      },
-                    ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Duty Cycle',
-                        style: GoogleFonts.montserrat(
-                          textStyle: kSliderText,
+                      color: Colors.white,
+                      selectedColor: Colors.white,
+                      fillColor: Color(0xFF003FC0),
+                      borderWidth: 2.0,
+                      borderRadius: BorderRadius.circular(25),
+                      textStyle: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w300,
                         ),
                       ),
+                      constraints: BoxConstraints(minHeight: 40.0),
                     ),
                   ),
-                  Flexible(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        '${_dragPercentage3.toInt()} %',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
@@ -369,11 +374,11 @@ class _Activity2State extends State<Activity2>
                     padding: EdgeInsets.only(top: 20, right: 0.0),
                     child: LiteRollingSwitch(
                       value: false,
-                      textOn: 'active',
+                      textOn: ' active',
                       textOff: 'inactive',
                       colorOn: Color(0xFF64F58D),
                       colorOff: Colors.grey,
-                      iconOn: Icons.lightbulb_outline,
+                      iconOn: Icons.flash_on,
                       iconOff: Icons.power_settings_new,
                       onChanged: (bool state) {
                         switch1 = state ? 1 : 0;
