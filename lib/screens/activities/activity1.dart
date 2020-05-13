@@ -151,6 +151,7 @@ class _Activity1State extends State<Activity1>
             ),
             SizedBox(
               height: 10.0,
+              width: double.maxFinite,
             ),
             Flexible(
               flex: 3,

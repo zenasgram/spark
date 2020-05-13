@@ -7,25 +7,31 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:spark/config_data.dart';
 import 'package:spark/screens/home_screen.dart';
 
-class Activity3 extends StatefulWidget {
-  static String id = 'activity_3';
+class Activity4 extends StatefulWidget {
+  static String id = 'activity_4';
 
   @override
-  _Activity3State createState() => _Activity3State();
+  _Activity4State createState() => _Activity4State();
 }
 
-class _Activity3State extends State<Activity3>
+class _Activity4State extends State<Activity4>
     with SingleTickerProviderStateMixin {
   RubberAnimationController _controller;
 
+  //--------------------------------------------------------
+  //          DECLARE ACTIVITY VARIABLES HERE
+  //--------------------------------------------------------
   int port1key = null;
   List<String> port1List = PWMPinsLIST;
-  String selectedPort1 = PWMPinsLIST[17]; //GPIO 18  as default
+  String selectedPort1 = PWMPinsLIST[0]; //GPIO 1  as default
 
   int port2key = null;
   List<String> port2List = PWMPinsLIST;
-  String selectedPort2 = PWMPinsLIST[18]; //GPIO 19 as default
+  String selectedPort2 = PWMPinsLIST[0]; //GPIO 1 as default
 
+  //--------------------------------------------------------
+  //          DECLARE ACTIVITY FUNCTIONS HERE
+  //--------------------------------------------------------
   List<DropdownMenuItem> getDropdownItems(List<String> portList) {
     List<DropdownMenuItem<String>> dropdownItems = [];
     for (String port in portList) {
@@ -76,7 +82,7 @@ class _Activity3State extends State<Activity3>
       backgroundColor: Color(0xFF202020),
       appBar: AppBar(
         title: Text(
-          "Tone Generator",
+          "Activity Title",
           style: GoogleFonts.montserrat(
             textStyle: kActivityTitleStyle,
           ),
@@ -93,6 +99,10 @@ class _Activity3State extends State<Activity3>
       ),
     );
   }
+
+  //--------------------------------------------------------
+  //                      CONTROL LAYER
+  //--------------------------------------------------------
 
   Widget _getLowerLayer() {
     return Container(
@@ -143,12 +153,18 @@ class _Activity3State extends State<Activity3>
               height: 10.0,
               width: double.maxFinite,
             ),
+//--------------------------------------------------------
+//            ADDITIONAL UI ELEMENTS GO HERE
+//--------------------------------------------------------
           ],
         ),
       ),
     );
   }
 
+  //--------------------------------------------------------
+  //                   CONFIGURE LAYER
+  //--------------------------------------------------------
   Widget _getUpperLayer() {
     return Container(
       decoration: BoxDecoration(
@@ -221,7 +237,7 @@ class _Activity3State extends State<Activity3>
                               port1key = PWMPins.keys.firstWhere(
                                   (k) => PWMPins[k] == selectedPort1,
                                   orElse: () => null);
-                              String dataPorts = "activity3::Port1: $port1key";
+                              String dataPorts = "activity4::Port1: $port1key";
                               print(dataPorts);
                               writeData(dataPorts);
                             });
@@ -260,7 +276,7 @@ class _Activity3State extends State<Activity3>
                               port2key = PWMPins.keys.firstWhere(
                                   (k) => PWMPins[k] == selectedPort2,
                                   orElse: () => null);
-                              String dataPorts = "activity3::Port2: $port2key";
+                              String dataPorts = "activity4::Port2: $port2key";
                               print(dataPorts);
                               writeData(dataPorts);
                             });
@@ -270,6 +286,9 @@ class _Activity3State extends State<Activity3>
                     ),
                   ),
                 ),
+//--------------------------------------------------------
+//          ADDITIONAL PORT ELEMENTS GO HERE
+//--------------------------------------------------------
               ],
             ),
           ),
