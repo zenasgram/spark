@@ -106,22 +106,60 @@ void parseCommand(String com) {
   }
   //**********************************************************************************************
   else if (part1.equalsIgnoreCase("activity3::Port1:")) {
-
+    passivePin = part2.toInt();
+    pinMode(passivePin, OUTPUT);//passive buzzer
   }
   else if (part1.equalsIgnoreCase("activity3::Port2:")) {
-
+    activePin = part2.toInt();
+    pinMode(activePin, OUTPUT);//active buzzer
   }
-  else if (part1.equalsIgnoreCase("activity3::Slider1:")) {
-
+  else if (part1.equalsIgnoreCase("activity3::Key0:")) {
+    playKey(0);
   }
-  else if (part1.equalsIgnoreCase("activity3::Slider2:")) {
-
+  else if (part1.equalsIgnoreCase("activity3::Key1:")) {
+    playKey(1);
   }
-  else if (part1.equalsIgnoreCase("activity3::Switch1:")) {
-
+  else if (part1.equalsIgnoreCase("activity3::Key2:")) {
+    playKey(2);
   }
-  else if (part1.equalsIgnoreCase("activity3::Switch2:")) {
+  else if (part1.equalsIgnoreCase("activity3::Key3:")) {
+    playKey(3);
+  }
+  else if (part1.equalsIgnoreCase("activity3::Key4:")) {
+    playKey(4);
+  }
+  else if (part1.equalsIgnoreCase("activity3::Key5:")) {
+    playKey(5);
+  }
+  else if (part1.equalsIgnoreCase("activity3::Key6:")) {
+    playKey(6);
+  }
+  else if (part1.equalsIgnoreCase("activity3::Sharp0:")) {
+    playSharp(0);
+  }
 
+  else if (part1.equalsIgnoreCase("activity3::Sharp1:")) {
+    playSharp(1);
+  }
+  else if (part1.equalsIgnoreCase("activity3::Sharp2:")) {
+    playSharp(2);
+  }
+  else if (part1.equalsIgnoreCase("activity3::Sharp3:")) {
+    playSharp(3);
+  }
+  else if (part1.equalsIgnoreCase("activity3::Sharp4:")) {
+    playSharp(4);
+  }
+
+  else if (part1.equalsIgnoreCase("activity3::Octave:")) {
+    octaveMode = part2.toInt();
+  }
+  else if (part1.equalsIgnoreCase("activity3::MelodyPlay:")) {
+    songChoice = part2;
+    sing(songChoice, buzzerMode);
+  }
+  else if (part1.equalsIgnoreCase("activity3::Mode:")) {
+    buzzerMode = part2;
   }
   else {
     Serial.println(" ");

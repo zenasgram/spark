@@ -35,6 +35,9 @@ class _Activity3State extends State<Activity3>
   List<bool> _octaveSelect = [false, false, true, false, false];
   List<int> octaveStates = [-2, -1, 0, 1, 2];
 
+  List<bool> _modeSelect = [true, false];
+  List<String> modeStates = ["passive", "active"];
+
   Expanded buildKey(int keyNumber) {
     return Expanded(
       child: Padding(
@@ -55,15 +58,16 @@ class _Activity3State extends State<Activity3>
   Expanded buildSharp(int sharpNumber) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(4.0),
         child: RaisedButton(
           onPressed: () {
-            playKey(sharpNumber);
+            playSharp(sharpNumber);
           },
+          child: Text("                             "),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          color: Color(0xCC000000),
+          color: Color(0xDD000000),
         ),
       ),
     );
@@ -76,6 +80,9 @@ class _Activity3State extends State<Activity3>
   int port2key = null;
   List<String> port2List = PWMPinsLIST;
   String selectedPort2 = PWMPinsLIST[18]; //GPIO 19 as default
+
+  List<String> songList = ["Mario", "Underwater"];
+  String song = "Mario"; //Default
 
   List<DropdownMenuItem> getDropdownItems(List<String> portList) {
     List<DropdownMenuItem<String>> dropdownItems = [];
@@ -194,119 +201,121 @@ class _Activity3State extends State<Activity3>
               height: 20.0,
               width: double.maxFinite,
             ),
-            buildKey(1),
-            buildKey(2),
-            buildKey(3),
-            buildKey(4),
-            buildKey(5),
-            buildKey(6),
-            buildKey(7),
-//            Stack(
-//              children: <Widget>[
-//                Column(
-////                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-////                  crossAxisAlignment: CrossAxisAlignment.stretch,
-//                  children: <Widget>[
-//                    buildKey(1),
-//                    buildKey(2),
-//                    buildKey(3),
-//                    buildKey(4),
-//                    buildKey(5),
-//                    buildKey(6),
-//                    buildKey(7),
-//                  ],
-//                ),
-//                Column(
-////                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-////                  crossAxisAlignment: CrossAxisAlignment.end,
-//                  children: <Widget>[
-//                    SizedBox(
-//                      height: 10.0,
-//                    ),
-//                    buildSharp(1),
-//                    buildSharp(2),
-//                    buildSharp(3),
-//                    SizedBox(
-//                      height: 10.0,
-//                    ),
-//                    buildSharp(4),
-//                    buildSharp(5),
-//                    SizedBox(
-//                      height: 10.0,
-//                    ),
-//                  ],
-//                ),
-//              ],
-//            ),
+            Flexible(
+              flex: 8,
+              child: Stack(
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      buildKey(0),
+                      buildKey(1),
+                      buildKey(2),
+                      buildKey(3),
+                      buildKey(4),
+                      buildKey(5),
+                      buildKey(6),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 25.0,
+                        width: double.maxFinite,
+                      ),
+                      buildSharp(0),
+                      buildSharp(1),
+                      SizedBox(
+                        height: 55.0,
+                        width: double.maxFinite,
+                      ),
+                      buildSharp(2),
+                      buildSharp(3),
+                      buildSharp(4),
+                      SizedBox(
+                        height: 25.0,
+                        width: double.maxFinite,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             SizedBox(
               height: 20.0,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Text(
-                  "Octave",
-                  style: GoogleFonts.montserrat(
-                    textStyle: kSliderText,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Center(
-                  child: ToggleButtons(
-                    children: <Widget>[
-                      Text(
-                        '      -2      ',
-                      ),
-                      Text(
-                        '      -1      ',
-                      ),
-                      Text(
-                        '      0      ',
-                      ),
-                      Text(
-                        '      +1      ',
-                      ),
-                      Text(
-                        '      +2      ',
-                      )
-                    ],
-                    isSelected: _octaveSelect,
-                    onPressed: (int index) {
-                      setState(() {
-                        for (int buttonIndex = 0;
-                            buttonIndex < _octaveSelect.length;
-                            buttonIndex++) {
-                          if (buttonIndex == index) {
-                            _octaveSelect[buttonIndex] =
-                                !_octaveSelect[buttonIndex];
-                          } else {
-                            _octaveSelect[buttonIndex] = false;
-                          }
-                        }
-                        int octave = octaveStates[index];
-                        print('octave: $octave');
-                        String dataValues = "activity3::Octave: $octave";
-                        writeData(dataValues);
-                      });
-                    },
-                    color: Colors.white,
-                    selectedColor: Colors.white,
-                    fillColor: Color(0xFFFAA436),
-                    borderWidth: 2.0,
-                    borderRadius: BorderRadius.circular(25),
-                    textStyle: GoogleFonts.montserrat(
-                      textStyle: TextStyle(
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w300,
-                      ),
+            Flexible(
+              flex: 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(
+                    "Octave",
+                    style: GoogleFonts.montserrat(
+                      textStyle: kSliderText,
                     ),
-                    constraints: BoxConstraints(minHeight: 40.0),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Center(
+                    child: ToggleButtons(
+                      children: <Widget>[
+                        Text(
+                          '      -2      ',
+                        ),
+                        Text(
+                          '      -1      ',
+                        ),
+                        Text(
+                          '      0      ',
+                        ),
+                        Text(
+                          '      +1      ',
+                        ),
+                        Text(
+                          '      +2      ',
+                        )
+                      ],
+                      isSelected: _octaveSelect,
+                      onPressed: (int index) {
+                        setState(() {
+                          for (int buttonIndex = 0;
+                              buttonIndex < _octaveSelect.length;
+                              buttonIndex++) {
+                            if (buttonIndex == index) {
+                              _octaveSelect[buttonIndex] =
+                                  !_octaveSelect[buttonIndex];
+                            } else {
+                              _octaveSelect[buttonIndex] = false;
+                            }
+                          }
+                          int octave = octaveStates[index];
+                          print('octave: $octave');
+                          String dataValues = "activity3::Octave: $octave";
+                          writeData(dataValues);
+                        });
+                      },
+                      color: Colors.white,
+                      selectedColor: Colors.white,
+                      fillColor: Color(0xFFFFAF0A),
+                      borderWidth: 2.0,
+                      borderRadius: BorderRadius.circular(25),
+                      textStyle: GoogleFonts.montserrat(
+                        textStyle: TextStyle(
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      constraints: BoxConstraints(minHeight: 40.0),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -430,6 +439,122 @@ class _Activity3State extends State<Activity3>
                               writeData(dataPorts);
                             });
                           },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 30.0,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: [0.1, 0.3, 0.6, 0.9],
+                      colors: [
+                        Color(0xFFFDC13F),
+                        Color(0xFFFEA641),
+                        Color(0xFFFF7D56),
+                        Color(0xFFFF6D46),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, bottom: 10.0, left: 40.0, right: 40.0),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              'Melody',
+                              style: kSliderText,
+                            ),
+                            DropdownButton<String>(
+                              value: song,
+                              items: getDropdownItems(songList),
+                              onChanged: (value) {
+                                setState(() {
+                                  song = value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 5.0,
+                        ),
+                        Center(
+                          child: ClipOval(
+                            child: Material(
+                              color: Color(0xFFFE1E49), // button color
+                              child: InkWell(
+                                child: SizedBox(
+                                    width: 65,
+                                    height: 65,
+                                    child: Icon(Icons.play_arrow)),
+                                onTap: () {
+                                  setState(() {
+                                    String dataSong =
+                                        "activity3::MelodyPlay: $song";
+                                    writeData(dataSong);
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        Center(
+                          child: ToggleButtons(
+                            children: <Widget>[
+                              Text(
+                                '      Passive      ',
+                              ),
+                              Text(
+                                '      Active      ',
+                              ),
+                            ],
+                            isSelected: _modeSelect,
+                            onPressed: (int index) {
+                              setState(() {
+                                for (int buttonIndex = 0;
+                                    buttonIndex < _modeSelect.length;
+                                    buttonIndex++) {
+                                  if (buttonIndex == index) {
+                                    _modeSelect[buttonIndex] =
+                                        !_modeSelect[buttonIndex];
+                                  } else {
+                                    _modeSelect[buttonIndex] = false;
+                                  }
+                                }
+                                String mode = modeStates[index];
+                                print('mode: $mode');
+                                String dataValues = "activity3::Mode: $mode";
+                                writeData(dataValues);
+                              });
+                            },
+                            color: Colors.white,
+                            selectedColor: Colors.white,
+                            fillColor: Color(0xFFFF1E49),
+                            borderWidth: 2.0,
+                            borderRadius: BorderRadius.circular(25),
+                            textStyle: GoogleFonts.montserrat(
+                              textStyle: TextStyle(
+                                fontSize: 13.0,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                            constraints: BoxConstraints(minHeight: 40.0),
+                          ),
                         ),
                       ],
                     ),

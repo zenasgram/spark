@@ -28,7 +28,9 @@ void MicroStep67();
 void MicroStep45();
 
 // ACTIVITY 3
-void sing(int s, String type);
+void playKey(int thisNote);
+void playSharp(int thisNote);
+void sing(String s, String type);
 void buzz(int targetPin, long frequency, long length);
 
 // COMMAND PARSE

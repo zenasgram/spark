@@ -15,6 +15,11 @@ int timePeriod2 = 500;
 int switch1tone = 0;
 int switch2tone = 0;
 
+String buzzerMode = "passive";
+String songChoice = "Mario";
+
+int octaveMode = 0;
+
 //PUBLIC CONSTANTS
 #define NOTE_B0  31
 #define NOTE_C1  33
@@ -217,10 +222,112 @@ int underworld_tempo[] = {
   3, 3, 3
 };
 
+// ############################# KEYBOARD ###########################################
 
-int song = 0;
+//~~~~~~~~~~~~~ -2 ~~~~~~~~~~~~~~~~~
+int octaveKeysMinus2[] = {
+  NOTE_C2, NOTE_D2, NOTE_E2, NOTE_F2, NOTE_G2, NOTE_A2, NOTE_B2
+};
+int octaveSharpsMinus2[] = {
+  NOTE_CS2, NOTE_DS2, NOTE_FS2, NOTE_GS2, NOTE_AS2
+};
 
-void sing(int s, String type) {
+//~~~~~~~~~~~~~ -1 ~~~~~~~~~~~~~~~~~
+int octaveKeysMinus1[] = {
+  NOTE_C3, NOTE_D3, NOTE_E3, NOTE_F3, NOTE_G3, NOTE_A3, NOTE_B3
+};
+int octaveSharpsMinus1[] = {
+  NOTE_CS3, NOTE_DS3, NOTE_FS3, NOTE_GS3, NOTE_AS3
+};
+
+//~~~~~~~~~~~~~ 0 ~~~~~~~~~~~~~~~~~
+int octaveKeys0[] = {
+  NOTE_C4, NOTE_D4, NOTE_E4, NOTE_F4, NOTE_G4, NOTE_A4, NOTE_B4
+};
+int octaveSharps0[] = {
+  NOTE_CS4, NOTE_DS4, NOTE_FS4, NOTE_GS4, NOTE_AS4
+};
+
+//~~~~~~~~~~~~~ +1 ~~~~~~~~~~~~~~~~~
+int octaveKeysPlus1[] = {
+  NOTE_C5, NOTE_D5, NOTE_E5, NOTE_F5, NOTE_G5, NOTE_A5, NOTE_B5
+};
+int octaveSharpsPlus1[] = {
+  NOTE_CS5, NOTE_DS5, NOTE_FS5, NOTE_GS5, NOTE_AS5
+};
+
+//~~~~~~~~~~~~~ +2 ~~~~~~~~~~~~~~~~~
+int octaveKeysPlus2[] = {
+  NOTE_C6, NOTE_D6, NOTE_E6, NOTE_F6, NOTE_G6, NOTE_A6, NOTE_B6
+};
+int octaveSharpsPlus2[] = {
+  NOTE_CS6, NOTE_DS6, NOTE_FS6, NOTE_GS6, NOTE_AS6
+};
+
+
+void playKey(int thisNote) {
+
+  int melodyPin;
+  if (buzzerMode == "active") {
+    melodyPin = activePin;
+  } else {
+    melodyPin = passivePin;
+  }
+
+  int* targetKeyList;
+
+  if (octaveMode == -2) {
+    targetKeyList = octaveKeysMinus2;
+  } else if (octaveMode == -1) {
+    targetKeyList = octaveKeysMinus1;
+  } else if (octaveMode == 0) {
+    targetKeyList = octaveKeys0;
+  } else if (octaveMode == 1) {
+    targetKeyList = octaveKeysPlus1;
+  } else if (octaveMode == 2) {
+    targetKeyList = octaveKeysPlus2;
+  }
+  int noteDuration = 1000 / 12;
+  buzz(melodyPin, targetKeyList[thisNote], noteDuration);
+  int pauseBetweenNotes = noteDuration * 1.3;
+  delay(pauseBetweenNotes);
+}
+
+
+void playSharp(int thisNote) {
+
+  int melodyPin;
+  if (buzzerMode == "active") {
+    melodyPin = activePin;
+  } else {
+    melodyPin = passivePin;
+  }
+
+  int* targetSharpList;
+
+  if (octaveMode == -2) {
+    targetSharpList = octaveSharpsMinus2;
+  } else if (octaveMode == -1) {
+    targetSharpList = octaveSharpsMinus1;
+  } else if (octaveMode == 0) {
+    targetSharpList = octaveSharps0;
+  } else if (octaveMode == 1) {
+    targetSharpList = octaveSharpsPlus1;
+  } else if (octaveMode == 2) {
+    targetSharpList = octaveSharpsPlus2;
+  }
+
+  int noteDuration = 1000 / 12;
+  buzz(melodyPin, targetSharpList[thisNote], noteDuration);
+  int pauseBetweenNotes = noteDuration * 1.3;
+  delay(pauseBetweenNotes);
+}
+
+
+
+String song = "Mario";
+
+void sing(String s, String type) {
   // iterate over the notes of the melody:
 
   int melodyPin;
@@ -231,11 +338,10 @@ void sing(int s, String type) {
   }
 
   song = s;
-  if (song == 2) {
+  if (song == "Underwater") {
     Serial.println(" 'Underworld Theme'");
     int size = sizeof(underworld_melody) / sizeof(int);
     for (int thisNote = 0; thisNote < size; thisNote++) {
-
       // to calculate the note duration, take one second
       // divided by the note type.
       //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
@@ -253,12 +359,11 @@ void sing(int s, String type) {
 
     }
 
-  } else {
+  } else if (song == "Mario") {
 
     Serial.println(" 'Mario Theme'");
     int size = sizeof(melody) / sizeof(int);
     for (int thisNote = 0; thisNote < size; thisNote++) {
-
       // to calculate the note duration, take one second
       // divided by the note type.
       //e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
