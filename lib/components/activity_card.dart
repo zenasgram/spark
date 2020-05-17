@@ -22,7 +22,7 @@ class ActivityCard extends StatelessWidget {
 //                    width: selected ? 200.0 : 100.0,
 //                    height: selected ? 100.0 : 200.0,
 //                  color: selected ? Colors.red : Colors.blue,
-          height: 250,
+          height: 240,
           duration: Duration(milliseconds: 50),
           child: FlareActor(
             'assets/$flare.flr',
