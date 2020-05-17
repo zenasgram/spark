@@ -8,8 +8,11 @@ import 'package:wave_slider/wave_slider.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 import 'package:spark/config_data.dart';
-
 import 'package:spark/screens/home_screen.dart';
+
+//concept tool packages
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flare_flutter/flare_actor.dart';
 
 class Activity1 extends StatefulWidget {
   static String id = 'activity_1';
@@ -20,6 +23,25 @@ class Activity1 extends StatefulWidget {
 
 class _Activity1State extends State<Activity1>
     with SingleTickerProviderStateMixin {
+  var alertStyle = AlertStyle(
+    backgroundColor: Color(0xAAFFFFFF),
+    animationType: AnimationType.fromBottom,
+    isCloseButton: false,
+    isOverlayTapDismiss: false,
+    animationDuration: Duration(milliseconds: 300),
+    alertBorder: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30.0),
+      side: BorderSide(
+        color: Colors.transparent,
+      ),
+    ),
+    titleStyle: TextStyle(
+      color: kAppBlue,
+      fontSize: 24.0,
+      fontWeight: FontWeight.bold,
+    ),
+  );
+
   RubberAnimationController _controller;
 
   double _dragPercentage1 = 0;
@@ -111,9 +133,9 @@ class _Activity1State extends State<Activity1>
           end: Alignment.bottomLeft,
           stops: [0.1, 0.5, 0.7, 0.9],
           colors: [
-            Color(0xFF3d349a),
-            Color(0xFF3d359a),
-            Color(0xFF2d248a),
+            Color(0xFF3d34Ea),
+            Color(0xFF3d35Ca),
+            Color(0xFF2d24Aa),
             Color(0xFF1d138a),
           ],
         ),
@@ -141,12 +163,84 @@ class _Activity1State extends State<Activity1>
           children: <Widget>[
             Flexible(
               flex: 2,
-              child: Text(
-                'Control Panel',
-                style: GoogleFonts.montserrat(
-                  textStyle: kControlPanelTitle,
-                ),
-                textAlign: TextAlign.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Control Panel',
+                    style: GoogleFonts.montserrat(
+                      textStyle: kControlPanelTitle,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.info),
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        Alert(
+                          context: context,
+                          style: alertStyle,
+                          type: AlertType.none,
+                          title: "LED DIMMING",
+                          content: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(25.0),
+                                child: AnimatedContainer(
+                                  height: 200,
+                                  duration: Duration(milliseconds: 50),
+                                  child: FlareActor(
+                                    'assets/concepts/led.flr',
+                                    alignment: Alignment.center,
+                                    fit: BoxFit.fill,
+                                    animation: '50',
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "The configured ports generate a Pulse Width Modulation (PWM) signal. The duty cycle of the signal directly modifies the duration an LED switches ON and OFF within a single period.",
+                                  style: kConceptToolText,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "For this activity, the frequency has been preset to 5000Hz, translating to a 0.2ms period. The sliders in the control panel determine the duty cycle of the signal. This directly translates to the percentage of the period that the LEDs switch ON, which our human eyes perceive as a visual dimming of the LED.",
+                                  style: kConceptToolText,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                          buttons: [
+                            DialogButton(
+                              child: Text(
+                                "OKAY",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                              color: kAppBlue,
+                              radius: BorderRadius.circular(20.0),
+                            ),
+                          ],
+                        ).show();
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
             SizedBox(

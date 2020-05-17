@@ -11,8 +11,11 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 import 'package:spark/config_data.dart';
-
 import 'package:spark/screens/home_screen.dart';
+
+//concept tool packages
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flare_flutter/flare_actor.dart';
 
 class Activity2 extends StatefulWidget {
   static String id = 'activity_2';
@@ -23,6 +26,25 @@ class Activity2 extends StatefulWidget {
 
 class _Activity2State extends State<Activity2>
     with SingleTickerProviderStateMixin {
+  var alertStyle = AlertStyle(
+    backgroundColor: Color(0xAAFFFFFF),
+    animationType: AnimationType.fromBottom,
+    isCloseButton: false,
+    isOverlayTapDismiss: false,
+    animationDuration: Duration(milliseconds: 300),
+    alertBorder: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30.0),
+      side: BorderSide(
+        color: Colors.transparent,
+      ),
+    ),
+    titleStyle: TextStyle(
+      color: kAppBlue,
+      fontSize: 22.0,
+      fontWeight: FontWeight.bold,
+    ),
+  );
+
   RubberAnimationController _controller;
 
   double _dragPercentage1 = 0;
@@ -156,12 +178,84 @@ class _Activity2State extends State<Activity2>
           children: <Widget>[
             Flexible(
               flex: 2,
-              child: Text(
-                'Control Panel',
-                style: GoogleFonts.montserrat(
-                  textStyle: kControlPanelTitle,
-                ),
-                textAlign: TextAlign.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Control Panel',
+                    style: GoogleFonts.montserrat(
+                      textStyle: kControlPanelTitle,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.info),
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        Alert(
+                          context: context,
+                          style: alertStyle,
+                          type: AlertType.none,
+                          title: "ELECTROMAGNETISM",
+                          content: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(25.0),
+                                child: AnimatedContainer(
+                                  height: 200,
+                                  duration: Duration(milliseconds: 50),
+                                  child: FlareActor(
+                                    'assets/concepts/electromagnet.flr', //insert flare animation file here
+                                    alignment: Alignment.center,
+                                    fit: BoxFit.fill,
+                                    animation: 'go',
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "Stepper motors are commonly made up of 4 electromagnets. A PWM signal is used to activate each magnet in a particular sequence. In the animation above, the LEDs represent these magnets.",
+                                  style: kConceptToolText,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "When a magnet is energised, it produces a magnetic field which attracts a spinning component known as a rotor. By activating these magnets in a pattern (full/half step), the rotor continuously spins.",
+                                  style: kConceptToolText,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                          buttons: [
+                            DialogButton(
+                              child: Text(
+                                "OKAY",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                              color: kAppBlue,
+                              radius: BorderRadius.circular(20.0),
+                            ),
+                          ],
+                        ).show();
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
             SizedBox(

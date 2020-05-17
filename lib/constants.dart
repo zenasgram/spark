@@ -73,3 +73,15 @@ const kConfigureText = TextStyle(
   fontWeight: FontWeight.w500,
   color: Colors.black,
 );
+
+const kConceptToolText = TextStyle(
+  color: Colors.black87,
+  fontSize: 14.0,
+  fontWeight: FontWeight.w300,
+);
+
+const kConceptButtonTitle = TextStyle(
+  fontSize: 15.0,
+  color: Colors.black87,
+  fontWeight: FontWeight.w500,
+);

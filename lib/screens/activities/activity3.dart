@@ -7,6 +7,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:spark/config_data.dart';
 import 'package:spark/screens/home_screen.dart';
 
+//concept tool packages
+import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:flare_flutter/flare_actor.dart';
+
 class Activity3 extends StatefulWidget {
   static String id = 'activity_3';
 
@@ -16,6 +20,25 @@ class Activity3 extends StatefulWidget {
 
 class _Activity3State extends State<Activity3>
     with SingleTickerProviderStateMixin {
+  var alertStyle = AlertStyle(
+    backgroundColor: Color(0xAAFFFFFF),
+    animationType: AnimationType.fromBottom,
+    isCloseButton: false,
+    isOverlayTapDismiss: false,
+    animationDuration: Duration(milliseconds: 300),
+    alertBorder: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30.0),
+      side: BorderSide(
+        color: Colors.transparent,
+      ),
+    ),
+    titleStyle: TextStyle(
+      color: kAppBlue,
+      fontSize: 22.0,
+      fontWeight: FontWeight.bold,
+    ),
+  );
+
   RubberAnimationController _controller;
 
   // 0 - Unpressed, 1 - Pressed
@@ -189,12 +212,84 @@ class _Activity3State extends State<Activity3>
           children: <Widget>[
             Flexible(
               flex: 2,
-              child: Text(
-                'Control Panel',
-                style: GoogleFonts.montserrat(
-                  textStyle: kControlPanelTitle,
-                ),
-                textAlign: TextAlign.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'Control Panel',
+                    style: GoogleFonts.montserrat(
+                      textStyle: kControlPanelTitle,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.info),
+                    color: Colors.white,
+                    onPressed: () {
+                      setState(() {
+                        Alert(
+                          context: context,
+                          style: alertStyle,
+                          type: AlertType.none,
+                          title: "NOTE FREQUENCIES",
+                          content: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(25.0),
+                                child: AnimatedContainer(
+                                  height: 200,
+                                  duration: Duration(milliseconds: 50),
+                                  child: FlareActor(
+                                    'assets/tone.flr', //insert flare animation file here
+                                    alignment: Alignment.center,
+                                    fit: BoxFit.fill,
+                                    animation: 'go',
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                                  style: kConceptToolText,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                                  style: kConceptToolText,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                          buttons: [
+                            DialogButton(
+                              child: Text(
+                                "OKAY",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                              onPressed: () => Navigator.pop(context),
+                              color: kAppBlue,
+                              radius: BorderRadius.circular(20.0),
+                            ),
+                          ],
+                        ).show();
+                      });
+                    },
+                  ),
+                ],
               ),
             ),
             SizedBox(
@@ -383,7 +478,7 @@ class _Activity3State extends State<Activity3>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          'Port 1',
+                          'Passive',
                           style: kSliderText,
                         ),
                         DropdownButton<String>(
@@ -422,7 +517,7 @@ class _Activity3State extends State<Activity3>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
-                          'Port 2',
+                          'Active',
                           style: kSliderText,
                         ),
                         DropdownButton<String>(

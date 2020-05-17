@@ -49,3 +49,4 @@ flutter:
   assets:
     - images/
     - assets/
+    - assets/concepts/
