@@ -245,7 +245,7 @@ class _Activity3State extends State<Activity3>
                                   height: 200,
                                   duration: Duration(milliseconds: 50),
                                   child: FlareActor(
-                                    'assets/tone.flr', //insert flare animation file here
+                                    'assets/concepts/buzzer.flr', //insert flare animation file here
                                     alignment: Alignment.center,
                                     fit: BoxFit.fill,
                                     animation: 'go',
@@ -258,7 +258,7 @@ class _Activity3State extends State<Activity3>
                               Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: Text(
-                                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                                  "A piezo buzzer houses a ceramic disc that compresses and expands at a certain frequency when a PWM signal is applied. The flexing of the disc generates a note that we hear as sound.",
                                   style: kConceptToolText,
                                   textAlign: TextAlign.center,
                                 ),
@@ -266,7 +266,7 @@ class _Activity3State extends State<Activity3>
                               Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: Text(
-                                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                                  "In this activity, you can configure the buzzer to play musical notes and experiment with difference octave scales. Have fun!",
                                   style: kConceptToolText,
                                   textAlign: TextAlign.center,
                                 ),
