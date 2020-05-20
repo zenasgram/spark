@@ -148,9 +148,9 @@ class _HomeScreenState extends State<HomeScreen> {
     print('DEVICE CONNECTED');
     setState(() {
       connected = true;
-      connectionText = "Connected";
+      connectionText = "${targetDevice.name}";
     });
-
+    stopScan();
     discoverServices();
   }
 
@@ -174,9 +174,6 @@ class _HomeScreenState extends State<HomeScreen> {
           if (characteristic.uuid.toString() == CHARACTERISTIC_UUID) {
             targetCharacteristic = characteristic;
             writeData("Spark App is CONNECTED!");
-            setState(() {
-              connectionText = "${targetDevice.name}";
-            });
           }
         });
       }
@@ -224,7 +221,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             //Implement logout functionality
                             if (connected == true) {
                               disconnectedFromDevice();
-                              stopScan();
                             } else {
                               Alert(
                                 context: context,
