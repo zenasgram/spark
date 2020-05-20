@@ -231,7 +231,7 @@ class _Activity3State extends State<Activity3>
                           context: context,
                           style: alertStyle,
                           type: AlertType.none,
-                          title: "PIEZO BUZZER",
+                          title: "NOTE FREQUENCIES",
                           content: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.stretch,

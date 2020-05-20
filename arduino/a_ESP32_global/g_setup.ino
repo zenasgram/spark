@@ -3,6 +3,16 @@ void setup() {
   // Start serial comms over USB
   Serial.begin(115200);
 
+  //----------------------------------- GET MAC ADDRESS -------------------------------------------
+
+  Serial.print("ESP Board MAC Address:  ");
+  Serial.println(WiFi.macAddress()); //eg. 24:62:AB:C9:F4:18
+//  const char* deviceName = "ESP32 for Spark by Imperial";
+  const char* deviceName = MACtoDeviceName(WiFi.macAddress());
+
+  Serial.print("Device ID:  ");
+  Serial.println(deviceName); 
+  
   //-------------------------------------- ACTIVITY 1 --------------------------------------------
 
   // configure LED PWM functionalitites
@@ -29,7 +39,7 @@ void setup() {
 
 
   // Create the BLE Device
-  BLEDevice::init("ESP32 for Spark by Imperial");
+  BLEDevice::init(deviceName);
 
   // Create the BLE Server
   pServer = BLEDevice::createServer();

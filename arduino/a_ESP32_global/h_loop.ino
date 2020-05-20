@@ -20,14 +20,6 @@ void loop() {
     }
   } // else do nothing
 
-  //-------------------------------------- ACTIVITY 3 --------------------------------------------
-
-  //sing the tunes
-  //    sing(1,"passive");
-  //    sing(1, "active");
-  //    sing(2, "passive");
-  //
-
 
   //-------------------------------------- BLUETOOTH --------------------------------------------
   // notify changed value

@@ -6,14 +6,7 @@
 #include <BLEUtils.h>
 #include <BLE2902.h>
 
-#include <elapsedMillis.h>
-
-#include <Stepper.h>
-
-#include "driver/mcpwm.h"
-#include "soc/mcpwm_reg.h"
-#include "soc/mcpwm_struct.h"
-
+#include <WiFi.h>
 
 
 //**********************************************************************************************
@@ -35,6 +28,9 @@ void buzz(int targetPin, long frequency, long length);
 
 // COMMAND PARSE
 void parseCommand(String com);
+
+// BLUETOOTH
+const char* MACtoDeviceName (String mac);
 
 // EXECUTION
 void setup();

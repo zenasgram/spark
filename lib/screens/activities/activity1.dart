@@ -133,8 +133,8 @@ class _Activity1State extends State<Activity1>
           end: Alignment.bottomLeft,
           stops: [0.1, 0.5, 0.7, 0.9],
           colors: [
-            Color(0xFF3d34Ca),
-            Color(0xFF3d35Ba),
+            Color(0xFF3d34Ea),
+            Color(0xFF3d35Ca),
             Color(0xFF2d24Aa),
             Color(0xFF1d138a),
           ],

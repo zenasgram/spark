@@ -32,12 +32,13 @@ BluetoothCharacteristic targetCharacteristic;
 
 class _HomeScreenState extends State<HomeScreen> {
   bool connected = false;
-  final String SERVICE_UUID = "c6bcdf5e-86da-11ea-bc55-0242ac130003";
-  final String CHARACTERISTIC_UUID = "cec2788a-86da-11ea-bc55-0242ac130003";
-  final String TARGET_DEVICE_NAME = "ESP32 for Spark by Imperial";
+  final String SERVICE_UUID = "364dc5da-99d3-11ea-bb37-0242ac130002";
+  final String CHARACTERISTIC_UUID = "3cf252f2-99d3-11ea-bb37-0242ac130002";
+//  final String TARGET_DEVICE_NAME = "ESP32 for Spark by Imperial";
+  String TARGET_DEVICE_NAME;
 
   FlutterBlue flutterBlue = FlutterBlue.instance;
-  StreamSubscription<ScanResult> scanSubscription;
+  var subscription;
 
   String connectionText = "";
 
@@ -65,49 +66,89 @@ class _HomeScreenState extends State<HomeScreen> {
     ),
   );
 
+  TextEditingController _controller = new TextEditingController();
+  var bleAlertStyle = AlertStyle(
+    backgroundColor: Color(0xCCFFFFFF),
+    animationType: AnimationType.grow,
+    isCloseButton: true,
+    isOverlayTapDismiss: false,
+    animationDuration: Duration(milliseconds: 300),
+    alertBorder: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(30.0),
+      side: BorderSide(
+        color: Colors.transparent,
+      ),
+    ),
+    titleStyle: TextStyle(
+      color: kAppBlue,
+      fontSize: 24.0,
+      fontWeight: FontWeight.bold,
+    ),
+  );
+
   @override
   void initState() {
     super.initState();
 
-    startScan();
+//    startScan();
   }
 
   startScan() {
     print('START Scan');
+    // Start scanning
+    flutterBlue.startScan(timeout: Duration(seconds: 4));
     setState(() {
-      connectionText = "Start Scanning";
+      connectionText = "Scanning..";
     });
-    scanSubscription = flutterBlue.scan().listen((scanResult) {
-      if (scanResult.device.name == TARGET_DEVICE_NAME) {
-        print('DEVICE found');
-        stopScan();
-        setState(() {
-          connectionText = "Found Target Device";
-        });
 
-        targetDevice = scanResult.device;
-        connectToDevice();
-      }
-    }, onDone: () => stopScan());
+    // Listen to scan results
+    subscription = flutterBlue.scanResults.listen(
+      (scanResult) {
+        bool deviceFound = false;
+        // do something with scan results
+        for (ScanResult r in scanResult) {
+          print(
+              '${r.device.name} found! RSSI: ${r.rssi}'); //RSSI = Received Signal Strength Indicator
+          if (r.device.name == TARGET_DEVICE_NAME) {
+            deviceFound = true;
+            print(' ');
+            print('****** TARGET DEVICE FOUND ******');
+            print(' ');
+//            stopScan();
+//            setState(() {
+//              connectionText = "Device Found";
+//            });
+
+            targetDevice = r.device;
+            connectToDevice();
+          }
+        }
+        if (deviceFound == false) {
+          setState(() {
+            connectionText = "Not Found";
+          });
+        }
+      },
+//      onDone: () => stopScan(),
+    );
   }
 
   stopScan() {
-    scanSubscription?.cancel();
-    scanSubscription = null;
+    flutterBlue.stopScan();
   }
 
   connectToDevice() async {
     if (targetDevice == null) return;
 
     setState(() {
-      connectionText = "Device Connecting";
+      connectionText = "...";
     });
 
     await targetDevice.connect();
     print('DEVICE CONNECTED');
     setState(() {
       connected = true;
-      connectionText = "Device Connected";
+      connectionText = "Connected";
     });
 
     discoverServices();
@@ -119,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print('DEVICE DISCONNECTED');
     setState(() {
       connected = false;
-      connectionText = "Device Disconnected";
+      connectionText = "Disconnected";
     });
   }
 
@@ -134,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
             targetCharacteristic = characteristic;
             writeData("Spark App is CONNECTED!");
             setState(() {
-              connectionText = "All Ready with ${targetDevice.name}";
+              connectionText = "${targetDevice.name}";
             });
           }
         });
@@ -163,16 +204,93 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Row(
                     children: <Widget>[
+                      Text(
+                        connectionText,
+                        style: GoogleFonts.montserrat(
+                          textStyle: TextStyle(
+                            color: connected ? Colors.greenAccent : Colors.grey,
+                            fontSize: 10.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
                       IconButton(
-                          icon: Icon(FontAwesomeIcons.bluetoothB),
+                          icon: connected
+                              ? Icon(Icons.bluetooth_connected)
+                              : Icon(Icons.bluetooth),
                           color: connected ? Colors.greenAccent : Colors.grey,
                           iconSize: 30,
                           onPressed: () {
                             //Implement logout functionality
                             if (connected == true) {
                               disconnectedFromDevice();
+                              stopScan();
                             } else {
-                              connectToDevice();
+                              Alert(
+                                context: context,
+                                style: bleAlertStyle,
+                                type: AlertType.none,
+                                title: "AUTHENTICATE",
+                                content: Column(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10.0,
+                                          right: 10.0,
+                                          top: 15.0,
+                                          bottom: 25.0),
+                                      child: TextField(
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                        ),
+                                        controller: _controller,
+                                        autocorrect: false,
+                                        textCapitalization:
+                                            TextCapitalization.characters,
+//                                        maxLength: 17,
+                                        cursorColor: kAppBlue,
+                                        decoration: InputDecoration(
+                                          icon: Icon(
+                                            Icons.developer_board,
+                                            color: kAppBlue,
+                                          ),
+                                          labelText: 'Device ID',
+                                          labelStyle: TextStyle(
+                                              color: kAppBlue,
+                                              fontWeight: FontWeight.w300),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.grey),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color(0xAA003BC0)),
+                                          ),
+                                        ),
+                                        onChanged: (text) {
+                                          TARGET_DEVICE_NAME = _controller.text;
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                buttons: [
+                                  DialogButton(
+                                    child: Text(
+                                      "CONNECT",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                    onPressed: () {
+                                      print(TARGET_DEVICE_NAME);
+                                      startScan();
+                                      Navigator.pop(context);
+                                    },
+                                    color: kAppBlue,
+                                    radius: BorderRadius.circular(20.0),
+                                  ),
+                                ],
+                              ).show();
                             }
                           }),
                       IconButton(

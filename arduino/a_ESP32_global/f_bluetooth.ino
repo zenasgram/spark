@@ -12,8 +12,8 @@ bool oldDeviceConnected = false;
 // See the following for generating UUIDs:
 // https://www.uuidgenerator.net/
 
-#define SERVICE_UUID        "c6bcdf5e-86da-11ea-bc55-0242ac130003"
-#define CHARACTERISTIC_UUID "cec2788a-86da-11ea-bc55-0242ac130003"
+#define SERVICE_UUID        "364dc5da-99d3-11ea-bb37-0242ac130002"
+#define CHARACTERISTIC_UUID "3cf252f2-99d3-11ea-bb37-0242ac130002"
 
 
 class MyServerCallbacks: public BLEServerCallbacks {
@@ -50,3 +50,18 @@ class MyCallbacks: public BLECharacteristicCallbacks {
     }
 
 };
+
+
+const char* MACtoDeviceName (String mac){
+  if(mac == "24:62:AB:C9:F4:18"){
+    return "ESP32-01";
+  }
+  else if (mac == "another mac address"){
+    return "ESP32-02";
+  }
+  else if (mac == "another mac address again"){
+    return "ESP32-03";
+  }
+
+  return "MAC address not found";
+}
