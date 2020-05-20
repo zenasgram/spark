@@ -280,7 +280,7 @@ class _Activity1State extends State<Activity1>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Slider 1',
+                        'Duty Cylce 1',
                         style: GoogleFonts.montserrat(
                           textStyle: kSliderText,
                         ),
@@ -333,7 +333,7 @@ class _Activity1State extends State<Activity1>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Slider 2',
+                        'Duty Cycle 2',
                         style: GoogleFonts.montserrat(
                           textStyle: kSliderText,
                         ),
@@ -365,7 +365,7 @@ class _Activity1State extends State<Activity1>
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0, left: 35.0),
                     child: Text(
-                      'Switch 1',
+                      'LED 1',
                       style: GoogleFonts.montserrat(
                         textStyle: kSliderText,
                       ),
@@ -405,7 +405,7 @@ class _Activity1State extends State<Activity1>
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0, left: 35.0),
                     child: Text(
-                      'Switch 2',
+                      'LED 2',
                       style: GoogleFonts.montserrat(
                         textStyle: kSliderText,
                       ),
