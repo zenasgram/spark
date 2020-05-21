@@ -45,7 +45,11 @@ class _Activity1State extends State<Activity1>
   RubberAnimationController _controller;
 
   double _dragPercentage1 = 0;
+  double dutycycle1 = 0.0;
+
   double _dragPercentage2 = 0;
+  double dutycycle2 = 0.0;
+
   int switch1 = 0;
   int switch2 = 0;
 
@@ -244,7 +248,7 @@ class _Activity1State extends State<Activity1>
               ),
             ),
             SizedBox(
-              height: 10.0,
+              height: 30.0,
               width: double.maxFinite,
             ),
             Flexible(
@@ -253,34 +257,68 @@ class _Activity1State extends State<Activity1>
                 children: <Widget>[
                   Flexible(
                     flex: 1,
-                    child: WaveSlider(
-                      color: Color(0xFFe42c64),
-                      displayTrackball: false,
-                      sliderHeight: 50,
-                      onChanged: (double dragUpdate) {
-                        setState(() {
-                          _dragPercentage1 = dragUpdate *
-                              100; // dragUpdate is a fractional value between 0 and 1
-                        });
-                      },
-                      onChangeEnd: (double dragUpdate) {
-                        setState(() {
-                          _dragPercentage1 = dragUpdate *
-                              100; // dragUpdate is a fractional value between 0 and 1
-                          String dataValues =
-                              "activity1::Slider1: ${_dragPercentage1.toStringAsFixed(2)}";
-                          print(dataValues);
-                          writeData(dataValues);
-                        });
-                      },
+                    child: SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        activeTrackColor: Color(0xFFe42c64),
+                        inactiveTrackColor: Colors.red[50],
+                        trackShape: RectangularSliderTrackShape(),
+                        trackHeight: 3.0,
+                        thumbColor: Color(0xFFF42c64),
+                        thumbShape:
+                            RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                        overlayColor: Color(0x40FFFFFF),
+                        overlayShape:
+                            RoundSliderOverlayShape(overlayRadius: 28.0),
+                      ),
+                      child: Slider(
+                        value: _dragPercentage1,
+                        onChanged: (double dragUpdate) {
+                          setState(() {
+                            _dragPercentage1 =
+                                dragUpdate; // dragUpdate is a fractional value between 0 and 1
+                          });
+                        },
+                        onChangeEnd: (double dragUpdate) {
+                          setState(() {
+                            _dragPercentage1 =
+                                dragUpdate; // dragUpdate is a fractional value between 0 and 1
+                            dutycycle1 = _dragPercentage1 * 100.0;
+                            String dataValues =
+                                "activity1::Slider1: ${dutycycle1.toStringAsFixed(2)}";
+                            print(dataValues);
+                            writeData(dataValues);
+                          });
+                        },
+                      ),
                     ),
+//                    WaveSlider(
+//                      color: Color(0xFFe42c64),
+//                      displayTrackball: false,
+//                      sliderHeight: 50,
+//                      onChanged: (double dragUpdate) {
+//                        setState(() {
+//                          _dragPercentage1 = dragUpdate *
+//                              100; // dragUpdate is a fractional value between 0 and 1
+//                        });
+//                      },
+//                      onChangeEnd: (double dragUpdate) {
+//                        setState(() {
+//                          _dragPercentage1 = dragUpdate *
+//                              100; // dragUpdate is a fractional value between 0 and 1
+//                          String dataValues =
+//                              "activity1::Slider1: ${_dragPercentage1.toStringAsFixed(2)}";
+//                          print(dataValues);
+//                          writeData(dataValues);
+//                        });
+//                      },
+//                    ),
                   ),
                   Flexible(
                     flex: 1,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Duty Cylce 1',
+                        'Duty Cycle 1',
                         style: GoogleFonts.montserrat(
                           textStyle: kSliderText,
                         ),
@@ -292,7 +330,7 @@ class _Activity1State extends State<Activity1>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '${_dragPercentage1.toStringAsFixed(2)}',
+                        '${dutycycle1.toInt()} %',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
@@ -306,26 +344,39 @@ class _Activity1State extends State<Activity1>
                 children: <Widget>[
                   Flexible(
                     flex: 1,
-                    child: WaveSlider(
-                      color: Color(0xFFe42c64),
-                      displayTrackball: false,
-                      sliderHeight: 50,
-                      onChanged: (double dragUpdate) {
-                        setState(() {
-                          _dragPercentage2 = dragUpdate *
-                              100; // dragUpdate is a fractional value between 0 and 1
-                        });
-                      },
-                      onChangeEnd: (double dragUpdate) {
-                        setState(() {
-                          _dragPercentage2 = dragUpdate *
-                              100; // dragUpdate is a fractional value between 0 and 1
-                          String dataValues =
-                              "activity1::Slider2: ${_dragPercentage2.toStringAsFixed(2)}";
-                          print(dataValues);
-                          writeData(dataValues);
-                        });
-                      },
+                    child: SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        activeTrackColor: Color(0xFFe42c64),
+                        inactiveTrackColor: Colors.red[50],
+                        trackShape: RectangularSliderTrackShape(),
+                        trackHeight: 3.0,
+                        thumbColor: Color(0xFFF42c64),
+                        thumbShape:
+                            RoundSliderThumbShape(enabledThumbRadius: 12.0),
+                        overlayColor: Color(0x40FFFFFF),
+                        overlayShape:
+                            RoundSliderOverlayShape(overlayRadius: 28.0),
+                      ),
+                      child: Slider(
+                        value: _dragPercentage2,
+                        onChanged: (double dragUpdate) {
+                          setState(() {
+                            _dragPercentage2 =
+                                dragUpdate; // dragUpdate is a fractional value between 0 and 1
+                          });
+                        },
+                        onChangeEnd: (double dragUpdate) {
+                          setState(() {
+                            _dragPercentage2 =
+                                dragUpdate; // dragUpdate is a fractional value between 0 and 1
+                            dutycycle2 = _dragPercentage2 * 100.0;
+                            String dataValues =
+                                "activity1::Slider1: ${dutycycle2.toStringAsFixed(2)}";
+                            print(dataValues);
+                            writeData(dataValues);
+                          });
+                        },
+                      ),
                     ),
                   ),
                   Flexible(
@@ -345,7 +396,7 @@ class _Activity1State extends State<Activity1>
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        '${_dragPercentage2.toStringAsFixed(2)}',
+                        '${dutycycle2.toInt()} %',
                         style: TextStyle(fontSize: 16),
                       ),
                     ),
