@@ -4,7 +4,6 @@ import 'package:spark/constants.dart';
 import 'package:rubber/rubber.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:wave_slider/wave_slider.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 import 'package:spark/config_data.dart';
@@ -291,27 +290,6 @@ class _Activity1State extends State<Activity1>
                         },
                       ),
                     ),
-//                    WaveSlider(
-//                      color: Color(0xFFe42c64),
-//                      displayTrackball: false,
-//                      sliderHeight: 50,
-//                      onChanged: (double dragUpdate) {
-//                        setState(() {
-//                          _dragPercentage1 = dragUpdate *
-//                              100; // dragUpdate is a fractional value between 0 and 1
-//                        });
-//                      },
-//                      onChangeEnd: (double dragUpdate) {
-//                        setState(() {
-//                          _dragPercentage1 = dragUpdate *
-//                              100; // dragUpdate is a fractional value between 0 and 1
-//                          String dataValues =
-//                              "activity1::Slider1: ${_dragPercentage1.toStringAsFixed(2)}";
-//                          print(dataValues);
-//                          writeData(dataValues);
-//                        });
-//                      },
-//                    ),
                   ),
                   Flexible(
                     flex: 1,

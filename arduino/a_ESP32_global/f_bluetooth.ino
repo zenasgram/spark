@@ -50,18 +50,3 @@ class MyCallbacks: public BLECharacteristicCallbacks {
     }
 
 };
-
-
-const char* MACtoDeviceName (String mac){
-  if(mac == "24:62:AB:C9:F4:18"){
-    return "ESP32-01";
-  }
-  else if (mac == "another mac address"){
-    return "ESP32-02";
-  }
-  else if (mac == "another mac address again"){
-    return "ESP32-03";
-  }
-
-  return "MAC address not found";
-}

@@ -11,7 +11,12 @@ void parseCommand(String com) {
   part1 = com.substring(0, com.indexOf(" "));
   part2 = com.substring(com.indexOf(" ") + 1);
 
-  if (part1.equalsIgnoreCase("activity1::Port1:")) {
+  //**********************************************************************************************
+  if (part1.equalsIgnoreCase("password:")) {
+    user_password = part2;
+  }
+  //**********************************************************************************************
+  else if (part1.equalsIgnoreCase("activity1::Port1:")) {
     led1 = part2.toInt();
     ledcAttachPin(led1, ledChannel1);
 

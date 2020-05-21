@@ -36,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final String CHARACTERISTIC_UUID = "3cf252f2-99d3-11ea-bb37-0242ac130002";
 //  final String TARGET_DEVICE_NAME = "ESP32 for Spark by Imperial";
   String TARGET_DEVICE_NAME;
+  String TARGET_DEVICE_PASSWORD;
 
   FlutterBlue flutterBlue = FlutterBlue.instance;
   var subscription;
@@ -67,6 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
   );
 
   TextEditingController _controller = new TextEditingController();
+  TextEditingController _passwordcontroller = new TextEditingController();
   var bleAlertStyle = AlertStyle(
     backgroundColor: Color(0xCCFFFFFF),
     animationType: AnimationType.grow,
@@ -94,6 +96,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   startScan() {
+    bool deviceFound = false;
+
     print('START Scan');
     // Start scanning
     flutterBlue.startScan(timeout: Duration(seconds: 4));
@@ -104,24 +108,24 @@ class _HomeScreenState extends State<HomeScreen> {
     // Listen to scan results
     subscription = flutterBlue.scanResults.listen(
       (scanResult) {
-        bool deviceFound = false;
+        print(
+            '************************** REFRESH ****************************');
+        int index = 0;
         // do something with scan results
         for (ScanResult r in scanResult) {
           print(
-              '${r.device.name} found! RSSI: ${r.rssi}'); //RSSI = Received Signal Strength Indicator
-          if (r.device.name == TARGET_DEVICE_NAME) {
+              '${index}. ${r.device.name} ----> \t RSSI: ${r.rssi}'); //RSSI = Received Signal Strength Indicator
+          if ((r.device.name == TARGET_DEVICE_NAME) && (deviceFound == false)) {
             deviceFound = true;
             print(' ');
-            print('****** TARGET DEVICE FOUND ******');
+            print('~~~~~~~~~~~~~~~ TARGET DEVICE FOUND ~~~~~~~~~~~~~~~');
             print(' ');
-//            stopScan();
-//            setState(() {
-//              connectionText = "Device Found";
-//            });
-
+            stopScan();
             targetDevice = r.device;
             connectToDevice();
           }
+
+          index++;
         }
         if (deviceFound == false) {
           setState(() {
@@ -129,11 +133,12 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         }
       },
-//      onDone: () => stopScan(),
+      onDone: () => stopScan(),
     );
   }
 
   stopScan() {
+//    subscription.cancel();
     flutterBlue.stopScan();
   }
 
@@ -150,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
       connected = true;
       connectionText = "${targetDevice.name}";
     });
-    stopScan();
+//    stopScan();
     discoverServices();
   }
 
@@ -158,6 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (targetDevice == null) return;
     targetDevice.disconnect();
     print('DEVICE DISCONNECTED');
+
     setState(() {
       connected = false;
       connectionText = "Disconnected";
@@ -173,7 +179,10 @@ class _HomeScreenState extends State<HomeScreen> {
         service.characteristics.forEach((characteristic) {
           if (characteristic.uuid.toString() == CHARACTERISTIC_UUID) {
             targetCharacteristic = characteristic;
-            writeData("Spark App is CONNECTED!");
+            writeData("ESP32 is connected to Spark!");
+
+            String dataValues = "password: ${TARGET_DEVICE_PASSWORD}";
+            writeData(dataValues);
           }
         });
       }
@@ -234,15 +243,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                           left: 10.0,
                                           right: 10.0,
                                           top: 15.0,
-                                          bottom: 25.0),
+                                          bottom: 10.0),
                                       child: TextField(
                                         style: TextStyle(
                                           color: Colors.black87,
                                         ),
                                         controller: _controller,
                                         autocorrect: false,
-                                        textCapitalization:
-                                            TextCapitalization.characters,
+//                                        textCapitalization:
+//                                            TextCapitalization.characters,
 //                                        maxLength: 17,
                                         cursorColor: kAppBlue,
                                         decoration: InputDecoration(
@@ -268,6 +277,46 @@ class _HomeScreenState extends State<HomeScreen> {
                                         },
                                       ),
                                     ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10.0,
+                                          right: 10.0,
+                                          top: 5.0,
+                                          bottom: 25.0),
+                                      child: TextField(
+                                        style: TextStyle(
+                                          color: Colors.black87,
+                                        ),
+                                        controller: _passwordcontroller,
+                                        autocorrect: false,
+//                                        textCapitalization:
+//                                            TextCapitalization.characters,
+//                                        maxLength: 17,
+                                        cursorColor: kAppBlue,
+                                        decoration: InputDecoration(
+                                          icon: Icon(
+                                            Icons.lock,
+                                            color: kAppBlue,
+                                          ),
+                                          labelText: 'Password',
+                                          labelStyle: TextStyle(
+                                              color: kAppBlue,
+                                              fontWeight: FontWeight.w300),
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.grey),
+                                          ),
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Color(0xAA003BC0)),
+                                          ),
+                                        ),
+                                        onChanged: (text) {
+                                          TARGET_DEVICE_PASSWORD =
+                                              _passwordcontroller.text;
+                                        },
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 buttons: [
@@ -279,6 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     onPressed: () {
                                       print(TARGET_DEVICE_NAME);
+                                      print(TARGET_DEVICE_PASSWORD);
                                       startScan();
                                       Navigator.pop(context);
                                     },

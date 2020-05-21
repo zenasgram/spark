@@ -8,6 +8,21 @@
 
 #include <WiFi.h>
 
+#include "mbedtls/md.h"
+
+//**********************************************************************************************
+//-----------------------------------  GLOBAL VARIABLES  ---------------------------------------
+//**********************************************************************************************
+
+String user_password = " "; //user input
+String device_password = " "; //hash function to generate this
+
+char deviceName[100]; //hash function to generate this
+String device_ID;
+
+bool triggerAdvertising = false;
+int onlyOnceCount = 0;
+String old_user_password = " ";
 
 //**********************************************************************************************
 //---------------------------------  FUNCTION DECLARATION  -------------------------------------
@@ -28,9 +43,6 @@ void buzz(int targetPin, long frequency, long length);
 
 // COMMAND PARSE
 void parseCommand(String com);
-
-// BLUETOOTH
-const char* MACtoDeviceName (String mac);
 
 // EXECUTION
 void setup();

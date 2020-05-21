@@ -8,11 +8,70 @@ void setup() {
   Serial.print("ESP Board MAC Address:  ");
   Serial.println(WiFi.macAddress()); //eg. 24:62:AB:C9:F4:18
 //  const char* deviceName = "ESP32 for Spark by Imperial";
-  const char* deviceName = MACtoDeviceName(WiFi.macAddress());
 
-  Serial.print("Device ID:  ");
+  //---------------------------------- GENERATING PASSWORD -----------------------------------------
+
+  char *payload = "Hello SHA 256 from ESP32learning";
+  byte shaResult[32];
+   
+  mbedtls_md_context_t ctx;
+  mbedtls_md_type_t md_type = MBEDTLS_MD_SHA256;
+   
+  const size_t payloadLength = strlen(payload);
+   
+  mbedtls_md_init(&ctx);
+  mbedtls_md_setup(&ctx, mbedtls_md_info_from_type(md_type), 0);
+  mbedtls_md_starts(&ctx);
+  mbedtls_md_update(&ctx, (const unsigned char *) payload, payloadLength);
+  mbedtls_md_finish(&ctx, shaResult);
+  mbedtls_md_free(&ctx);
+   
+  Serial.print("Hash: ");
+
+  // generating random sequence for dynamic password
+  int ab = random(1, sizeof(shaResult)-1);
+  int cd = random(1, sizeof(shaResult)-1);
+  int ef = random(1, sizeof(shaResult)-1);
+  int gh = random(1, sizeof(shaResult)-1);
+
+//  Serial.println(ab);
+//  Serial.println(cd);
+//  Serial.println(ef);
+//  Serial.println(gh);
+  
+  for(int i= 0; i< sizeof(shaResult); i++)
+  {
+    char str[3];
+    sprintf(str, "%02x", (int)shaResult[i]);
+    Serial.print(str);
+
+    if (i==0){
+      device_ID = str; //capture unique ID for ESP32
+    }
+    
+    if(i==ab || i==cd || i==ef || i==gh){
+      device_password = device_password + str; //limit password to 8 characters
+    }
+    
+  }
+
+  char* prefix = "ESP32-";
+  strcpy(deviceName,prefix); // copy string one into the result.
+  strcat(deviceName,device_ID.c_str());
+
+  //-------------------------------- PRINTING DEVICE INFO -----------------------------------------
+  // Use SHA256 encryption
+  Serial.println(" ");
+  Serial.println(" ");
+  Serial.println("***************************************************************");
+  Serial.print("Device ID: \t");
   Serial.println(deviceName); 
   
+  Serial.print("Password: \t");
+  Serial.println(device_password);
+  Serial.println("***************************************************************");
+  Serial.println(" ");
+  Serial.println(" ");
   //-------------------------------------- ACTIVITY 1 --------------------------------------------
 
   // configure LED PWM functionalitites

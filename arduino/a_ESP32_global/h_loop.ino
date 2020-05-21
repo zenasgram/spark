@@ -29,8 +29,18 @@ void loop() {
   //        value++;
   //        delay(500); // bluetooth stack will go into congestion, if too many packets are sent, in 6 hours test i was able to go as low as 3ms
   //    }
+  
+  if((user_password!=device_password)&&(old_user_password!=user_password)){
+    old_user_password = user_password;
+    uint16_t conn_id = pServer->getConnId();
+    pServer->disconnect(conn_id);
+    Serial.println("Invalid password, disconnecting..");
+  }
+
+  
+  
   // disconnecting
-  if (!deviceConnected && oldDeviceConnected) {
+  if ( (!deviceConnected && oldDeviceConnected)){
     delay(500); // give the bluetooth stack the chance to get things ready
     pServer->startAdvertising(); // restart advertising
     Serial.println("Start advertising");
