@@ -419,7 +419,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 20),
                                 ),
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, Activity1.id);
+                                },
                                 color: kAppBlue,
                                 radius: BorderRadius.circular(20.0),
                               ),
@@ -456,7 +459,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 20),
                                 ),
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, Activity2.id);
+                                },
                                 color: kAppBlue,
                                 radius: BorderRadius.circular(20.0),
                               ),
@@ -493,7 +499,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   style: TextStyle(
                                       color: Colors.white, fontSize: 20),
                                 ),
-                                onPressed: () => Navigator.pop(context),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, Activity3.id);
+                                },
                                 color: kAppBlue,
                                 radius: BorderRadius.circular(20.0),
                               ),
