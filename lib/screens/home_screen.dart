@@ -139,7 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   stopScan() {
     flutterBlue.stopScan();
-    subscription.cancel();
+    subscription?.cancel();
+    subscription = null;
   }
 
   connectToDevice() async {
@@ -148,8 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       connectionText = "...";
     });
-
-    await targetDevice.connect();
+    await targetDevice.connect(autoConnect: false);
     print('DEVICE CONNECTED');
 //    setState(() {
 //      connected = true;
@@ -162,6 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
   disconnectedFromDevice() {
     if (targetDevice == null) return;
     targetDevice.disconnect();
+    targetDevice = null;
     print('DEVICE DISCONNECTED');
 
     setState(() {
@@ -184,21 +185,20 @@ class _HomeScreenState extends State<HomeScreen> {
             String dataValues = "password: ${TARGET_DEVICE_PASSWORD}";
             writeData(dataValues);
 
-            Future.delayed(const Duration(milliseconds: 2000), () {
-              //wait for 1.5 seconds
+            Future.delayed(const Duration(milliseconds: 500), () {
+              //wait for 0.5 seconds
               // waiting for authentication by ESP32
               targetDevice.state.listen((state) {
                 print(state);
                 if (state == BluetoothDeviceState.connected) {
-                  setState(() {
-                    connected = true;
-                    connectionText = "${targetDevice.name}";
-                  });
+                  if (this.mounted) {
+                    setState(() {
+                      connected = true;
+                      connectionText = "${targetDevice.name}";
+                    });
+                  }
                 } else {
-                  setState(() {
-                    connected = false;
-                    connectionText = "Disconnected";
-                  });
+                  disconnectedFromDevice();
                 }
               });
             });
@@ -249,7 +249,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             //Implement logout functionality
                             if (connected == true) {
                               disconnectedFromDevice();
-                              stopScan();
                             } else {
                               Alert(
                                 context: context,
