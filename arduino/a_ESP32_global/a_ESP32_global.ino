@@ -15,14 +15,12 @@
 //**********************************************************************************************
 
 String user_password = " "; //user input
-String device_password = " "; //hash function to generate this
+String device_password = ""; //hash function to generate this
 
 char deviceName[100]; //hash function to generate this
 String device_ID;
 
-bool triggerAdvertising = false;
-int onlyOnceCount = 0;
-String old_user_password = " ";
+bool newPasswordTrigger = false;
 
 //**********************************************************************************************
 //---------------------------------  FUNCTION DECLARATION  -------------------------------------

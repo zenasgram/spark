@@ -138,8 +138,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   stopScan() {
-//    subscription.cancel();
     flutterBlue.stopScan();
+    subscription.cancel();
   }
 
   connectToDevice() async {
@@ -151,10 +151,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     await targetDevice.connect();
     print('DEVICE CONNECTED');
-    setState(() {
-      connected = true;
-      connectionText = "${targetDevice.name}";
-    });
+//    setState(() {
+//      connected = true;
+//      connectionText = "${targetDevice.name}";
+//    });
 //    stopScan();
     discoverServices();
   }
@@ -183,6 +183,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
             String dataValues = "password: ${TARGET_DEVICE_PASSWORD}";
             writeData(dataValues);
+
+            Future.delayed(const Duration(milliseconds: 2000), () {
+              //wait for 1.5 seconds
+              // waiting for authentication by ESP32
+              targetDevice.state.listen((state) {
+                print(state);
+                if (state == BluetoothDeviceState.connected) {
+                  setState(() {
+                    connected = true;
+                    connectionText = "${targetDevice.name}";
+                  });
+                } else {
+                  setState(() {
+                    connected = false;
+                    connectionText = "Disconnected";
+                  });
+                }
+              });
+            });
           }
         });
       }
@@ -230,6 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             //Implement logout functionality
                             if (connected == true) {
                               disconnectedFromDevice();
+                              stopScan();
                             } else {
                               Alert(
                                 context: context,

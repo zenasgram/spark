@@ -14,6 +14,7 @@ void parseCommand(String com) {
   //**********************************************************************************************
   if (part1.equalsIgnoreCase("password:")) {
     user_password = part2;
+    newPasswordTrigger = true;
   }
   //**********************************************************************************************
   else if (part1.equalsIgnoreCase("activity1::Port1:")) {

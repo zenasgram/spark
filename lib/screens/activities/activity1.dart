@@ -349,7 +349,7 @@ class _Activity1State extends State<Activity1>
                                 dragUpdate; // dragUpdate is a fractional value between 0 and 1
                             dutycycle2 = _dragPercentage2 * 100.0;
                             String dataValues =
-                                "activity1::Slider1: ${dutycycle2.toStringAsFixed(2)}";
+                                "activity1::Slider2: ${dutycycle2.toStringAsFixed(2)}";
                             print(dataValues);
                             writeData(dataValues);
                           });
