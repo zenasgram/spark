@@ -39,7 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String TARGET_DEVICE_PASSWORD;
 
   FlutterBlue flutterBlue = FlutterBlue.instance;
-  var subscription;
+  StreamSubscription<ScanResult> subscription;
+//  var subscription;
 
   String connectionText = "";
 
@@ -100,33 +101,23 @@ class _HomeScreenState extends State<HomeScreen> {
 
     print('START Scan');
     // Start scanning
-    flutterBlue.startScan(timeout: Duration(seconds: 4));
+//    flutterBlue.startScan(timeout: Duration(seconds: 4));
     setState(() {
       connectionText = "Scanning..";
     });
 
-    // Listen to scan results
-    subscription = flutterBlue.scanResults.listen(
+    subscription = flutterBlue.scan().listen(
       (scanResult) {
-        print(
-            '************************** REFRESH ****************************');
-        int index = 0;
-        // do something with scan results
-        for (ScanResult r in scanResult) {
-          print(
-              '${index}. ${r.device.name} ----> \t RSSI: ${r.rssi}'); //RSSI = Received Signal Strength Indicator
-          if ((r.device.name == TARGET_DEVICE_NAME) && (deviceFound == false)) {
-            deviceFound = true;
-            print(' ');
-            print('~~~~~~~~~~~~~~~ TARGET DEVICE FOUND ~~~~~~~~~~~~~~~');
-            print(' ');
-            stopScan();
-            targetDevice = r.device;
-            connectToDevice();
-          }
+        print(scanResult.device.name.toString()); // ! TEST
+        if (scanResult.device.name == TARGET_DEVICE_NAME) {
+          deviceFound = true;
+          print('~~~~~~~~~~~~~~~ TARGET DEVICE FOUND ~~~~~~~~~~~~~~~');
+          stopScan();
 
-          index++;
+          targetDevice = scanResult.device;
+          connectToDevice();
         }
+
         if (deviceFound == false) {
           setState(() {
             connectionText = "Not Found";
@@ -135,6 +126,37 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       onDone: () => stopScan(),
     );
+
+    // Listen to scan results
+//    subscription = flutterBlue.scanResults.listen(
+//      (scanResult) {
+//        print(
+//            '************************** REFRESH ****************************');
+//        int index = 0;
+//        // do something with scan results
+//        for (ScanResult r in scanResult) {
+//          print(
+//              '${index}. ${r.device.name} ----> \t RSSI: ${r.rssi}'); //RSSI = Received Signal Strength Indicator
+//          if ((r.device.name == TARGET_DEVICE_NAME) && (deviceFound == false)) {
+//            deviceFound = true;
+//            print(' ');
+//            print('~~~~~~~~~~~~~~~ TARGET DEVICE FOUND ~~~~~~~~~~~~~~~');
+//            print(' ');
+//            stopScan();
+//            targetDevice = r.device;
+//            connectToDevice();
+//          }
+//
+//          index++;
+//        }
+//        if (deviceFound == false) {
+//          setState(() {
+//            connectionText = "Not Found";
+//          });
+//        }
+//      },
+//      onDone: () => stopScan(),
+//    );
   }
 
   stopScan() {
