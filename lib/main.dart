@@ -5,6 +5,8 @@ import 'package:spark/screens/activities/activity1.dart';
 import 'package:spark/screens/activities/activity2.dart';
 import 'package:spark/screens/activities/activity3.dart';
 
+import 'package:spark/screens/activities/activity_template.dart';
+
 //bluetooth packages
 
 void main() => runApp(Spark());
@@ -26,6 +28,7 @@ class Spark extends StatelessWidget {
         Activity1.id: (context) => Activity1(),
         Activity2.id: (context) => Activity2(),
         Activity3.id: (context) => Activity3(),
+//        Activity4.id: (context) => Activity4(),
       },
     );
   }

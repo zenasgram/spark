@@ -1,7 +1,7 @@
 name: spark
 description: A learning tool for college outreach using BLE.
 
-version: 1.0.3+4
+version: 1.0.4+5
 
 environment:
   sdk: ">=2.1.0<3.0.0"
@@ -37,6 +37,9 @@ dependencies:
 
   #bluetooth packages
   flutter_blue: ^0.7.0
+
+  #user rights packages
+  permission_handler: ^5.0.0+hotfix.6
 
 
 dev_dependencies:

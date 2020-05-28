@@ -130,6 +130,7 @@ class _Activity1State extends State<Activity1>
 
   Widget _getLowerLayer() {
     return Container(
+      height: MediaQuery.of(context).size.height,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topRight,
@@ -161,7 +162,7 @@ class _Activity1State extends State<Activity1>
       child: Padding(
         padding: const EdgeInsets.all(40.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Flexible(
@@ -245,10 +246,6 @@ class _Activity1State extends State<Activity1>
                   ),
                 ],
               ),
-            ),
-            SizedBox(
-              height: 30.0,
-              width: double.maxFinite,
             ),
             Flexible(
               flex: 3,
@@ -382,9 +379,6 @@ class _Activity1State extends State<Activity1>
                 ],
               ),
             ),
-            SizedBox(
-              height: 30.0,
-            ),
             Flexible(
               flex: 2,
               child: Row(
@@ -422,9 +416,6 @@ class _Activity1State extends State<Activity1>
                 ],
               ),
             ),
-            SizedBox(
-              height: 30.0,
-            ),
             Flexible(
               flex: 2,
               child: Row(
@@ -461,7 +452,10 @@ class _Activity1State extends State<Activity1>
                   ),
                 ],
               ),
-            )
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.1,
+            ),
           ],
         ),
       ),
@@ -490,103 +484,131 @@ class _Activity1State extends State<Activity1>
       child: SingleChildScrollView(
         physics: NeverScrollableScrollPhysics(),
         child: Container(
-          height: 1000,
+          height: MediaQuery.of(context).size.height * 0.7,
           child: Padding(
             padding: const EdgeInsets.all(40.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text(
-                  'Configure',
-                  style: GoogleFonts.montserrat(
-                    textStyle: kConfigurePanelTitle,
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Divider(
-                  color: Colors.grey,
-                  thickness: 1.0,
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0x44333333),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10.0, bottom: 10.0, left: 40.0, right: 40.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Port 1',
-                          style: kSliderText,
+                Flexible(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Configure',
+                        style: GoogleFonts.montserrat(
+                          textStyle: kConfigurePanelTitle,
                         ),
-                        DropdownButton<String>(
-                          value: selectedPort1,
-                          items: getDropdownItems(port1List),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedPort1 = value;
-                              port1key = PWMPins.keys.firstWhere(
-                                  (k) => PWMPins[k] == selectedPort1,
-                                  orElse: () => null);
-                              String dataPorts = "activity1::Port1: $port1key";
-                              print(dataPorts);
-                              writeData(dataPorts);
-                            });
-                          },
-                        ),
-                      ],
-                    ),
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Divider(
+                        color: Colors.grey,
+                        thickness: 1.0,
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  height: 30.0,
+                Flexible(
+                  flex: 1,
+                  child: SizedBox(
+                    height: 10.0,
+                  ),
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color(0x44333333),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15),
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(0x44333333),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 10.0, bottom: 10.0, left: 40.0, right: 40.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Port 1',
+                            style: kSliderText,
+                          ),
+                          DropdownButton<String>(
+                            value: selectedPort1,
+                            items: getDropdownItems(port1List),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedPort1 = value;
+                                port1key = PWMPins.keys.firstWhere(
+                                    (k) => PWMPins[k] == selectedPort1,
+                                    orElse: () => null);
+                                String dataPorts =
+                                    "activity1::Port1: $port1key";
+                                print(dataPorts);
+                                writeData(dataPorts);
+                              });
+                            },
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        top: 10.0, bottom: 10.0, left: 40.0, right: 40.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          'Port 2',
-                          style: kSliderText,
-                        ),
-                        DropdownButton<String>(
-                          value: selectedPort2,
-                          items: getDropdownItems(port2List),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedPort2 = value;
-                              port2key = PWMPins.keys.firstWhere(
-                                  (k) => PWMPins[k] == selectedPort2,
-                                  orElse: () => null);
-                              String dataPorts = "activity1::Port2: $port2key";
-                              print(dataPorts);
-                              writeData(dataPorts);
-                            });
-                          },
-                        ),
-                      ],
+                ),
+                Flexible(
+                  flex: 1,
+                  child: SizedBox(
+                    height: 30.0,
+                  ),
+                ),
+                Flexible(
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(0x44333333),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15),
+                      ),
                     ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 10.0, bottom: 10.0, left: 40.0, right: 40.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Port 2',
+                            style: kSliderText,
+                          ),
+                          DropdownButton<String>(
+                            value: selectedPort2,
+                            items: getDropdownItems(port2List),
+                            onChanged: (value) {
+                              setState(() {
+                                selectedPort2 = value;
+                                port2key = PWMPins.keys.firstWhere(
+                                    (k) => PWMPins[k] == selectedPort2,
+                                    orElse: () => null);
+                                String dataPorts =
+                                    "activity1::Port2: $port2key";
+                                print(dataPorts);
+                                writeData(dataPorts);
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Flexible(
+                  flex: 5,
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.3,
                   ),
                 ),
               ],

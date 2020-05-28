@@ -20,6 +20,9 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'dart:convert' show utf8;
 import 'dart:async';
 
+//user permission package
+import 'package:permission_handler/permission_handler.dart';
+
 class HomeScreen extends StatefulWidget {
   static String id = 'home_screen';
 
@@ -91,6 +94,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    Future.microtask(() async {
+      if (await Permission.location.request().isGranted) {
+        // Either the permission was already granted before or the user just granted it.
+      }
+
+// You can request multiple permissions at once.
+      Map<Permission, PermissionStatus> statuses = await [
+        Permission.location,
+      ].request();
+      print(statuses[Permission.location]);
+    });
+
     super.initState();
 
 //    startScan();

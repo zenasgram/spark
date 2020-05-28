@@ -29,10 +29,10 @@ void setup() {
   Serial.print("Hash: ");
 
   // generating random sequence for dynamic password
-  int ab = random(1, sizeof(shaResult)-1);
-  int cd = random(1, sizeof(shaResult)-1);
-  int ef = random(1, sizeof(shaResult)-1);
-  int gh = random(1, sizeof(shaResult)-1);
+//  int ab = random(1, sizeof(shaResult)-1);
+//  int cd = random(1, sizeof(shaResult)-1);
+//  int ef = random(1, sizeof(shaResult)-1);
+//  int gh = random(1, sizeof(shaResult)-1);
 
 //  Serial.println(ab);
 //  Serial.println(cd);
@@ -45,13 +45,17 @@ void setup() {
     sprintf(str, "%02x", (int)shaResult[i]);
     Serial.print(str);
 
-    if (i==0){
-      device_ID = str; //capture unique ID for ESP32
+    if (i<2){
+      device_ID = device_ID + str; //capture unique ID for ESP32 (index 0 to 3)
+    }
+
+    if(i>=2 && i<=5){
+      device_password = device_password + str; //limit password to 8 characters (index 4 to 11)
     }
     
-    if(i==ab || i==cd || i==ef || i==gh){
-      device_password = device_password + str; //limit password to 8 characters
-    }
+//    if(i==ab || i==cd || i==ef || i==gh){
+//      device_password = device_password + str; //limit password to 8 characters
+//    }
     
   }
 
