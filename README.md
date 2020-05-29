@@ -4,6 +4,10 @@ Download published app on the Android Playstore: https://play.google.com/store/a
 
 Spark is a pre-college outreach application to educate students on fundamental engineering concepts (eg. electromagnetism).
 
+Welcome Screen              |  Home Screen        |  BLE connection          |  Activity Screen
+:-------------------------:|:-------------------------:-------------------------:|:-------------------------:
+![](https://github.com/zenasgram/spark/blob/master/images/readme_welcome.png)  |  ![](https://github.com/zenasgram/spark/blob/master/images/readme_home.png)  |  ![](https://github.com/zenasgram/spark/blob/master/images/readme_auth.png)  |  ![](https://github.com/zenasgram/spark/blob/master/images/readme_activity.png)
+
 Final Year Project Demo Video:
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=C4DCKOrjJ8o
 " target="_blank"><img src="http://img.youtube.com/vi/C4DCKOrjJ8o/0.jpg" 
@@ -141,6 +145,6 @@ For more information, check out the official Flutter team [documentation](https:
 
 ## Authors
 
-* **Lim Fei Yu. Zenas** - *Developer*
+* **Lim Fei Yu, Zenas** - *Developer*
 * **Dr Adrià Junyent-Ferré** - *Supervisor*
 
