@@ -4,14 +4,17 @@ Download published app on the Android Playstore: https://play.google.com/store/a
 
 Spark is a pre-college outreach application to educate students on fundamental engineering concepts (eg. electromagnetism).
 
-Welcome Screen              |  Home Screen        |  BLE connection          |  Activity Screen
-:-------------------------:|:-------------------------:-------------------------:|:-------------------------:
-![](https://github.com/zenasgram/spark/blob/master/images/readme_welcome.png)  |  ![](https://github.com/zenasgram/spark/blob/master/images/readme_home.png)  |  ![](https://github.com/zenasgram/spark/blob/master/images/readme_auth.png)  |  ![](https://github.com/zenasgram/spark/blob/master/images/readme_activity.png)
+<p float="left">
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_welcome.png" width="100" />
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_home.png" width="100" /> 
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_auth.png" width="100" />
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_activity.png" width="100" />
+</p>
 
-Final Year Project Demo Video:
+Final Year Project Demo Video: <br/>
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=C4DCKOrjJ8o
 " target="_blank"><img src="http://img.youtube.com/vi/C4DCKOrjJ8o/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="480" height="300" border="5" /></a>
+alt="IMAGE ALT TEXT HERE" width="480" height="360" border="0" /></a>
 
 ## Getting Started
 
