@@ -1,8 +1,9 @@
 # Spark <img align="right" width="100" height="100" src="https://github.com/zenasgram/spark/blob/master/images/readme_logo.png"> 
 
-Download published app on the Android Playstore: https://play.google.com/store/apps/details?id=ac.imperial.spark
 
 Spark is a pre-college outreach application to educate students on fundamental engineering concepts (eg. electromagnetism).
+
+Download published app on the Android Playstore: https://play.google.com/store/apps/details?id=ac.imperial.spark
 
 <p float="left">
   <img src="https://github.com/zenasgram/spark/blob/master/images/readme_welcome.jpg" width="210" />
