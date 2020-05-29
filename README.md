@@ -4,17 +4,18 @@ Download published app on the Android Playstore: https://play.google.com/store/a
 
 Spark is a pre-college outreach application to educate students on fundamental engineering concepts (eg. electromagnetism).
 
-<p float="left">
-  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_welcome.jpg" width="200" />
-  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_home.jpg" width="200" /> 
-  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_auth.jpg" width="200" />
-  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_activity.jpg" width="200" />
+
+<p float="center">
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_welcome.jpg" width="210" />
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_home.jpg" width="210" /> 
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_auth.jpg" width="210" />
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_activity.jpg" width="210" />
 </p>
 
 Final Year Project Demo Video: <br/>
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=C4DCKOrjJ8o
 " target="_blank"><img src="http://img.youtube.com/vi/C4DCKOrjJ8o/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="480" height="270" border="10" /></a>
+alt="IMAGE ALT TEXT HERE" width="480" height="360" border="10" /></a>
 
 ## Getting Started
 
@@ -33,13 +34,13 @@ samples, guidance on mobile development, and a full API reference.
 ### Prerequisites
 
 If you own a PC, it must:
-- be running Windows 7 or later 
-- have at least 400MB RAM, although 8GB RAM and above is highly recommended
-- have [git](https://git-scm.com/downloads) installed
+- [x] be running Windows 7 or later 
+- [x] have at least 400MB RAM, although 8GB RAM and above is highly recommended
+- [x] have [git](https://git-scm.com/downloads) installed
 
 If you own a Mac, it must:
-- be running MacOS X or later
-- have at least 700MB RAM, although 8GB RAM and above is highly recommended
+- [x] be running MacOS X or later
+- [x] have at least 700MB RAM, although 8GB RAM and above is highly recommended
 
 Android Studio (recommended) or Visual Studio Code for Flutter development.
 Android Studio benefits include better integration with iOS and Android mobile phone emulators, easy upgrades to Android X, etc. 
