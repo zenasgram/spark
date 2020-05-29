@@ -14,11 +14,9 @@ Spark is a pre-college outreach application to educate students on fundamental e
 Final Year Project Demo Video: <br/>
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=C4DCKOrjJ8o
 " target="_blank"><img src="http://img.youtube.com/vi/C4DCKOrjJ8o/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="480" height="360" border="10" /></a>
+alt="IMAGE ALT TEXT HERE" width="480" /></a>
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
 
@@ -60,7 +58,7 @@ If you have a PC:
 For more information, check out the official Flutter team [documentation](https://flutter.dev/docs/get-started/install/windows).
 
 
-If you have a MacOS Machine:
+If you have a MacOS machine:
 1) Install the Flutter SDK
 2) Install Android Studio
 3) Install the Android Emulator
