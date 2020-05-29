@@ -5,10 +5,10 @@ Download published app on the Android Playstore: https://play.google.com/store/a
 Spark is a pre-college outreach application to educate students on fundamental engineering concepts (eg. electromagnetism).
 
 <p float="left">
-  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_welcome.png" width="100" />
-  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_home.png" width="100" /> 
-  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_auth.png" width="100" />
-  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_activity.png" width="100" />
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_welcome.jpg" width="100" />
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_home.jpg" width="100" /> 
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_auth.jpg" width="100" />
+  <img src="https://github.com/zenasgram/spark/blob/master/images/readme_activity.jpg" width="100" />
 </p>
 
 Final Year Project Demo Video: <br/>
