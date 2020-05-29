@@ -1,12 +1,12 @@
-# Spark ![alt text](https://github.com/zenasgram/spark/blob/master/images/logo.png "Logo Title Text 1")
+# Spark ![alt text](https://github.com/zenasgram/spark/blob/master/images/readme_logo.png "Logo Title Text 1")
 
 Download published app on the Android Playstore: https://play.google.com/store/apps/details?id=ac.imperial.spark
 
 Spark is a pre-college outreach application to educate students on fundamental engineering concepts (eg. electromagnetism).
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=YOUTUBE_VIDEO_ID_HERE
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=C4DCKOrjJ8o
 " target="_blank"><img src="http://img.youtube.com/vi/C4DCKOrjJ8o/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+alt="IMAGE ALT TEXT HERE" width="480" height="360" border="5" /></a>
 
 ## Getting Started
 
