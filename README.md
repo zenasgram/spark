@@ -1,12 +1,13 @@
-# Spark ![alt text](https://github.com/zenasgram/spark/blob/master/images/readme_logo.png "Logo Title Text 1")
+# Spark <img align="right" width="100" height="100" src="https://github.com/zenasgram/spark/blob/master/images/readme_logo.png"> 
 
 Download published app on the Android Playstore: https://play.google.com/store/apps/details?id=ac.imperial.spark
 
 Spark is a pre-college outreach application to educate students on fundamental engineering concepts (eg. electromagnetism).
 
+Final Year Project Demo Video:
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=C4DCKOrjJ8o
 " target="_blank"><img src="http://img.youtube.com/vi/C4DCKOrjJ8o/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="480" height="360" border="5" /></a>
+alt="IMAGE ALT TEXT HERE" width="480" height="300" border="5" /></a>
 
 ## Getting Started
 
@@ -106,7 +107,7 @@ For more information, check out the official Flutter team [documentation](https:
 
 
 
-## Flutter Dependencies
+### Flutter Dependencies
 
 #### Google Packages
 * [firebase_core](https://pub.dev/packages/firebase_core) - ^0.4.4+3
