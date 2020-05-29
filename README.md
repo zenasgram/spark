@@ -1,6 +1,12 @@
-# Spark
+# Spark ![alt text](https://github.com/zenasgram/spark/blob/master/images/logo.png "Logo Title Text 1")
+
+Download published app on the Android Playstore: https://play.google.com/store/apps/details?id=ac.imperial.spark
 
 Spark is a pre-college outreach application to educate students on fundamental engineering concepts (eg. electromagnetism).
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=YOUTUBE_VIDEO_ID_HERE
+" target="_blank"><img src="http://img.youtube.com/vi/C4DCKOrjJ8o/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 ## Getting Started
 
@@ -15,85 +21,125 @@ For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+If you own a PC, it must:
+- be running Windows 7 or later 
+- have at least 400MB RAM, although 8GB RAM and above is highly recommended
+- have [git](https://git-scm.com/downloads) installed
 
-```
-Give examples
-```
+If you own a Mac, it must:
+- be running MacOS X or later
+- have at least 700MB RAM, although 8GB RAM and above is highly recommended
 
-### Installing
+Android Studio (recommended) or Visual Studio Code for Flutter development.
+Android Studio benefits include better integration with iOS and Android mobile phone emulators, easy upgrades to Android X, etc. 
 
-A step by step series of examples that tell you how to get a development env running
+- For Android apps, you will also need the Android emulator (integrated with Android Studio) or a physical Android device
+- For iOS testing and deployment, a MacOS machine running Xcode is required. For iOS apps, you will need either an iOS simulator or an Apple mobile device. Note that you will need to install [Cocoa Pods](https://guides.cocoapods.org/using/getting-started.html) for the Flutter program to compile for iOS.
 
-Say what the step will be
+Arduino Labs software is required to program the ESP32 microprocessor.
 
-```
-Give the example
-```
 
-And repeat
+### Set Up
 
-```
-until finished
-```
+If you have a PC:
+1) Install the Flutter SDK (save it directly to the C: drive, eg. C:\src\flutter)
+2) Install Android Studio
+3) Install the Android Emulator
 
-End with an example of getting some data out of the system or using it for a little demo
+For more information, check out the official Flutter team [documentation](https://flutter.dev/docs/get-started/install/windows).
 
-## Running the tests
 
-Explain how to run the automated tests for this system
+If you have a MacOS Machine:
+1) Install the Flutter SDK
+2) Install Android Studio
+3) Install the Android Emulator
+4) Install Xcode and command-line tools
+5) Test the iOS simulator
 
-### Break down into end to end tests
+For more information, check out the official Flutter team [documentation](https://flutter.dev/docs/get-started/install/macos).
 
-Explain what these tests test and why
 
-```
-Give an example
-```
+## Directory Layout
 
-### And coding style tests
+    .
+    ├── android                             # Android environment configuration files
+    ├── arduino                             # Arduino lab files for ESP32 hardware
+    │   └── a_ESP32_global
+    │       ├── a_ESP32_global.ino          # Arduino code for imported libraries, global variables and function declarations
+    │       ├── b_activity1.ino             # Activity 1 control parameters and functions
+    │       ├── c_activity2.ino             # Activity 2 control parameters and functions
+    │       ├── d_activity3.ino             # Activity 3 control parameters and functions
+    │       ├── e_commandParse.ino          # Command parser to handle data input from app client to ESP32 server
+    │       ├── f_bluetooth.ino             # BLE callback functions for connection and read/write
+    │       ├── g_setup.ino                 # ESP32 set up
+    │       └── h_loop.ino                  # ESP32 run-time loop execution
+    │    
+    ├── assets                              # Folder containing Rive graphic animations for Activity Cards
+    │   └── concepts                        # Animation soruce folder for Concept Tool Tips
+    ├── images                              # Folder containing spark app logo and google/facebook sign in icons
+    │   
+    ├── ios                                 # iOS environment configuration files
+    ├── lib                                 # Top library
+    │   ├── components            
+    │   │   ├── activity_card.dart          # Refactored code for home screen activity card design
+    │   │   └── signin_button.dart          # Refactored code for registration/login button
+    │   ├── screens     
+    │   │   ├── activities                    
+    │   │   │   ├── activity1.dart          # Flutter code for activity 1
+    │   │   │   ├── activity2.dart          # Flutter code for activity 2
+    │   │   │   ├── activity3.dart          # Flutter code for activity 3
+    │   │   │   └── activity_template.dart  # Activity template for future development 
+    │   │   ├── home_screen.dart            # Code for primary UI screen  
+    │   │   └── welcome_screen.dart         # Code for initial screen on application boot
+    │   │  
+    │   ├── main.dart                       # Code for navigation route declaration 
+    │   ├── auth_fb.dart                    # Code for Facebook sign in
+    │   ├── auth_google.dart                # Code for Google sign in
+    │   ├── config_data.dart                # Source file containing dictionaries of ESP32 port types
+    │   └── constants.dart                  # Source file that stores constants (frequently used colors, widges, etc.)
+    ├── test
+    ├── pubspec.yaml                        # Package files (firebase, facebook login, rive, etc.)
+    └── README.md
 
-Explain what these tests test and why
 
-```
-Give an example
-```
 
-## Deployment
+## Flutter Dependencies
 
-Add additional notes about how to deploy this on a live system
+#### Google Packages
+* [firebase_core](https://pub.dev/packages/firebase_core) - ^0.4.4+3
+* [firebase_analytics](https://pub.dev/packages/firebase_analytics) - ^5.0.11
+* [cloud_firestore](https://pub.dev/packages/cloud_firestore) - ^0.13.4+2
+* [firebase_auth](https://pub.dev/packages/firebase_auth) - ^0.15.5+3
+* [google_sign_in](https://pub.dev/packages/google_sign_in) - ^4.3.0
+* [rxdart](https://pub.dev/packages/rxdart) - ^0.23.0
 
-## Built With
+#### Facebook Login Packages
+* [flutter_facebook_login](https://pub.dev/packages/flutter_facebook_login) - ^3.0.0
+* [http](https://pub.dev/packages/http) - ^0.12.0+2
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+#### Permission Package
+* [permission_handler](https://pub.dev/packages/permission_handler) - ^5.0.0+hotfix.6
 
-## Contributing
+#### Bluetooth Package
+* [flutter_blue](https://pub.dev/packages/flutter_blue) - ^0.7.0
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+#### Design Packages
+* [rubber](https://pub.dev/packages/rubber) - ^0.4.0
+* [flare_flutter](https://pub.dev/packages/flare_flutter) - ^2.0.1
+* [rflutter_alert](https://pub.dev/packages/rflutter_alert) - ^1.0.3
+* [cupertino_icons](https://pub.dev/packages/cupertino_icons) - ^0.1.2
+* [google_fonts](https://pub.dev/packages/google_fonts) - ^0.3.10
+* [font_awesome_flutter](https://pub.dev/packages/font_awesome_flutter) - ^8.8.1
+* [wave_slider](https://pub.dev/packages/wave_slider) - ^0.2.0
+* [sleek_circular_slider](https://pub.dev/packages/sleek_circular_slider) - ^1.1.0
+* [lite_rolling_switch](https://pub.dev/packages/lite_rolling_switch) - ^0.1.1
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* **Lim Fei Yu. Zenas** - *Developer*
+* **Dr Adrià Junyent-Ferré** - *Supervisor*
 
